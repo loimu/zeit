@@ -37,16 +37,29 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->setupUi(this);
     ui->statusBar->hide();
     ui->mainToolBar->setMovable(false);
+    ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    // main menu actions
+    ui->actionAddTask->setIcon(QIcon::fromTheme(QLatin1String("document-new")));
+    ui->actionModifyTask->setIcon(QIcon::fromTheme(QLatin1String("document-edit")));
+    ui->actionDeleteTask->setIcon(QIcon::fromTheme(QLatin1String("document-close")));
+    ui->actionQuit->setIcon(QIcon::fromTheme(QLatin1String("application-exit")));
+    ui->actionAlarm->setIcon(QIcon::fromTheme(QLatin1String("chronometer")));
+    ui->actionTimer->setIcon(QIcon::fromTheme(QLatin1String("player-time")));
     // create ToolBar actions
     createTaskAction = new QAction(tr("New Task"), this);
+    createTaskAction->setIcon(QIcon::fromTheme(QLatin1String("document-new")));
     ui->mainToolBar->addAction(createTaskAction);
     deleteTaskAction = new QAction(tr("Delete Task"), this);
+    deleteTaskAction->setIcon(QIcon::fromTheme(QLatin1String("document-close")));
     ui->mainToolBar->addAction(deleteTaskAction);
     modifyTaskAction = new QAction(tr("Modify Task"), this);
+    modifyTaskAction->setIcon(QIcon::fromTheme(QLatin1String("document-edit")));
     ui->mainToolBar->addAction(modifyTaskAction);
     createAlarmAction = new QAction(tr("New Alarm"), this);
+    createAlarmAction->setIcon(QIcon::fromTheme(QLatin1String("chronometer")));
     ui->mainToolBar->addAction(createAlarmAction);
     createTimerAction = new QAction(tr("New Timer"), this);
+    createTimerAction->setIcon(QIcon::fromTheme(QLatin1String("player-time")));
     ui->mainToolBar->addAction(createTimerAction);
     // connect MainMenu actions
     connect(ui->actionAddTask, SIGNAL(triggered()), SLOT(createTask()));

@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>498</width>
-    <height>284</height>
+    <width>599</width>
+    <height>278</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Zeit</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="chronometer"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -25,7 +28,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>498</width>
+     <width>599</width>
      <height>25</height>
     </rect>
    </property>
