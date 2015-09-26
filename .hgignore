@@ -1,0 +1,16 @@
+# use glob syntax.
+syntax: glob
+
+*~
+*.kdev4
+*.pro.user*
+*.txt.user*
+Makefile
+moc_*
+
+# switch to regexp syntax.
+syntax: regexp
+
+^local$
+^.kdev4$
+^build$
