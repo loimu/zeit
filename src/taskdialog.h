@@ -27,6 +27,7 @@ class TaskDialog;
 }
 
 class CTTask;
+class CTUnit;
 
 class TaskDialog : public QDialog
 {
@@ -41,6 +42,7 @@ private:
     Ui::TaskDialog *ui;
     void init();
     void setText(const QString&, const QString&, const QString&, const QString&, const QString&);
+    void setUnit(CTUnit&, const QString&);
 private slots:
     void toggleMode();
     void saveTask();

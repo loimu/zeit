@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(checkActions(QListWidgetItem*)));
     CTInitializationError error;
     // init crontab host
-    ctHost = new CTHost("crontab", error);
+    ctHost = new CTHost(QLatin1String("crontab"), error);
     // init cron instance
     cron = ctHost->findCurrentUserCron();
     // refresh state

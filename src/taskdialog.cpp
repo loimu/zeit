@@ -61,7 +61,7 @@ void TaskDialog::init() {
     }
     else {
         QStringList tokenList = task->schedulingCronFormat().split(QRegExp("\\s"));
-        setText(tokenList.at(0),tokenList.at(1),tokenList.at(2),tokenList.at(3),tokenList.at(4));
+        setText(tokenList.at(0),tokenList.at(1),tokenList.at(2),tokenList.at(4),tokenList.at(3));
     }
 }
 
@@ -73,6 +73,18 @@ void TaskDialog::setText(const QString& minute, const QString& hour,
     ui->editDay->setText(day);
     ui->editWeekday->setText(weekday);
     ui->editMonth->setText(month);
+}
+
+void TaskDialog::setUnit(CTUnit& unit, const QString& token) {
+    if(token != "*") {
+        for(int i = unit.minimum(); i <= unit.maximum(); i++)
+            unit.setEnabled(i, false);
+        QStringList items = token.split(",");
+        foreach(QString string, items)
+            unit.setEnabled(string.toInt(), true);
+    } else
+        for(int i = unit.minimum(); i <= unit.maximum(); i++)
+            unit.setEnabled(i, true);
 }
 
 void TaskDialog::toggleMode() {
@@ -90,41 +102,12 @@ void TaskDialog::toggleMode() {
 void TaskDialog::saveTask() {
     task->command = ui->commandEdit->text();
     task->comment = ui->commentEdit->text();
-    if(ui->editMinute->text() != "*") {
-        QStringList items = ui->editMinute->text().split(",");
-        foreach(QString string, items)
-            task->minute.setEnabled(string.toInt(), true);
-    } else
-        for(int mi = 0; mi <= 59; ++mi)
-            task->minute.setEnabled(mi, true);
-    if(ui->editHour->text() != "*") {
-        QStringList items = ui->editHour->text().split(",");
-        foreach(QString string, items)
-            task->hour.setEnabled(string.toInt(), true);
-    } else
-        for(int ho = 0; ho <= 23; ho++)
-            task->hour.setEnabled(ho, true);
-    if(ui->editDay->text() != "*") {
-        QStringList items = ui->editDay->text().split(",");
-        foreach(QString string, items)
-            task->dayOfMonth.setEnabled(string.toInt(), true);
-    } else
-        for(int dm = 1; dm <= 31; dm++)
-            task->dayOfMonth.setEnabled(dm, true);
-    if(ui->editWeekday->text() != "*") {
-        QStringList items = ui->editWeekday->text().split(",");
-        foreach(QString string, items)
-            task->dayOfWeek.setEnabled(string.toInt(), true);
-    } else
-        for(int dw = 1; dw <= 7; dw++)
-            task->dayOfWeek.setEnabled(dw, true);
-    if(ui->editMonth->text() != "*") {
-        QStringList items = ui->editMonth->text().split(",");
-        foreach(QString string, items)
-            task->month.setEnabled(string.toInt(), true);
-    } else
-        for(int mo = CTMonth::MINIMUM; mo <= CTMonth::MAXIMUM; mo++)
-            task->month.setEnabled(mo, true);
+    // write time tokens into cttask object
+    setUnit(task->minute, ui->editMinute->text());
+    setUnit(task->hour, ui->editHour->text());
+    setUnit(task->dayOfMonth, ui->editDay->text());
+    setUnit(task->dayOfWeek, ui->editWeekday->text());
+    setUnit(task->month, ui->editMonth->text());
 }
 
 void TaskDialog::refresh(int index) {
