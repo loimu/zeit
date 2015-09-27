@@ -50,19 +50,19 @@ private:
     QAction* modifyTaskAction;
     QAction* createAlarmAction;
     QAction* createTimerAction;
-
     void refreshActions(bool);
     void refreshTasks();
 
 private slots:
     void checkActions(QListWidgetItem*);
-    void showAboutDialog();
-    void createTask();
-    void deleteTask();
+    void addTask();
     void modifyTask();
-    void saveTask();
-    void createAlarm();
-    void createTimer();
+    void showAboutDialog();
+    void createTaskDialog();
+    void deleteTask();
+    void modifyTaskDialog();
+    void createAlarmDialog();
+    void createTimerDialog();
 };
 
 #endif // MAINWINDOW_H

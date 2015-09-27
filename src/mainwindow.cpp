@@ -62,19 +62,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     createTimerAction->setIcon(QIcon::fromTheme(QLatin1String("player-time")));
     ui->mainToolBar->addAction(createTimerAction);
     // connect MainMenu actions
-    connect(ui->actionAddTask, SIGNAL(triggered()), SLOT(createTask()));
-    connect(ui->actionModifyTask, SIGNAL(triggered()), SLOT(modifyTask()));
+    connect(ui->actionAddTask, SIGNAL(triggered()), SLOT(createTaskDialog()));
+    connect(ui->actionModifyTask, SIGNAL(triggered()), SLOT(modifyTaskDialog()));
     connect(ui->actionDeleteTask, SIGNAL(triggered()), SLOT(deleteTask()));
-    connect(ui->actionAlarm, SIGNAL(triggered()), SLOT(createAlarm()));
-    connect(ui->actionTimer, SIGNAL(triggered()), SLOT(createTimer()));
+    connect(ui->actionAlarm, SIGNAL(triggered()), SLOT(createAlarmDialog()));
+    connect(ui->actionTimer, SIGNAL(triggered()), SLOT(createTimerDialog()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
     connect(ui->actionAbout, SIGNAL(triggered()), SLOT(showAboutDialog()));
     // connect ToolBar actions
-    connect(createTaskAction, SIGNAL(triggered()), SLOT(createTask()));
-    connect(modifyTaskAction, SIGNAL(triggered()), SLOT(modifyTask()));
+    connect(createTaskAction, SIGNAL(triggered()), SLOT(createTaskDialog()));
+    connect(modifyTaskAction, SIGNAL(triggered()), SLOT(modifyTaskDialog()));
     connect(deleteTaskAction, SIGNAL(triggered()), SLOT(deleteTask()));
-    connect(createAlarmAction, SIGNAL(triggered()), SLOT(createAlarm()));
-    connect(createTimerAction, SIGNAL(triggered()), SLOT(createTimer()));
+    connect(createAlarmAction, SIGNAL(triggered()), SLOT(createAlarmDialog()));
+    connect(createTimerAction, SIGNAL(triggered()), SLOT(createTimerDialog()));
     // connect ListWidget actions
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(checkActions(QListWidgetItem*)));
     CTInitializationError error;
@@ -99,14 +99,6 @@ void MainWindow::refreshActions(bool enabled) {
     ui->actionDeleteTask->setEnabled(enabled);
 }
 
-void MainWindow::checkActions(QListWidgetItem* item) {
-    refreshActions(item->isSelected());
-    if(item->isSelected()) {
-        ListItem* taskItem = static_cast<ListItem*>(item);
-        currentTask = taskItem->task();
-    }
-}
-
 void MainWindow::refreshTasks() {
     ui->listWidget->clear();
     // Add new items
@@ -117,15 +109,35 @@ void MainWindow::refreshTasks() {
     }
 }
 
-void MainWindow::createTask() {
+void MainWindow::checkActions(QListWidgetItem* item) {
+    refreshActions(item->isSelected());
+    if(item->isSelected()) {
+        ListItem* taskItem = static_cast<ListItem*>(item);
+        currentTask = taskItem->task();
+    }
+}
+
+void MainWindow::addTask() {
+    cron->addTask(currentTask);
+    cron->save();
+    refreshTasks();
+}
+
+
+void MainWindow::modifyTask() {
+    cron->modifyTask(currentTask);
+    cron->save();
+    refreshTasks();
+}
+
+void MainWindow::createTaskDialog() {
     currentTask = new CTTask(QLatin1String(""),
                              QLatin1String(""),
                              cron->userLogin(),
                              false);
     TaskDialog *td = new TaskDialog(currentTask, tr("New Task"), this);
     td->show();
-    cron->addTask(currentTask);
-    connect(td, SIGNAL(accepted()), SLOT(saveTask()));
+    connect(td, SIGNAL(accepted()), SLOT(addTask()));
 }
 
 void MainWindow::deleteTask() {
@@ -134,30 +146,23 @@ void MainWindow::deleteTask() {
     refreshTasks();
 }
 
-void MainWindow::modifyTask() {
+void MainWindow::modifyTaskDialog() {
     TaskDialog *td = new TaskDialog(currentTask, tr("Edit Task"), this);
     td->show();
-    cron->modifyTask(currentTask);
-    connect(td, SIGNAL(accepted()), SLOT(saveTask()));
+    connect(td, SIGNAL(accepted()), SLOT(modifyTask()));
 }
 
-void MainWindow::saveTask() {
-    cron->save();
-    refreshTasks();
-}
-
-void MainWindow::createAlarm() {
+void MainWindow::createAlarmDialog() {
     currentTask = new CTTask(QLatin1String(""),
                              QLatin1String(""),
                              cron->userLogin(),
                              false);
     AlarmDialog *ad = new AlarmDialog(currentTask, tr("New Alarm"), this);
     ad->show();
-    cron->addTask(currentTask);
-    connect(ad, SIGNAL(accepted()), SLOT(saveTask()));
+    connect(ad, SIGNAL(accepted()), SLOT(addTask()));
 }
 
-void MainWindow::createTimer() {
+void MainWindow::createTimerDialog() {
     TimerDialog *td = new TimerDialog(tr("New Timer"), this);
     td->show();
 }
