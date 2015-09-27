@@ -17,6 +17,8 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <QMessageBox>
+
 #include "cthost.h"
 #include "ctcron.h"
 #include "cttask.h"
@@ -141,9 +143,15 @@ void MainWindow::createTaskDialog() {
 }
 
 void MainWindow::deleteTask() {
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Deleting Task", "Delete task?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if(reply == QMessageBox::No)
+        return;
     cron->removeTask(currentTask);
     cron->save();
     refreshTasks();
+    refreshActions(false);
 }
 
 void MainWindow::modifyTaskDialog() {
