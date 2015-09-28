@@ -24,25 +24,27 @@
 #include "alarmdialog.h"
 #include "ui_alarmdialog.h"
 
-AlarmDialog::AlarmDialog(CTTask* _ctTask, const QString& _caption, QWidget *parent) :
+AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AlarmDialog)
 {
     task = _ctTask;
     ui->setupUi(this);
-    setWindowTitle(_caption);
+    setWindowTitle(tr("New Alarm"));
+    // prepopulate fields
     ui->checkBoxMon->setChecked(true);
     ui->checkBoxTue->setChecked(true);
     ui->checkBoxWed->setChecked(true);
     ui->checkBoxThu->setChecked(true);
     ui->checkBoxFri->setChecked(true);
-    ui->lineEditComment->setText(tr("Undefined"));
+    ui->lineEditComment->setText(tr("New Alarm"));
     // detect player
     QProcess proc;
-    proc.start("which", QStringList() << "mpv");
+    proc.start("which", QStringList() << "mpv" << "mplayer");
     proc.waitForFinished(-1);
-    ui->lineEditPlayer->setText(QString::fromUtf8(proc.readAllStandardOutput())
-                                                  .remove(QRegExp("[\n\t\r]")));
+    QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(QRegExp("\n"));
+    if(players.length() > 0)
+        ui->lineEditPlayer->setText(players.at(0));
     // ButtonBox action
     connect(this, SIGNAL(accepted()), SLOT(saveTask()));
     // FileDialog actions

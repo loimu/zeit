@@ -19,22 +19,30 @@
 
 #include <QProcess>
 #include <QFileDialog>
+#include <QTime>
 
 #include "timerdialog.h"
 #include "ui_timerdialog.h"
 
-TimerDialog::TimerDialog(const QString& _caption, QWidget *parent) :
+TimerDialog::TimerDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TimerDialog)
 {
     ui->setupUi(this);
-    setWindowTitle(_caption);
+    setWindowTitle(tr("New Timer"));
+    // prepopulate fields
+    ui->lineEditComment->setText(tr("New Timer"));
+    ui->checkBox->setChecked(true);
     // detect player
     QProcess proc;
-    proc.start("which", QStringList() << "mpv");
+    proc.start("which", QStringList() << "mpv" << "mplayer");
     proc.waitForFinished(-1);
-    ui->lineEditPlayer->setText(QString::fromUtf8(proc.readAllStandardOutput())
-                                                  .remove(QRegExp("[\n\t\r]")));
+    QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(QRegExp("\n"));
+    if(players.length() > 0)
+        ui->lineEditPlayer->setText(players.at(0));
+    // get system time
+    ui->spinBoxHours->setValue(QTime::currentTime().hour());
+    ui->spinBoxMinutes->setValue(QTime::currentTime().minute() + 5);
     // save task action
     connect(this, SIGNAL(accepted()), SLOT(saveTask()));
     // FileDialog actions
@@ -51,14 +59,16 @@ void TimerDialog::saveTask() {
     /*
         timer uses the "at" cli utility: echo '/path/to/script' | at 11:15
     */
-    QString command = QString("echo '%1 %2' | at %3:%4")
+    QString notification = QString();
+    if(ui->checkBox->isChecked())
+        notification.append(QString(" ; notify-send \"Timer\" \"%1\"")
+                       .arg(ui->lineEditComment->text()));
+    QString command = QString("echo '%1 %2%3' | at %4:%5")
             .arg(ui->lineEditPlayer->text())
             .arg(ui->lineEditSoundFile->text())
+            .arg(notification)
             .arg(ui->spinBoxHours->value())
             .arg(ui->spinBoxMinutes->value());
-    if(ui->checkBox->isChecked())
-        command.append(QString(" ; notify-send 'Timer' '%1'")
-                       .arg(ui->lineEditComment->text()));
     QProcess proc;
     proc.start("bash", QStringList() << "-c" << command);
     proc.waitForFinished(-1);
@@ -76,4 +86,14 @@ void TimerDialog::showPlayerDialog() {
     QStringList file = QFileDialog::getOpenFileNames(this,"Executable","/usr/bin","");
     if(file.length() > 0)
         ui->lineEditPlayer->setText(file.at(0));
+}
+
+void TimerDialog::on_pushButtonCurrent_released() {
+    ui->spinBoxHours->setValue(QTime::currentTime().hour());
+    ui->spinBoxMinutes->setValue(QTime::currentTime().minute());
+}
+
+void TimerDialog::on_pushButtonReset_released() {
+    ui->spinBoxHours->setValue(0);
+    ui->spinBoxMinutes->setValue(0);
 }

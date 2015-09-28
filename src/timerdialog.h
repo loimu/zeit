@@ -31,7 +31,7 @@ class TimerDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TimerDialog(const QString&, QWidget *parent = 0);
+    explicit TimerDialog(QWidget *parent = 0);
     ~TimerDialog();
 
 private:
@@ -41,6 +41,8 @@ private slots:
     void saveTask();
     void showFileDialog();
     void showPlayerDialog();
+    void on_pushButtonCurrent_released();
+    void on_pushButtonReset_released();
 };
 
 #endif // TIMERDIALOG_H

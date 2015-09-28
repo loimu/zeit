@@ -172,13 +172,13 @@ void MainWindow::createAlarmDialog() {
                              QLatin1String(""),
                              cron->userLogin(),
                              false);
-    AlarmDialog *ad = new AlarmDialog(currentTask, tr("New Alarm"), this);
+    AlarmDialog *ad = new AlarmDialog(currentTask, this);
     ad->show();
     connect(ad, SIGNAL(accepted()), SLOT(addTask()));
 }
 
 void MainWindow::createTimerDialog() {
-    TimerDialog *td = new TimerDialog(tr("New Timer"), this);
+    TimerDialog *td = new TimerDialog(this);
     td->show();
 }
 
