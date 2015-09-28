@@ -133,7 +133,6 @@ void MainWindow::addTask() {
     refreshTasks();
 }
 
-
 void MainWindow::modifyTask() {
     cron->modifyTask(currentTask);
     cron->save();
