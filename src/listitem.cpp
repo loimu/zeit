@@ -30,9 +30,22 @@ ListItem::ListItem(CTTask* _cttask, QListWidget *parent, int type) :
     task.append(QString("Command: %1\n").arg(ctTask->command));
     task.append(QString("Description: %1\n").arg(ctTask->comment));
     task.append(QString("Periodicity: %1").arg(ctTask->describe()));
-    this->setText(task);
+    setText(task);
+    refresh();
 }
 
 CTTask* ListItem::task() {
     return ctTask;
+}
+
+void ListItem::refresh() {
+    if(ctTask->enabled)
+        setIcon(QIcon::fromTheme(QLatin1String("dialog-ok-apply")));
+    else
+        setIcon(QIcon::fromTheme(QLatin1String("edit-delete")));
+}
+
+void ListItem::toggleStatus() {
+    ctTask->enabled = !ctTask->enabled;
+    refresh();
 }

@@ -27,11 +27,11 @@ class CTTask;
 class ListItem : public QListWidgetItem
 {
     CTTask* ctTask;
+    void refresh();
 public:
     ListItem(CTTask* _cttask, QListWidget *parent=0, int type=Type);
     CTTask* task();
-
-signals:
+    void toggleStatus();
 
 public slots:
 };

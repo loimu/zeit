@@ -18,7 +18,7 @@
 #include <QProcess>
 #include <QDateTime>
 
-#include <kshell.h>
+//#include <kshell.h>
 #include <KLocalizedString>
 
 #include "cttask.h"

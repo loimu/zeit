@@ -12,7 +12,7 @@
 #include "ctGlobalCron.h"
 
 
-#include <kshell.h>
+//#include <kshell.h>
 #include <KLocalizedString>
 
 #include "cthost.h"

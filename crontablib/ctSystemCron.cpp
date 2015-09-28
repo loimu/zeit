@@ -12,7 +12,7 @@
 #include "ctSystemCron.h"
 
 
-#include <kshell.h>
+//-#include <kshell.h>
 #include <KLocalizedString>
 
 #include <QTemporaryFile>

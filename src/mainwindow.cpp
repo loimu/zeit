@@ -79,8 +79,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(createTimerAction, SIGNAL(triggered()), SLOT(createTimerDialog()));
     // connect ListWidget actions
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(checkActions(QListWidgetItem*)));
-    CTInitializationError error;
+    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+            SLOT(toggleTaskStatus(QListWidgetItem*)));
     // init crontab host
+    CTInitializationError error;
     ctHost = new CTHost(QLatin1String("crontab"), error);
     // init cron instance
     cron = ctHost->findCurrentUserCron();
@@ -117,6 +119,12 @@ void MainWindow::checkActions(QListWidgetItem* item) {
         ListItem* taskItem = static_cast<ListItem*>(item);
         currentTask = taskItem->task();
     }
+}
+
+void MainWindow::toggleTaskStatus(QListWidgetItem* item) {
+    ListItem* taskItem = static_cast<ListItem*>(item);
+    taskItem->toggleStatus();
+    cron->save();
 }
 
 void MainWindow::addTask() {

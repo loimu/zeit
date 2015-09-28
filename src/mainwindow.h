@@ -55,14 +55,15 @@ private:
 
 private slots:
     void checkActions(QListWidgetItem*);
+    void toggleTaskStatus(QListWidgetItem*);
     void addTask();
     void modifyTask();
-    void showAboutDialog();
     void createTaskDialog();
     void deleteTask();
     void modifyTaskDialog();
     void createAlarmDialog();
     void createTimerDialog();
+    void showAboutDialog();
 };
 
 #endif // MAINWINDOW_H
