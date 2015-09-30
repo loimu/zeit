@@ -11,7 +11,7 @@ find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 )
 find_package(KF5 REQUIRED COMPONENTS
     I18n
-    IconThemes
+    #IconThemes
 )
 #add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 set(CMAKE_AUTOMOC ON)
@@ -64,7 +64,7 @@ add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS})
 target_link_libraries(zeit
     ${qt_LIBS}
     KF5::I18n
-    KF5::IconThemes
+    #KF5::IconThemes
 )
 
 install(TARGETS zeit RUNTIME DESTINATION bin)

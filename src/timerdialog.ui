@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>436</width>
-    <height>178</height>
+    <width>434</width>
+    <height>176</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -105,7 +105,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Start task in</string>
+        <string>Run at</string>
        </property>
       </widget>
      </item>

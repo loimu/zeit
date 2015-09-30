@@ -12,7 +12,7 @@
 #include "cttask.h"
 
 #include <KLocalizedString>
-#include <kiconloader.h>
+//#include <kiconloader.h>
 
 #include <QMimeDatabase>
 #include <QUrl>
@@ -358,12 +358,12 @@ QIcon CTTask::commandIcon() const {
 	if (mimeType.name() == QLatin1String( "application/x-executable" ) || mimeType.name() == QLatin1String( "application/octet-stream" )) {
 
 		//The next line is identical as SmallIcon(commandPath.fileName()), but is able to return a isNull() QPixmap
-		QPixmap pixmap = KIconLoader::global()->loadIcon(commandPath.fileName(), KIconLoader::Small, 0, KIconLoader::DefaultState, QStringList(), 0L, true);
-		if (pixmap.isNull()) {
+        //QPixmap pixmap = KIconLoader::global()->loadIcon(commandPath.fileName(), KIconLoader::Small, 0, KIconLoader::DefaultState, QStringList(), 0L, true);
+        //if (pixmap.isNull()) {
 			return QIcon::fromTheme(QLatin1String("system-run"));
-		}
+        //}
 
-		return QIcon(pixmap);
+        //return QIcon(pixmap);
 	}
 
 	return QIcon::fromTheme(mimeType.iconName());

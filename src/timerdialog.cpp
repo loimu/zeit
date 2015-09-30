@@ -76,7 +76,8 @@ void TimerDialog::saveTask() {
 }
 
 void TimerDialog::showFileDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(this, "Sound file", "",
+    QStringList file = QFileDialog::getOpenFileNames(this, "Sound file",
+                                                     QDir::homePath(),
                                             "Media (*.wav *.ogg *.mp3 *.flac)");
     if(file.length() > 0)
         ui->lineEditSoundFile->setText(file.at(0));
