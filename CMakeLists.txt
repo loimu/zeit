@@ -8,12 +8,11 @@ set (CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
     Widgets
+    Test
 )
 find_package(KF5 REQUIRED COMPONENTS
     I18n
-    #IconThemes
 )
-#add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 set(CMAKE_AUTOMOC ON)
 
 ### sources
@@ -64,7 +63,12 @@ add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS})
 target_link_libraries(zeit
     ${qt_LIBS}
     KF5::I18n
-    #KF5::IconThemes
 )
+# 
+#tests
+set(tests_SRCS ${zeit_crontablib_SRCS} src/tests.cpp)
+set(qtTest_LIBS ${qt_LIBS} Qt5::Test)
+add_executable(tests ${tests_SRCS})
+target_link_libraries(tests ${qtTest_LIBS} KF5::I18n)
 
 install(TARGETS zeit RUNTIME DESTINATION bin)
