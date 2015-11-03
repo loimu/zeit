@@ -151,7 +151,7 @@ void MainWindow::createTaskDialog() {
 
 void MainWindow::deleteTask() {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Deleting Task", "Delete task?",
+    reply = QMessageBox::question(this, tr("Deleting Task"), tr("Delete task?"),
                                   QMessageBox::Yes|QMessageBox::No);
     if(reply == QMessageBox::No)
         return;

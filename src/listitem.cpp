@@ -27,9 +27,9 @@ ListItem::ListItem(CTTask* _cttask, QListWidget *parent, int type) :
 {
     ctTask = _cttask;
     QString task;
-    task.append(QString("Command: %1\n").arg(ctTask->command));
-    task.append(QString("Description: %1\n").arg(ctTask->comment));
-    task.append(QString("Periodicity: %1").arg(ctTask->describe()));
+    task.append(QObject::tr("Command") + QString(": %1\n").arg(ctTask->command));
+    task.append(QObject::tr("Description") + QString(": %1\n").arg(ctTask->comment));
+    task.append(QObject::tr("Periodicity") + QString(": %1").arg(ctTask->describe()));
     setText(task);
     refresh();
 }

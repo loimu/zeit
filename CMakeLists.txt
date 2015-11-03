@@ -50,6 +50,14 @@ set(zeit_FRMS
    src/taskdialog.ui
    src/timerdialog.ui)
 
+#translations
+SET(TRANSLATION
+    translations/ru_RU.ts
+)
+find_package(Qt5LinguistTools REQUIRED)
+#add translations
+qt5_add_translation(QM ${TRANSLATION})
+
 ### build
 set(qt_LIBS Qt5::Core Qt5::Widgets)
 include_directories(
@@ -59,12 +67,11 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
-add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS})
+add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS} ${QM})
 target_link_libraries(zeit
     ${qt_LIBS}
     KF5::I18n
 )
-# 
 #tests
 set(tests_SRCS ${zeit_crontablib_SRCS} src/tests.cpp)
 set(qtTest_LIBS ${qt_LIBS} Qt5::Test)

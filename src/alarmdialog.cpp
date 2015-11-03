@@ -70,7 +70,7 @@ void AlarmDialog::saveTask() {
     task->dayOfWeek.setEnabled(5, ui->checkBoxFri->isChecked());
     task->dayOfWeek.setEnabled(6, ui->checkBoxSat->isChecked());
     task->dayOfWeek.setEnabled(7, ui->checkBoxSun->isChecked());
-    for(int dm = 1; dm <= 31; dm++)
+    for(int dm = CTDayOfMonth::MINIMUM; dm <= CTDayOfMonth::MAXIMUM; dm++)
         task->dayOfMonth.setEnabled(dm, true);
     for(int mo = CTMonth::MINIMUM; mo <= CTMonth::MAXIMUM; mo++)
         task->month.setEnabled(mo, true);
