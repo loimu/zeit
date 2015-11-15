@@ -19,12 +19,9 @@
 #include <QFile>
 #include <QTextStream>
 
-#include <KLocalizedString>
-
 #include "ctcron.h"
 #include "ctSystemCron.h"
 #include "ctInitializationError.h"
-
 
 #include "logging.h"
 
@@ -57,7 +54,7 @@ CTHost::CTHost(const QString& cronBinary, CTInitializationError& ctInitializatio
 		setpwent(); // restart
 		while ((userInfos=getpwent())) {
 			if ((userInfos->pw_uid == uid) && (!allowDeny(userInfos->pw_name))) {
-				ctInitializationError.setErrorMessage(i18n("You have been blocked from using KCron\
+                ctInitializationError.setErrorMessage(tr("You have been blocked from using Crontablib\
 	                      by either the /etc/cron.allow file or the /etc/cron.deny file.\
 	                      \n\nCheck the crontab man page for further details.")
 				);
@@ -139,7 +136,7 @@ CTSaveStatus CTHost::save() {
 		CTSaveStatus ctSaveStatus = ctCron->save();
 
 		if (ctSaveStatus.isError() == true) {
-			return CTSaveStatus(i18nc("User login: errorMessage", "User %1: %2", ctCron->userLogin(), ctSaveStatus.errorMessage()), ctSaveStatus.detailErrorMessage());
+            return CTSaveStatus(tr("User %1: %2", "User login: errorMessage").arg(ctCron->userLogin()).arg(ctSaveStatus.errorMessage()), ctSaveStatus.detailErrorMessage());
 		}
 	}
 

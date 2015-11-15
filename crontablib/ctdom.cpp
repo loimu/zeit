@@ -10,7 +10,6 @@
  ***************************************************************************/
 
 #include "ctdom.h"
-#include <KLocalizedString>
 
 QList<QString> CTDayOfMonth::shortName;
 
@@ -20,7 +19,7 @@ CTDayOfMonth::CTDayOfMonth(const QString& tokStr) :
 
 QString CTDayOfMonth::describe() const {
 	initializeNames();
-	return (enabledCount() == CTDayOfMonth::MAXIMUM) ? i18n("every day ") : CTUnit::genericDescribe(shortName);
+    return (enabledCount() == CTDayOfMonth::MAXIMUM) ? tr("every day ") : CTUnit::genericDescribe(shortName);
 }
 
 QString CTDayOfMonth::getName(const int ndx) {
@@ -30,7 +29,7 @@ QString CTDayOfMonth::getName(const int ndx) {
 
 void CTDayOfMonth::initializeNames() {
 	if (shortName.isEmpty()) {
-		shortName << QLatin1String( "" ) << i18n("1st") << i18n("2nd") << i18n("3rd") << i18n("4th") << i18n("5th") << i18n("6th") << i18n("7th") << i18n("8th") << i18n("9th") << i18n("10th") << i18n("11th") << i18n("12th") << i18n("13th") << i18n("14th") << i18n("15th") << i18n("16th") << i18n("17th")
-				<< i18n("18th") << i18n("19th") << i18n("20th") << i18n("21st") << i18n("22nd") << i18n("23rd") << i18n("24th") << i18n("25th") << i18n("26th") << i18n("27th") << i18n("28th") << i18n("29th") << i18n("30th") << i18n("31st");
+        shortName << QLatin1String( "" ) << tr("1st") << tr("2nd") << tr("3rd") << tr("4th") << tr("5th") << tr("6th") << tr("7th") << tr("8th") << tr("9th") << tr("10th") << tr("11th") << tr("12th") << tr("13th") << tr("14th") << tr("15th") << tr("16th") << tr("17th")
+                << tr("18th") << tr("19th") << tr("20th") << tr("21st") << tr("22nd") << tr("23rd") << tr("24th") << tr("25th") << tr("26th") << tr("27th") << tr("28th") << tr("29th") << tr("30th") << tr("31st");
 	}
 }

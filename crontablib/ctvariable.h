@@ -14,12 +14,15 @@
 
 #include <QString>
 #include <QIcon>
+#include <QCoreApplication>
 
 /**
  * An environment variable (encapsulation of crontab environment variable
  * entry).  Encapsulates parsing and tokenization.
  */
 class CTVariable {
+    Q_DECLARE_TR_FUNCTIONS(CTVariable)
+
 public:
 
 	/**

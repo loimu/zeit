@@ -10,9 +10,6 @@ find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Widgets
     Test
 )
-find_package(KF5 REQUIRED COMPONENTS
-    I18n
-)
 set(CMAKE_AUTOMOC ON)
 
 ### sources
@@ -58,8 +55,11 @@ find_package(Qt5LinguistTools REQUIRED)
 #add translations
 qt5_add_translation(QM ${TRANSLATION})
 
-### build
 set(qt_LIBS Qt5::Core Qt5::Widgets)
+#tests
+set(tests_SRCS ${zeit_crontablib_SRCS} src/tests.cpp)
+set(qtTest_LIBS ${qt_LIBS} Qt5::Test)
+
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -68,14 +68,8 @@ include_directories(
 )
 qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
 add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS} ${QM})
-target_link_libraries(zeit
-    ${qt_LIBS}
-    KF5::I18n
-)
-#tests
-set(tests_SRCS ${zeit_crontablib_SRCS} src/tests.cpp)
-set(qtTest_LIBS ${qt_LIBS} Qt5::Test)
 add_executable(tests ${tests_SRCS})
-target_link_libraries(tests ${qtTest_LIBS} KF5::I18n)
+target_link_libraries(zeit ${qt_LIBS})
+target_link_libraries(tests ${qtTest_LIBS})
 
 install(TARGETS zeit RUNTIME DESTINATION bin)

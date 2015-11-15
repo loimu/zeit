@@ -14,6 +14,7 @@
 
 #include <QString>
 #include <QList>
+#include <QCoreApplication>
 
 /**
  * A cron table unit parser and tokenizer.
@@ -21,6 +22,7 @@
  * Also provides default natural language description.
  */
 class CTUnit {
+    Q_DECLARE_TR_FUNCTIONS(CTUnit)
 	
 protected:
 	CTUnit(int min, int max, const QString& tokStr = QLatin1String(""));

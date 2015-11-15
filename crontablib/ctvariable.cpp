@@ -13,8 +13,6 @@
 
 #include <QRegExp>
 
-#include <KLocalizedString>
-
 #include "ctHelper.h"
 
 CTVariable::CTVariable(const QString& tokenString, const QString& _comment, const QString& _userLogin) {
@@ -120,21 +118,21 @@ QIcon CTVariable::variableIcon() const {
 QString CTVariable::information() const {
 
 	if (variable == QLatin1String( "HOME" )) {
-		return i18n("Override default home folder.");
+        return tr("Override default home folder.");
 	}
 	else if (variable == QLatin1String( "MAILTO" )) {
-		return i18n("Email output to specified account.");
+        return tr("Email output to specified account.");
 	}
 	else if (variable == QLatin1String( "SHELL" )) {
-		return i18n("Override default shell.");
+        return tr("Override default shell.");
 	}
 	else if (variable == QLatin1String( "PATH" )) {
-		return i18n("Folders to search for program files.");
+        return tr("Folders to search for program files.");
 	}
 	else if (variable == QLatin1String( "LD_CONFIG_PATH" )) {
-		return i18n("Dynamic libraries location.");
+        return tr("Dynamic libraries location.");
 	}
 
-	return i18n("Local Variable");
+    return tr("Local Variable");
 
 }

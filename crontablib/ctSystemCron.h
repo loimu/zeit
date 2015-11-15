@@ -13,12 +13,15 @@
 #define CT_SYSTEM_CRON_H
 
 #include <QString>
+#include <QCoreApplication>
 
 #include "ctcron.h"
 
 
 
 class CTSystemCron : public CTCron {
+    Q_DECLARE_TR_FUNCTIONS(CTSystemCron)
+
 public:
 
 

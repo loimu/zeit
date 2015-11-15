@@ -14,6 +14,7 @@
 
 #include <QString>
 #include <QList>
+#include <QCoreApplication>
 
 #include "ctSaveStatus.h"
 
@@ -35,6 +36,8 @@ struct passwd;
  * cron vector.
  */
 class CTHost {
+    Q_DECLARE_TR_FUNCTIONS(CTHost)
+
 public:
 
 	/**

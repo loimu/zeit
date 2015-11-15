@@ -14,6 +14,7 @@
 
 #include <QString>
 #include <QList>
+#include <QCoreApplication>
 
 #include "ctcron.h"
 
@@ -27,6 +28,8 @@ class CTHost;
  * file i/o, parsing, tokenization, and natural language description.
  */
 class CTGlobalCron : public CTCron {
+    Q_DECLARE_TR_FUNCTIONS(CTGlobalCron)
+
 public:
 
 

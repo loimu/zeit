@@ -11,10 +11,6 @@
 
 #include "ctSystemCron.h"
 
-
-//-#include <kshell.h>
-#include <KLocalizedString>
-
 #include <QTemporaryFile>
 
 #include "cthost.h"
@@ -46,7 +42,7 @@ CTSystemCron::CTSystemCron(const QString& crontabBinary) :
 	d->writeCommandLine.parameters << d->tmpFileName;
 	d->writeCommandLine.standardOutputFile = QLatin1String( "/etc/crontab" );
 
-	d->userLogin = i18n("System Crontab");
+    d->userLogin = tr("System Crontab");
 	d->userRealName = d->userLogin;
 
 	d->initialTaskCount = 0;

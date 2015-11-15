@@ -11,8 +11,6 @@
 
 #include "ctunit.h"
 
-#include <KLocalizedString>
-
 #include "logging.h"
 
 CTUnit::CTUnit(int _min, int _max, const QString& tokStr) {
@@ -169,11 +167,11 @@ QString CTUnit::genericDescribe(const QList<QString>& label) const {
 				break;
 			case 1:
 				if (total > 2)
-					tmpStr += i18n(",");
-				tmpStr += i18n(" and ");
+                    tmpStr += tr(",");
+                tmpStr += tr(" and ");
 				break;
 			default:
-				tmpStr += i18n(", ");
+                tmpStr += tr(", ");
 				break;
 			}
 		}

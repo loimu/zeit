@@ -13,13 +13,11 @@
 
 #include <QStringList>
 
-#include <KLocalizedString>
-
 QString CTHelper::exportComment(const QString& comment) {
 	QString exportComment;
 
 	if (comment.isEmpty()) {
-		QString noComment = i18n("No comment");
+        QString noComment = tr("No comment");
 		exportComment += QLatin1String( "#" ) + noComment + QLatin1String( "\n" );
 		return exportComment;
 	}

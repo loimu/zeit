@@ -28,6 +28,8 @@
  * parsing, tokenization, and natural language description.
  */
 class CTTask {
+    Q_DECLARE_TR_FUNCTIONS(CTTask)
+
 public:
 
 	/**

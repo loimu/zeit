@@ -13,8 +13,11 @@
 #define CT_HELPER
 
 #include <QString>
+#include <QCoreApplication>
 
 class CTHelper {
+    Q_DECLARE_TR_FUNCTIONS(CTHelper)
+
 public:
 
 	static QString exportComment(const QString& comment);

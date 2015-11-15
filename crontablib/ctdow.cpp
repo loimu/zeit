@@ -10,7 +10,6 @@
  ***************************************************************************/
 
 #include "ctdow.h"
-#include <KLocalizedString>
 
 QList<QString> CTDayOfWeek::shortName;
 
@@ -41,7 +40,7 @@ void CTDayOfWeek::initialize(const QString &tokStr) {
 QString CTDayOfWeek::describe() const {
 	initializeNames();
 	if (enabledCount() == CTDayOfWeek::MAXIMUM)
-		return i18n("every day ");
+        return tr("every day ");
 	else
 		return CTUnit::genericDescribe(shortName);
 }
@@ -53,9 +52,9 @@ QString CTDayOfWeek::getName(const int ndx, const bool format) {
 
 void CTDayOfWeek::initializeNames() {
 	if (shortName.isEmpty()) {
-		shortName << QLatin1String( "" ) << i18n("Mon") << i18n("Tue") << i18n("Wed") << i18n("Thu") << i18n("Fri") << i18n("Sat") << i18n("Sun");
+        shortName << QLatin1String( "" ) << tr("Mon") << tr("Tue") << tr("Wed") << tr("Thu") << tr("Fri") << tr("Sat") << tr("Sun");
 
-		longName << QLatin1String( "" ) << i18n("Monday") << i18n("Tuesday") << i18n("Wednesday") << i18n("Thursday") << i18n("Friday") << i18n("Saturday") << i18n("Sunday");
+        longName << QLatin1String( "" ) << tr("Monday") << tr("Tuesday") << tr("Wednesday") << tr("Thursday") << tr("Friday") << tr("Saturday") << tr("Sunday");
 
 	}
 }

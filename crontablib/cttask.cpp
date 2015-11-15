@@ -11,9 +11,6 @@
 
 #include "cttask.h"
 
-#include <KLocalizedString>
-//#include <kiconloader.h>
-
 #include <QMimeDatabase>
 #include <QUrl>
 
@@ -238,22 +235,22 @@ QString CTTask::schedulingCronFormat() const {
 QString CTTask::describe() const {
 
 	if (reboot) {
-		return i18n("At system startup");
+        return tr("At system startup");
 	}
 
 	QString dateFormat = createDateFormat();
 
 	QString timeFormat = createTimeFormat();
 
-	return i18nc("1:Time Description, 2:Date Description", "%1, %2", timeFormat, dateFormat);
+    return tr("%1, %2", "1:Time Description, 2:Date Description").arg(timeFormat).arg(dateFormat);
 }
 
 QString CTTask::describeDayOfWeek() const {
-	return i18nc("Every 'days of week'", "every %1", dayOfWeek.describe());
+    return tr("every %1", "Every 'days of week'").arg(dayOfWeek.describe());
 }
 
 QString CTTask::describeDayOfMonth() const {
-	return i18nc("'Days of month' of 'Months'", "%1 of %2", dayOfMonth.describe(), month.describe());
+    return tr("%1 of %2", "'Days of month' of 'Months'").arg(dayOfMonth.describe()).arg(month.describe());
 }
 
 QString CTTask::createDateFormat() const {
@@ -264,7 +261,7 @@ QString CTTask::createDateFormat() const {
 	 */
 	QString dateFormat;
 	if ((dayOfMonth.enabledCount() == CTDayOfMonth::MAXIMUM) && (dayOfWeek.enabledCount() == CTDayOfWeek::MAXIMUM)) {
-		dateFormat = i18n("every day ");
+        dateFormat = tr("every day ");
 	}
 	// Day of month not specified, so use day of week.
 	else if (dayOfMonth.enabledCount() == CTDayOfMonth::MAXIMUM) {
@@ -275,7 +272,7 @@ QString CTTask::createDateFormat() const {
 		dateFormat = describeDayOfMonth();
 	}
 	else {
-		dateFormat = i18nc("1:Day of month, 2:Day of week", "%1 as well as %2", describeDayOfMonth(), describeDayOfWeek());
+        dateFormat = tr("%1 as well as %2", "1:Day of month, 2:Day of week").arg(describeDayOfMonth()).arg(describeDayOfWeek());
 	}
 
 	return dateFormat;
@@ -305,7 +302,7 @@ QString CTTask::describeDateAndHours() const {
 					else
 						minuteString = QString::number(m);
 
-					QString tmpStr = i18nc("1:Hour, 2:Minute", "%1:%2", hourString, minuteString);
+                    QString tmpStr = tr("%1:%2", "1:Hour, 2:Minute").arg(hourString).arg(minuteString);
 
 					timeDesc += tmpStr;
 					count++;
@@ -314,28 +311,25 @@ QString CTTask::describeDateAndHours() const {
 						break;
 					case 1:
 						if (total > 2)
-							timeDesc += i18n(", and ");
+                            timeDesc += tr(", and ");
 						else
-							timeDesc += i18n(" and ");
+                            timeDesc += tr(" and ");
 						break;
 					default:
-						timeDesc += i18n(", ");
+                        timeDesc += tr(", ");
 					}
 				}
 			}
 		}
 	}
-
-
-	return i18nc("Hour::Minute list", "At %1", timeDesc);
-
+    return tr("At %1", "Hour::Minute list").arg(timeDesc);
 }
 
 QString CTTask::createTimeFormat() const {
 	if (hour.isAllEnabled()) {
 		int minutePeriod = minute.findPeriod();
 		if (minutePeriod != 0)
-			return i18np("Every minute", "Every %1 minutes", minutePeriod);
+            return tr("Every %L minute(s)", "Every minute", minutePeriod);
 	}
 
 	return describeDateAndHours();

@@ -10,11 +10,6 @@
  ***************************************************************************/
 
 #include "ctGlobalCron.h"
-
-
-//#include <kshell.h>
-#include <KLocalizedString>
-
 #include "cthost.h"
 #include "cttask.h"
 #include "ctvariable.h"
@@ -30,7 +25,7 @@ CTGlobalCron::CTGlobalCron(CTHost* _ctHost) :
 	d->systemCron = false;
 	d->currentUserCron = false;
 
-	d->userLogin = i18n("All users");
+    d->userLogin = tr("All users");
 		
 	ctHost = _ctHost;
 }

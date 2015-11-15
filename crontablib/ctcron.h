@@ -15,6 +15,7 @@
 #include <QString>
 #include <QList>
 #include <QStringList>
+#include <QCoreApplication>
 
 class CTTask;
 class CTVariable;
@@ -104,6 +105,8 @@ public:
  * file i/o, parsing, tokenization, and natural language description.
  */
 class CTCron {
+    Q_DECLARE_TR_FUNCTIONS(CTCron)
+
 public:
 
 	/**
