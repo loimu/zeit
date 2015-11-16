@@ -431,64 +431,64 @@ Check the crontab man page for further details.</source>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>January</source>
-        <translation>Январь</translation>
+        <translation>Январе</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>February</source>
-        <translation>Февраль</translation>
+        <translation>Феврале</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>March</source>
-        <translation>Март</translation>
+        <translation>Марте</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>April</source>
-        <translation>Апрель</translation>
+        <translation>Апреле</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>May</source>
         <comment>May long</comment>
-        <translation>Май</translation>
+        <translation>Мае</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>June</source>
-        <translation>Июнь</translation>
+        <translation>Июне</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>July</source>
         <comment>July long</comment>
-        <translation>Июль</translation>
+        <translation>Июле</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>August</source>
-        <translation>Август</translation>
+        <translation>Августе</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>September</source>
-        <translation>Сентябрь</translation>
+        <translation>Сентябре</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>October</source>
-        <translation>Октябрь</translation>
+        <translation>Октябре</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>November</source>
-        <translation>Ноябрь</translation>
+        <translation>Ноябре</translation>
     </message>
     <message>
         <location filename="../crontablib/ctmonth.cpp" line="32"/>
         <source>December</source>
-        <translation>Декабрь</translation>
+        <translation>Декабре</translation>
     </message>
 </context>
 <context>
