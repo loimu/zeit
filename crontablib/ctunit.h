@@ -23,7 +23,7 @@
  */
 class CTUnit {
     Q_DECLARE_TR_FUNCTIONS(CTUnit)
-	
+
 protected:
 	CTUnit(int min, int max, const QString& tokStr = QLatin1String(""));
 

@@ -14,6 +14,7 @@
 
 #include <QString>
 #include <QList>
+#include <QCoreApplication>
 
 #include "ctunit.h"
 
@@ -21,6 +22,8 @@
  * Scheduled task months.
  */
 class CTMonth : public CTUnit {
+    Q_DECLARE_TR_FUNCTIONS(CTMonth)
+
 public:
 
 	/**
