@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("0.1");
 
     QTranslator translator;
-    translator.load(QLocale::system().name() + ".qm");
+    translator.load(QApplication::applicationDirPath() +
+                    "/../share/zeit/translations/" + QLocale::system().name() + ".qm");
     a.installTranslator(&translator);
 
     MainWindow w;

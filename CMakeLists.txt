@@ -2,9 +2,7 @@ project(zeit)
 
 #### setup
 cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
-set (QT_MIN_VERSION "5.2.0")
-find_package (ECM 1.3.0 REQUIRED NO_MODULE)
-set (CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+set(QT_MIN_VERSION "5.2.0")
 find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
     Widgets
@@ -12,26 +10,10 @@ find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 )
 set(CMAKE_AUTOMOC ON)
 
+add_subdirectory(crontablib)
+
 ### sources
-set(zeit_crontablib_SRCS
-   crontablib/cthost.cpp
-   crontablib/ctcron.cpp
-   crontablib/ctmonth.cpp
-   crontablib/ctminute.cpp
-   crontablib/cthour.cpp
-   crontablib/ctdom.cpp
-   crontablib/ctdow.cpp
-   crontablib/cttask.cpp
-   crontablib/ctunit.cpp
-   crontablib/ctvariable.cpp
-   crontablib/ctGlobalCron.cpp
-   crontablib/ctSystemCron.cpp
-   crontablib/ctInitializationError.cpp
-   crontablib/ctSaveStatus.cpp
-   crontablib/ctHelper.cpp
-)
 set(zeit_SRCS
-   ${zeit_crontablib_SRCS}
    src/aboutdialog.cpp
    src/alarmdialog.cpp
    src/listitem.cpp
@@ -52,14 +34,14 @@ SET(TRANSLATION
     translations/ru_RU.ts
 )
 find_package(Qt5LinguistTools REQUIRED)
-#add translations
-qt5_add_translation(QM ${TRANSLATION})
+qt5_add_translation(QM_FILES ${TRANSLATION})
 
 set(qt_LIBS Qt5::Core Qt5::Widgets)
 #tests
-set(tests_SRCS ${zeit_crontablib_SRCS} src/tests.cpp)
-set(qtTest_LIBS ${qt_LIBS} Qt5::Test)
+set(test_LIBS Qt5::Core Qt5::Test)
+set(tests_SRCS src/tests.cpp)
 
+#build
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -67,9 +49,10 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
-add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS} ${QM})
+add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS} ${QM_FILES})
 add_executable(tests ${tests_SRCS})
-target_link_libraries(zeit ${qt_LIBS})
-target_link_libraries(tests ${qtTest_LIBS})
+target_link_libraries(zeit crontablib ${qt_LIBS})
+target_link_libraries(tests crontablib ${test_LIBS})
 
 install(TARGETS zeit RUNTIME DESTINATION bin)
+install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zeit/translations)
