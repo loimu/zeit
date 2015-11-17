@@ -639,7 +639,7 @@ Check the crontab man page for further details.</source>
     <message>
         <location filename="../src/mainwindow.ui" line="49"/>
         <source>He&amp;lp</source>
-        <translation>Помо&amp;щь</translation>
+        <translation>По&amp;мощь</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="55"/>
@@ -649,7 +649,7 @@ Check the crontab man page for further details.</source>
     <message>
         <location filename="../src/mainwindow.ui" line="75"/>
         <source>&amp;About</source>
-        <translation>&amp;О Программе</translation>
+        <translation>&amp;О программе</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="80"/>
