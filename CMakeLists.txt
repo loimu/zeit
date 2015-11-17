@@ -51,8 +51,8 @@ include_directories(
 qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
 add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS} ${QM_FILES})
 add_executable(tests ${tests_SRCS})
-target_link_libraries(zeit crontablib ${qt_LIBS})
-target_link_libraries(tests crontablib ${test_LIBS})
+target_link_libraries(zeit crontab ${qt_LIBS})
+target_link_libraries(tests crontab ${test_LIBS})
 
 install(TARGETS zeit RUNTIME DESTINATION bin)
 install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zeit/translations)

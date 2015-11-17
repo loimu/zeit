@@ -40,12 +40,12 @@ set(crontablib_HDRS
    ctHelper.h
 )
 
-add_library(crontablib SHARED ${crontablib_SRCS})
+add_library(crontab SHARED ${crontablib_SRCS})
 
-target_link_libraries(crontablib
+target_link_libraries(crontab
     Qt5::Core
     Qt5::Widgets
 )
 
 install(FILES ${crontablib_HDRS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/crontablib/)
-install(TARGETS crontablib LIBRARY DESTINATION lib)
+install(TARGETS crontab LIBRARY DESTINATION lib)
