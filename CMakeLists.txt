@@ -28,6 +28,7 @@ set(zeit_FRMS
    src/mainwindow.ui
    src/taskdialog.ui
    src/timerdialog.ui)
+set(zeit_RSRCS zeit.qrc)
 
 #translations
 SET(TRANSLATION
@@ -49,7 +50,9 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
-add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS} ${QM_FILES})
+qt5_add_resources(zeit_RESOURCES_RCC ${zeit_RSRCS})
+add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS}
+                    ${QM_FILES} ${zeit_RESOURCES_RCC})
 add_executable(tests ${tests_SRCS})
 target_link_libraries(zeit crontab ${qt_LIBS})
 target_link_libraries(tests crontab ${test_LIBS})

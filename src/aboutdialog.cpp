@@ -20,6 +20,7 @@
 #include <QKeyEvent>
 
 #include "aboutdialog.h"
+#include "ui_aboutdialog.h"
 
 AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent),
     ui(new Ui::AboutDialog)
@@ -32,23 +33,27 @@ AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent),
 
 AboutDialog::~AboutDialog()
 {
-    delete ui;
     emit destroyed(true);
 }
 
 void AboutDialog::addText() {
     QString text;
-    text.append(QString("<p><b>Zeit</b> v%1 &copy; 2015 Blaze<br />&lt;blaze@"
-                        "open.by&gt;</p><p>Qt %2 (built with Qt %3)<br />"
-                        "Licensed under GPL v3 or later.</p><p><b>Links:</b>"
-                        "<br />News: <a href=\"http://loimu.tk/zeit/\">"
-                        "http://loimu.tk/zeit/</a><br />Project: "
-                        "<a href=\"https://bitbucket.org/blaze/zeit\">"
+    text.append(QString("<p><b>Zeit</b> v%1 &copy; 2015-2016 Blaze<br />"
+                        "&lt;blaze@vivaldi.net&gt;</p>"
+                        "<p>Qt %2 (built with Qt %3)<br />"
+                        "Licensed under GPL v3 or later.</p>"
+                        "<p><b>Links:</b><br />"
+                        "News: <a href=\"http://loimu.tk/zeit/\">"
+                        "http://loimu.tk/zeit/</a><br />"
+                        "Patreon: <a href=\"https://patreon.com/blazy\">"
+                        "https://patreon.com/blazy</a><br />"
+                        "Project: <a href=\"https://bitbucket.org/blaze/zeit\">"
                         "https://bitbucket.org/blaze/zeit</a></p>")
                 .arg(qApp->applicationVersion())
                 .arg(qVersion())
                 .arg(QT_VERSION_STR));
     ui->label->setText(text);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 void AboutDialog::keyPressEvent(QKeyEvent *e) {

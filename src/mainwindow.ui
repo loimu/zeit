@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>811</width>
-    <height>270</height>
+    <width>809</width>
+    <height>268</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,8 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset theme="chronometer">
-    <normaloff/>
-   </iconset>
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -30,7 +29,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>811</width>
+     <width>809</width>
      <height>25</height>
     </rect>
    </property>
@@ -52,12 +51,21 @@
    </widget>
    <widget class="QMenu" name="menuPredefined">
     <property name="title">
-     <string>Predefi&amp;ned</string>
+     <string>&amp;Tools</string>
     </property>
     <addaction name="actionAlarm"/>
     <addaction name="actionTimer"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionPeriodic"/>
+    <addaction name="actionVariables"/>
+    <addaction name="actionNonperiodic"/>
+   </widget>
    <addaction name="menuAdd"/>
+   <addaction name="menuView"/>
    <addaction name="menuPredefined"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -121,6 +129,35 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionPeriodic">
+   <property name="text">
+    <string>&amp;Periodic Tasks</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="action_Root_Mode">
+   <property name="text">
+    <string>&amp;Root Mode</string>
+   </property>
+  </action>
+  <action name="actionVariables">
+   <property name="text">
+    <string>&amp;Environment Variables</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionNonperiodic">
+   <property name="text">
+    <string>&amp;Nonperiodic Tasks</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>
