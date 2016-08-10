@@ -81,8 +81,11 @@ void MainWindow::selectUser(bool system) {
 }
 
 void MainWindow::refreshActions(bool enabled) {
-    ui->actionModifyTask->setEnabled(enabled);
-    ui->actionDeleteTask->setEnabled(enabled);
+    bool currentUser = cron->isCurrentUserCron();
+    ui->actionAddTask->setEnabled(currentUser);
+    ui->actionModifyTask->setEnabled(currentUser && enabled);
+    ui->actionDeleteTask->setEnabled(currentUser && enabled);
+    ui->actionAlarm->setEnabled(currentUser);
 }
 
 void MainWindow::refreshTasks() {
@@ -170,4 +173,36 @@ void MainWindow::showAboutDialog() {
     AboutDialog* about = new AboutDialog(this);
     about->show();
     connect(about, SIGNAL(destroyed(bool)), ui->actionAbout, SLOT(setEnabled(bool)));
+}
+
+void MainWindow::on_actionSystem_triggered(bool check) {
+    selectUser(check);
+    refreshTasks();
+    refreshActions(false);
+}
+
+void MainWindow::on_actionPeriodic_triggered(bool check) {
+    ui->actionSystem->setEnabled(true);
+    ui->actionVariables->setChecked(false);
+    ui->actionNonperiodic->setChecked(false);
+    selectUser(false);
+    refreshTasks();
+    refreshActions(false);
+    ui->actionPeriodic->setChecked(true);
+}
+
+void MainWindow::on_actionVariables_triggered(bool check) {
+    ui->actionSystem->setChecked(false);
+    ui->actionSystem->setEnabled(false);
+    ui->actionPeriodic->setChecked(false);
+    ui->actionNonperiodic->setChecked(false);
+    ui->actionVariables->setChecked(true);
+}
+
+void MainWindow::on_actionNonperiodic_triggered(bool check) {
+    ui->actionSystem->setChecked(false);
+    ui->actionSystem->setEnabled(false);
+    ui->actionPeriodic->setChecked(false);
+    ui->actionVariables->setChecked(false);
+    ui->actionNonperiodic->setChecked(true);
 }

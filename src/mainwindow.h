@@ -59,6 +59,10 @@ private slots:
     void createAlarmDialog();
     void createTimerDialog();
     void showAboutDialog();
+    void on_actionSystem_triggered(bool);
+    void on_actionPeriodic_triggered(bool);
+    void on_actionVariables_triggered(bool);
+    void on_actionNonperiodic_triggered(bool);
 };
 
 #endif // MAINWINDOW_H
