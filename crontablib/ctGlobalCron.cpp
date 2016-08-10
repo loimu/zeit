@@ -38,11 +38,11 @@ QList<CTTask*> CTGlobalCron::tasks() const {
 	logDebug() << "Global Cron Tasks" << endl;
 	QList<CTTask*> tasks;
 	
-	foreach(CTCron* cron, ctHost->crons) {
+    for(CTCron* cron: ctHost->crons) {
 		if (cron->isSystemCron())
 			continue;
 		
-		foreach(CTTask* task, cron->tasks()) {
+        for(CTTask* task: cron->tasks()) {
 			tasks.append(task);
 		}
 	}
@@ -53,11 +53,11 @@ QList<CTVariable*> CTGlobalCron::variables() const {
 	logDebug() << "Global Cron Variables" << endl;
 	QList<CTVariable*> variables;
 	
-	foreach(CTCron* cron, ctHost->crons) {
+    for(CTCron* cron: ctHost->crons) {
 		if (cron->isSystemCron())
 			continue;
 		
-		foreach(CTVariable* variable, cron->variables()) {
+        for(CTVariable* variable: cron->variables()) {
 			variables.append(variable);
 		}
 	}

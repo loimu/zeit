@@ -141,13 +141,13 @@ CTCron& CTCron::operator = (const CTCron& source) {
 	}
 
 	d->variable.clear();
-	foreach(CTVariable* ctVariable, source.variables()) {
+    for(CTVariable* ctVariable: source.variables()) {
 		CTVariable* tmp = new CTVariable(*ctVariable);
 		d->variable.append(tmp);
 	}
 
 	d->task.clear();
-	foreach(CTTask* ctTask, source.tasks()) {
+    for(CTTask* ctTask: source.tasks()) {
 		CTTask* tmp = new CTTask(*ctTask);
 		d->task.append(tmp);
 	}
@@ -223,12 +223,12 @@ QString CTCron::exportCron() const {
 	QString exportCron;
 
 
-	foreach(CTVariable* ctVariable, d->variable) {
+    for(CTVariable* ctVariable: d->variable) {
 		exportCron += ctVariable->exportVariable();
 		exportCron += QLatin1String( "\n" );
 	}
 
-	foreach(CTTask* ctTask, d->task) {
+    for(CTTask* ctTask: d->task) {
 		exportCron += ctTask->exportTask();
 		exportCron += QLatin1String( "\n" );
 	}
@@ -241,11 +241,11 @@ QString CTCron::exportCron() const {
 }
 
 CTCron::~CTCron() {
-	foreach(CTTask* ctTask, d->task) {
+    for(CTTask* ctTask: d->task) {
 		delete ctTask;
 	}
 
-	foreach(CTVariable* ctVariable, d->variable) {
+    for(CTVariable* ctVariable: d->variable) {
 		delete ctVariable;
 	}
 
@@ -311,11 +311,11 @@ CTSaveStatus CTCron::save() {
 
 
 	//Mark as applied
-	foreach(CTTask* ctTask, d->task) {
+    for(CTTask* ctTask: d->task) {
 		ctTask->apply();
 	}
 
-	foreach(CTVariable* ctVariable, d->variable) {
+    for(CTVariable* ctVariable: d->variable) {
 		ctVariable->apply();
 	}
 
@@ -326,11 +326,11 @@ CTSaveStatus CTCron::save() {
 }
 
 void CTCron::cancel() {
-	foreach(CTTask* ctTask, d->task) {
+    for(CTTask* ctTask: d->task) {
 		ctTask->cancel();
 	}
 
-	foreach(CTVariable* ctVariable, d->variable) {
+    for(CTVariable* ctVariable: d->variable) {
 		ctVariable->cancel();
 	}
 
@@ -343,12 +343,12 @@ bool CTCron::isDirty() const {
 	if (d->initialVariableCount != d->variable.count())
 		return true;
 
-	foreach(CTTask* ctTask, d->task) {
+    for(CTTask* ctTask: d->task) {
 		if (ctTask->dirty())
 		return true;
 	}
 
-	foreach(CTVariable* ctVariable, d->variable) {
+    for(CTVariable* ctVariable: d->variable) {
 		if (ctVariable->dirty())
 		return true;
 	}
@@ -359,7 +359,7 @@ bool CTCron::isDirty() const {
 QString CTCron::path() const {
 	QString path;
 
-	foreach(CTVariable* ctVariable, d->variable) {
+    for(CTVariable* ctVariable: d->variable) {
 		if (ctVariable->variable == QLatin1String( "PATH" )) {
 			path = ctVariable->value;
 		}

@@ -83,7 +83,7 @@ CTHost::CTHost(const QString& cronBinary, CTInitializationError& ctInitializatio
 }
 
 CTHost::~CTHost() {
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		delete ctCron;
 	}
 }
@@ -132,7 +132,7 @@ CTSaveStatus CTHost::save() {
 		return ctCron->save();
 	}
 
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		CTSaveStatus ctSaveStatus = ctCron->save();
 
 		if (ctSaveStatus.isError() == true) {
@@ -144,7 +144,7 @@ CTSaveStatus CTHost::save() {
 }
 
 void CTHost::cancel() {
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		ctCron->cancel();
 	}
 }
@@ -152,7 +152,7 @@ void CTHost::cancel() {
 bool CTHost::isDirty() {
 	bool isDirty = false;
 
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		if (ctCron->isDirty()) {
 			isDirty = true;
 		}
@@ -188,7 +188,7 @@ QString CTHost::createCTCron(const struct passwd* userInfos) {
 }
 
 CTCron* CTHost::findCurrentUserCron() const {
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		if (ctCron->isCurrentUserCron())
 			return ctCron;
 	}
@@ -198,7 +198,7 @@ CTCron* CTHost::findCurrentUserCron() const {
 }
 
 CTCron* CTHost::findSystemCron() const {
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		if (ctCron->isMultiUserCron())
 			return ctCron;
 	}
@@ -208,7 +208,7 @@ CTCron* CTHost::findSystemCron() const {
 }
 
 CTCron* CTHost::findUserCron(const QString& userLogin) const {
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		if (ctCron->userLogin() == userLogin)
 			return ctCron;
 	}
@@ -218,7 +218,7 @@ CTCron* CTHost::findUserCron(const QString& userLogin) const {
 }
 
 CTCron* CTHost::findCronContaining(CTTask* ctTask) const {
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		if (ctCron->tasks().contains(ctTask) == true) {
 			return ctCron;
 		}
@@ -230,7 +230,7 @@ CTCron* CTHost::findCronContaining(CTTask* ctTask) const {
 }
 
 CTCron* CTHost::findCronContaining(CTVariable* ctVariable) const {
-	foreach(CTCron* ctCron, crons) {
+    for(CTCron* ctCron: crons) {
 		if (ctCron->variables().contains(ctVariable) == true) {
 			return ctCron;
 		}

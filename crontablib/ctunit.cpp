@@ -263,7 +263,7 @@ int CTUnit::fieldToValue(const QString& entry) const {
  * If no period has been found, return 0
  */
 int CTUnit::findPeriod(const QList<int>& periods) const {
-	foreach(int period, periods) {
+    for(int period: periods) {
 		bool validPeriod = true;
 
 		for (int i = minimum(); i <= maximum(); i++) {
