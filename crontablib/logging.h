@@ -20,11 +20,11 @@
  ***************************************************************************/
 
 
-#ifndef _KCRON_LOGGING_H_
-#define _KCRON_LOGGING_H_
+#ifndef _CRONTABLIB_LOGGING_H_
+#define _CRONTABLIB_LOGGING_H_
 
 #include <QLoggingCategory>
 
-#define logDebug() qCDebug(QLoggingCategory("zeit"))
+#define logDebug() qCDebug(QLoggingCategory("crontablib"))
 
-#endif // _KCRON_LOGGING_H_
+#endif // _CRONTABLIB_LOGGING_H_
