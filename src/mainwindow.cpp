@@ -107,7 +107,7 @@ void MainWindow::refreshTasks() {
     ui->listWidget->clear();
     // Add new items
     ListItem* item;
-    foreach(CTTask* ctTask, cron->tasks()) {
+    for(CTTask* ctTask: cron->tasks()) {
         item = new ListItem(ctTask, ui->listWidget);
         ui->listWidget->addItem(item);
     }

@@ -80,7 +80,7 @@ void TaskDialog::setUnit(CTUnit& unit, const QString& token) {
         for(int i = unit.minimum(); i <= unit.maximum(); i++)
             unit.setEnabled(i, false);
         QStringList items = token.split(",");
-        foreach(QString string, items)
+        for(QString string: items)
             unit.setEnabled(string.toInt(), true);
     } else
         for(int i = unit.minimum(); i <= unit.maximum(); i++)
