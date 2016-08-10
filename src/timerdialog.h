@@ -31,7 +31,7 @@ class TimerDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TimerDialog(QWidget *parent = 0);
+    explicit TimerDialog(QWidget *parent = nullptr);
     ~TimerDialog();
 
 private:

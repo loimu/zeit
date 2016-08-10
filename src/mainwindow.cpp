@@ -35,7 +35,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    currentTask = NULL;
+    currentTask = nullptr;
     ui->setupUi(this);
     ui->statusBar->hide();
     ui->mainToolBar->setMovable(false);

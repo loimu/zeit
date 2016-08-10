@@ -17,7 +17,7 @@ class CrontabLibTests: public QObject {
     CTTask* currentTask;
 
 public:
-    CrontabLibTests(QObject *parent = 0) : QObject(parent) {
+    CrontabLibTests(QObject *parent = nullptr) : QObject(parent) {
     }
 
 private slots:

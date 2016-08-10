@@ -34,7 +34,7 @@ class TaskDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TaskDialog(CTTask*, const QString&, QWidget *parent = 0);
+    explicit TaskDialog(CTTask*, const QString&, QWidget *parent = nullptr);
     ~TaskDialog();
 
 private:

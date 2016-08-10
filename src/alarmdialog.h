@@ -33,7 +33,7 @@ class AlarmDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AlarmDialog(CTTask*, QWidget *parent = 0);
+    explicit AlarmDialog(CTTask*, QWidget *parent = nullptr);
     ~AlarmDialog();
 
 private:

@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 }
 
 void CrontabLibTests::init() {
-    currentTask = NULL;
+    currentTask = nullptr;
     // init crontab host
     CTInitializationError error;
     ctHost = new CTHost(QLatin1String("crontab"), error);
