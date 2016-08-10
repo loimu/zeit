@@ -58,7 +58,7 @@ CommandLineStatus CommandLine::execute() {
 CTCron::CTCron(const QString& crontabBinary, const struct passwd* userInfos, bool currentUserCron, CTInitializationError& ctInitializationError) :
 	d(new CTCronPrivate()) {
 
-	Q_ASSERT(userInfos != NULL);
+    Q_ASSERT(userInfos != nullptr);
 
 	d->multiUserCron = false;
 	d->systemCron = false;

@@ -89,8 +89,8 @@ void CTGlobalCron::modifyTask(CTTask* task) {
 	 * actualCron could be NULL is the task came from clipboard because those tasks are never
 	 * linked to an existing CTCron* object
 	 */ 
-	if (actualCron == NULL || actualCron->userLogin() != task->userLogin) {
-		if (actualCron!=NULL) {
+    if (actualCron == nullptr || actualCron->userLogin() != task->userLogin) {
+        if (actualCron!=nullptr) {
 			actualCron->removeTask(task);
 		}
 		
@@ -108,8 +108,8 @@ void CTGlobalCron::modifyVariable(CTVariable* variable) {
 	 * actualCron could be NULL is the task came from clipboard because those tasks are never
 	 * linked to an existing CTCron* object
 	 */ 
-	if (actualCron == NULL || actualCron->userLogin() != variable->userLogin) {
-		if (actualCron!=NULL) {
+    if (actualCron == nullptr || actualCron->userLogin() != variable->userLogin) {
+        if (actualCron!=nullptr) {
 			actualCron->removeVariable(variable);
 		}
 		
