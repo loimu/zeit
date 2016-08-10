@@ -44,16 +44,11 @@ private:
     CTCron* cron;
     CTTask* currentTask;
     Ui::MainWindow *ui;
-    /* Actions */
-    QAction* createTaskAction;
-    QAction* deleteTaskAction;
-    QAction* modifyTaskAction;
-    QAction* createAlarmAction;
-    QAction* createTimerAction;
     void refreshActions(bool);
     void refreshTasks();
 
 private slots:
+    void selectUser(bool system);
     void checkActions(QListWidgetItem*);
     void toggleTaskStatus(QListWidgetItem*);
     void addTask();

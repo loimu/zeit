@@ -40,30 +40,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->statusBar->hide();
     ui->mainToolBar->setMovable(false);
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    // main menu actions
+    // actions setup
     ui->actionAddTask->setIcon(QIcon::fromTheme(QLatin1String("document-new")));
     ui->actionModifyTask->setIcon(QIcon::fromTheme(QLatin1String("document-edit")));
     ui->actionDeleteTask->setIcon(QIcon::fromTheme(QLatin1String("document-close")));
     ui->actionQuit->setIcon(QIcon::fromTheme(QLatin1String("application-exit")));
     ui->actionAlarm->setIcon(QIcon::fromTheme(QLatin1String("chronometer")));
     ui->actionTimer->setIcon(QIcon::fromTheme(QLatin1String("player-time")));
-    // create ToolBar actions
-    createTaskAction = new QAction(tr("New Task"), this);
-    createTaskAction->setIcon(QIcon::fromTheme(QLatin1String("document-new")));
-    ui->mainToolBar->addAction(createTaskAction);
-    deleteTaskAction = new QAction(tr("Delete Task"), this);
-    deleteTaskAction->setIcon(QIcon::fromTheme(QLatin1String("document-close")));
-    ui->mainToolBar->addAction(deleteTaskAction);
-    modifyTaskAction = new QAction(tr("Modify Task"), this);
-    modifyTaskAction->setIcon(QIcon::fromTheme(QLatin1String("document-edit")));
-    ui->mainToolBar->addAction(modifyTaskAction);
-    createAlarmAction = new QAction(tr("New Alarm"), this);
-    createAlarmAction->setIcon(QIcon::fromTheme(QLatin1String("chronometer")));
-    ui->mainToolBar->addAction(createAlarmAction);
-    createTimerAction = new QAction(tr("New Timer"), this);
-    createTimerAction->setIcon(QIcon::fromTheme(QLatin1String("player-time")));
-    ui->mainToolBar->addAction(createTimerAction);
-    // connect MainMenu actions
+    ui->mainToolBar->addAction(ui->actionAddTask);
+    ui->mainToolBar->addAction(ui->actionModifyTask);
+    ui->mainToolBar->addAction(ui->actionDeleteTask);
+    ui->mainToolBar->addAction(ui->actionAlarm);
+    ui->mainToolBar->addAction(ui->actionTimer);
     connect(ui->actionAddTask, SIGNAL(triggered()), SLOT(createTaskDialog()));
     connect(ui->actionModifyTask, SIGNAL(triggered()), SLOT(modifyTaskDialog()));
     connect(ui->actionDeleteTask, SIGNAL(triggered()), SLOT(deleteTask()));
@@ -71,21 +59,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionTimer, SIGNAL(triggered()), SLOT(createTimerDialog()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
     connect(ui->actionAbout, SIGNAL(triggered()), SLOT(showAboutDialog()));
-    // connect ToolBar actions
-    connect(createTaskAction, SIGNAL(triggered()), SLOT(createTaskDialog()));
-    connect(modifyTaskAction, SIGNAL(triggered()), SLOT(modifyTaskDialog()));
-    connect(deleteTaskAction, SIGNAL(triggered()), SLOT(deleteTask()));
-    connect(createAlarmAction, SIGNAL(triggered()), SLOT(createAlarmDialog()));
-    connect(createTimerAction, SIGNAL(triggered()), SLOT(createTimerDialog()));
-    // connect ListWidget actions
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(checkActions(QListWidgetItem*)));
     connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             SLOT(toggleTaskStatus(QListWidgetItem*)));
     // init crontab host
     CTInitializationError error;
     ctHost = new CTHost(QLatin1String("crontab"), error);
-    // init cron instance
-    cron = ctHost->findCurrentUserCron();
+    selectUser(false);
     // refresh state
     refreshTasks();
     refreshActions(false);
@@ -96,14 +76,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::selectUser(bool system) {
+    cron = system ? ctHost->findSystemCron() : ctHost->findCurrentUserCron();
+}
+
 void MainWindow::refreshActions(bool enabled) {
-    deleteTaskAction->setEnabled(enabled);
-    modifyTaskAction->setEnabled(enabled);
     ui->actionModifyTask->setEnabled(enabled);
     ui->actionDeleteTask->setEnabled(enabled);
 }
 
 void MainWindow::refreshTasks() {
+    ui->listWidget->setEnabled(cron->isCurrentUserCron());
     ui->listWidget->clear();
     // Add new items
     ListItem* item;
