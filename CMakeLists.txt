@@ -1,7 +1,7 @@
 project(zeit)
 
 #### setup
-cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.1.0)
 set(QT_MIN_VERSION "5.2.0")
 find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
@@ -56,6 +56,8 @@ add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS}
 add_executable(tests ${tests_SRCS})
 target_link_libraries(zeit crontab ${qt_LIBS})
 target_link_libraries(tests crontab ${test_LIBS})
+target_compile_features(zeit PRIVATE cxx_nullptr)
+target_compile_features(tests PRIVATE cxx_nullptr)
 
 install(TARGETS zeit RUNTIME DESTINATION bin)
 install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zeit/translations)

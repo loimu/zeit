@@ -46,6 +46,7 @@ target_link_libraries(crontab
     Qt5::Core
     Qt5::Widgets
 )
+target_compile_features(crontab PRIVATE cxx_nullptr)
 
 install(FILES ${crontablib_HDRS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/crontablib/)
 install(TARGETS crontab LIBRARY DESTINATION lib)
