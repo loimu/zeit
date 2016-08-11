@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionAbout, SIGNAL(triggered()), SLOT(showAboutDialog()));
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(checkActions(QListWidgetItem*)));
     connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-            SLOT(toggleTaskStatus(QListWidgetItem*)));
+            SLOT(toggleStatus(QListWidgetItem*)));
     // init crontab host
     CTInitializationError error;
     ctHost = new CTHost(QLatin1String("crontab"), error);
@@ -131,12 +131,24 @@ void MainWindow::checkActions(QListWidgetItem* item) {
     }
 }
 
-void MainWindow::toggleTaskStatus(QListWidgetItem* item) {
-    if(!ui->actionPeriodic->isChecked())
+void MainWindow::toggleStatus(QListWidgetItem* item) {
+    int index = ui->listWidget->currentRow();
+    if(index < 0)
         return;
-    ListItem* taskItem = static_cast<ListItem*>(item);
-    taskItem->toggleStatus();
+    bool enabled = false;
+    if(ui->actionPeriodic->isChecked()) {
+        CTTask* task = cron->tasks().at(index);
+        enabled = task->enabled = !task->enabled;
+    }
+    if(ui->actionVariables->isChecked()) {
+        CTVariable* var = cron->variables().at(index);
+        enabled = var->enabled = !var->enabled;
+    }
     cron->save();
+    if(enabled)
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok-apply")));
+    else
+        item->setIcon(QIcon::fromTheme(QLatin1String("edit-delete")));
 }
 
 void MainWindow::addTask() {
