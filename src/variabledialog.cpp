@@ -28,6 +28,10 @@ VariableDialog::VariableDialog(CTVariable* _ctVar, const QString& _caption, QWid
 {
     ui->setupUi(this);
     setWindowTitle(_caption);
+    //
+    ui->varEdit->setText(variable->variable);
+    ui->valEdit->setText(variable->value);
+    ui->commentEdit->setText(variable->comment);
     // ButtonBox action
     connect(ui->varEdit, SIGNAL(textChanged(QString)), SLOT(validate()));
     connect(ui->valEdit, SIGNAL(textChanged(QString)), SLOT(validate()));

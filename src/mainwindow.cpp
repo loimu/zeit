@@ -30,6 +30,7 @@
 #include "listitem.h"
 #include "taskdialog.h"
 #include "timerdialog.h"
+#include "variabledialog.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -42,24 +43,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->mainToolBar->setMovable(false);
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     // actions setup
-    ui->actionAddTask->setIcon(QIcon::fromTheme(QLatin1String("document-new")));
-    ui->actionModifyTask->setIcon(QIcon::fromTheme(QLatin1String("document-edit")));
-    ui->actionDeleteTask->setIcon(QIcon::fromTheme(QLatin1String("document-close")));
+    ui->actionAddEntry->setIcon(QIcon::fromTheme(QLatin1String("document-new")));
+    ui->actionModifyEntry->setIcon(QIcon::fromTheme(QLatin1String("document-edit")));
+    ui->actionDeleteEntry->setIcon(QIcon::fromTheme(QLatin1String("document-close")));
     ui->actionQuit->setIcon(QIcon::fromTheme(QLatin1String("application-exit")));
     ui->actionAlarm->setIcon(QIcon::fromTheme(QLatin1String("chronometer")));
     ui->actionTimer->setIcon(QIcon::fromTheme(QLatin1String("player-time")));
-    ui->mainToolBar->addAction(ui->actionAddTask);
-    ui->mainToolBar->addAction(ui->actionModifyTask);
-    ui->mainToolBar->addAction(ui->actionDeleteTask);
+    ui->mainToolBar->addAction(ui->actionAddEntry);
+    ui->mainToolBar->addAction(ui->actionModifyEntry);
+    ui->mainToolBar->addAction(ui->actionDeleteEntry);
     ui->mainToolBar->addAction(ui->actionAlarm);
     ui->mainToolBar->addAction(ui->actionTimer);
     QActionGroup* group = new QActionGroup(this);
     ui->actionPeriodic->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
     ui->actionNonperiodic->setActionGroup(group);
-    connect(ui->actionAddTask, SIGNAL(triggered()), SLOT(createTaskDialog()));
-    connect(ui->actionModifyTask, SIGNAL(triggered()), SLOT(modifyTaskDialog()));
-    connect(ui->actionDeleteTask, SIGNAL(triggered()), SLOT(deleteTask()));
+    connect(ui->actionAddEntry, SIGNAL(triggered()), SLOT(createEntry()));
+    connect(ui->actionModifyEntry, SIGNAL(triggered()), SLOT(modifyEntry()));
+    connect(ui->actionDeleteEntry, SIGNAL(triggered()), SLOT(deleteEntry()));
     connect(ui->actionAlarm, SIGNAL(triggered()), SLOT(createAlarmDialog()));
     connect(ui->actionTimer, SIGNAL(triggered()), SLOT(createTimerDialog()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
@@ -72,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ctHost = new CTHost(QLatin1String("crontab"), error);
     selectUser(false);
     // refresh state
-    showTasks();
+    on_actionPeriodic_triggered();
     refreshActions(false);
 }
 
@@ -87,10 +88,11 @@ void MainWindow::selectUser(bool system) {
 
 void MainWindow::refreshActions(bool enabled) {
     bool currentUser = cron->isCurrentUserCron();
-    ui->actionAddTask->setEnabled(currentUser);
-    ui->actionModifyTask->setEnabled(currentUser && enabled);
-    ui->actionDeleteTask->setEnabled(currentUser && enabled);
+    ui->actionAddEntry->setEnabled(currentUser);
+    ui->actionModifyEntry->setEnabled(currentUser && enabled);
+    ui->actionDeleteEntry->setEnabled(currentUser && enabled);
     ui->actionAlarm->setEnabled(currentUser);
+    ui->actionTimer->setEnabled(currentUser);
 }
 
 void MainWindow::showTasks() {
@@ -122,8 +124,6 @@ void MainWindow::showNPTasks() {
 }
 
 void MainWindow::checkActions(QListWidgetItem* item) {
-    if(!ui->actionPeriodic->isChecked())
-        return;
     refreshActions(item->isSelected());
     if(item->isSelected()) {
         ListItem* taskItem = static_cast<ListItem*>(item);
@@ -163,32 +163,73 @@ void MainWindow::modifyTask() {
     showTasks();
 }
 
-void MainWindow::createTaskDialog() {
-    currentTask = new CTTask(QLatin1String(""),
-                             QLatin1String(""),
-                             cron->userLogin(),
-                             false);
-    TaskDialog *td = new TaskDialog(currentTask, tr("New Task"), this);
-    td->show();
-    connect(td, SIGNAL(accepted()), SLOT(addTask()));
+void MainWindow::addVariable() {
+    CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+    cron->addVariable(var);
+    cron->save();
+    showVariables();
 }
 
-void MainWindow::deleteTask() {
+void MainWindow::modifyVariable() {
+    CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+    cron->modifyVariable(var);
+    cron->save();
+    showVariables();
+}
+
+void MainWindow::createEntry() {
+    if(ui->actionPeriodic->isChecked()) {
+        currentTask = new CTTask(QLatin1String(""),
+                                 QLatin1String(""),
+                                 cron->userLogin(),
+                                 false);
+        TaskDialog *td = new TaskDialog(currentTask, tr("New Task"), this);
+        td->show();
+        connect(td, SIGNAL(accepted()), SLOT(addTask()));
+    }
+    if(ui->actionVariables->isChecked()) {
+        CTVariable* var = new CTVariable(QLatin1String(""),
+                                         QLatin1String(""),
+                                         cron->userLogin());
+        VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
+        vd->show();
+        connect(vd, SIGNAL(accepted()), SLOT(addVariable()));
+    }
+}
+
+void MainWindow::deleteEntry() {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("Deleting Task"), tr("Delete task?"),
+    reply = QMessageBox::question(this, tr("Deleting Entry"), tr("Delete entry?"),
                                   QMessageBox::Yes|QMessageBox::No);
     if(reply == QMessageBox::No)
         return;
-    cron->removeTask(currentTask);
-    cron->save();
-    showTasks();
-    refreshActions(false);
+    if(ui->actionPeriodic->isChecked()) {
+        cron->removeTask(currentTask);
+        cron->save();
+        showTasks();
+        refreshActions(false);
+    }
+    if(ui->actionVariables->isChecked()) {
+        CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+        cron->removeVariable(var);
+        cron->save();
+        showVariables();
+        refreshActions(false);
+    }
 }
 
-void MainWindow::modifyTaskDialog() {
-    TaskDialog *td = new TaskDialog(currentTask, tr("Edit Task"), this);
-    td->show();
-    connect(td, SIGNAL(accepted()), SLOT(modifyTask()));
+void MainWindow::modifyEntry() {
+    if(ui->actionPeriodic->isChecked()) {
+        TaskDialog *td = new TaskDialog(currentTask, tr("Edit Task"), this);
+        td->show();
+        connect(td, SIGNAL(accepted()), SLOT(modifyTask()));
+    }
+    if(ui->actionVariables->isChecked()) {
+        CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+        VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
+        vd->show();
+        connect(vd, SIGNAL(accepted()), SLOT(modifyVariable()));
+    }
 }
 
 void MainWindow::createAlarmDialog() {
@@ -223,20 +264,32 @@ void MainWindow::on_actionSystem_triggered(bool check) {
 }
 
 void MainWindow::on_actionPeriodic_triggered() {
+    ui->actionAddEntry->setText(tr("New Task"));
+    ui->actionModifyEntry->setText(tr("Modify Task"));
+    ui->actionDeleteEntry->setText(tr("Delete Task"));
     ui->actionSystem->setEnabled(true);
     showTasks();
+    refreshActions(false);
 }
 
 void MainWindow::on_actionVariables_triggered() {
+    ui->actionAddEntry->setText(tr("New Variable"));
+    ui->actionModifyEntry->setText(tr("Modify Variable"));
+    ui->actionDeleteEntry->setText(tr("Delete Variable"));
     ui->actionSystem->setEnabled(true);
     showVariables();
+    refreshActions(false);
 }
 
 void MainWindow::on_actionNonperiodic_triggered() {
+    ui->actionAddEntry->setText(tr("New One-Shot Task"));
+    ui->actionModifyEntry->setText(tr("Modify One-Shot Task"));
+    ui->actionDeleteEntry->setText(tr("Delete One-Shot Task"));
     ui->listWidget->setEnabled(true);
     ui->listWidget->clear();
     selectUser(false);
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);
     showNPTasks();
+    refreshActions(false);
 }

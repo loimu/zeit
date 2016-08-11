@@ -29,6 +29,7 @@ class MainWindow;
 class CTHost;
 class CTCron;
 class CTTask;
+class CTVariable;
 class QListWidgetItem;
 
 class MainWindow : public QMainWindow
@@ -55,9 +56,11 @@ private slots:
     void toggleStatus(QListWidgetItem*);
     void addTask();
     void modifyTask();
-    void createTaskDialog();
-    void deleteTask();
-    void modifyTaskDialog();
+    void addVariable();
+    void modifyVariable();
+    void createEntry();
+    void deleteEntry();
+    void modifyEntry();
     void createAlarmDialog();
     void createTimerDialog();
     void showAboutDialog();
