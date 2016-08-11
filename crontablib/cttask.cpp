@@ -329,7 +329,7 @@ QString CTTask::createTimeFormat() const {
 	if (hour.isAllEnabled()) {
 		int minutePeriod = minute.findPeriod();
 		if (minutePeriod != 0)
-            return tr("Every %L minute(s)", "Every minute", minutePeriod);
+            return tr("Every minute", "Every minute");
 	}
 
 	return describeDateAndHours();
