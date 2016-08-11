@@ -21,13 +21,16 @@ set(zeit_SRCS
    src/mainwindow.cpp
    src/taskdialog.cpp
    src/timerdialog.cpp
+   src/variabledialog.cpp
 )
 set(zeit_FRMS
    src/aboutdialog.ui
    src/alarmdialog.ui
    src/mainwindow.ui
    src/taskdialog.ui
-   src/timerdialog.ui)
+   src/timerdialog.ui
+   src/variabledialog.ui
+)
 set(zeit_RSRCS zeit.qrc)
 
 #translations
