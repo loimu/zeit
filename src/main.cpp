@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QApplication::setApplicationName("Zeit");
     QApplication::setOrganizationName("zeit");
-    QApplication::setApplicationVersion("0.1");
+    QApplication::setApplicationVersion("0.2");
     QTranslator translator;
     translator.load(QApplication::applicationDirPath() +
                     "/../share/zeit/translations/" + QLocale::system().name() + ".qm");

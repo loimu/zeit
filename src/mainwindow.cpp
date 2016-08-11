@@ -22,6 +22,7 @@
 #include "cthost.h"
 #include "ctcron.h"
 #include "cttask.h"
+#include "ctvariable.h"
 #include "ctInitializationError.h"
 
 #include "aboutdialog.h"
@@ -52,6 +53,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->mainToolBar->addAction(ui->actionDeleteTask);
     ui->mainToolBar->addAction(ui->actionAlarm);
     ui->mainToolBar->addAction(ui->actionTimer);
+    QActionGroup* group = new QActionGroup(this);
+    ui->actionPeriodic->setActionGroup(group);
+    ui->actionVariables->setActionGroup(group);
+    ui->actionNonperiodic->setActionGroup(group);
     connect(ui->actionAddTask, SIGNAL(triggered()), SLOT(createTaskDialog()));
     connect(ui->actionModifyTask, SIGNAL(triggered()), SLOT(modifyTaskDialog()));
     connect(ui->actionDeleteTask, SIGNAL(triggered()), SLOT(deleteTask()));
@@ -67,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ctHost = new CTHost(QLatin1String("crontab"), error);
     selectUser(false);
     // refresh state
-    refreshTasks();
+    showTasks();
     refreshActions(false);
 }
 
@@ -88,18 +93,37 @@ void MainWindow::refreshActions(bool enabled) {
     ui->actionAlarm->setEnabled(currentUser);
 }
 
-void MainWindow::refreshTasks() {
+void MainWindow::showTasks() {
     ui->listWidget->setEnabled(cron->isCurrentUserCron());
     ui->listWidget->clear();
-    // Add new items
-    ListItem* item;
     for(CTTask* ctTask: cron->tasks()) {
-        item = new ListItem(ctTask, ui->listWidget);
+        ListItem* item = new ListItem(ctTask, ui->listWidget);
         ui->listWidget->addItem(item);
     }
 }
 
+void MainWindow::showVariables() {
+    ui->listWidget->setEnabled(cron->isCurrentUserCron());
+    ui->listWidget->clear();
+    for(CTVariable* var : cron->variables()) {
+        QListWidgetItem* item = new QListWidgetItem();
+        QString comment = !var->comment.isEmpty() ? "#" + var->comment + "\n" : "";
+        item->setText(comment + var->variable + "=" + var->value);
+        if(var->enabled)
+            item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok-apply")));
+        else
+            item->setIcon(QIcon::fromTheme(QLatin1String("edit-delete")));
+        ui->listWidget->addItem(item);
+    }
+}
+
+void MainWindow::showNPTasks() {
+
+}
+
 void MainWindow::checkActions(QListWidgetItem* item) {
+    if(!ui->actionPeriodic->isChecked())
+        return;
     refreshActions(item->isSelected());
     if(item->isSelected()) {
         ListItem* taskItem = static_cast<ListItem*>(item);
@@ -108,6 +132,8 @@ void MainWindow::checkActions(QListWidgetItem* item) {
 }
 
 void MainWindow::toggleTaskStatus(QListWidgetItem* item) {
+    if(!ui->actionPeriodic->isChecked())
+        return;
     ListItem* taskItem = static_cast<ListItem*>(item);
     taskItem->toggleStatus();
     cron->save();
@@ -116,13 +142,13 @@ void MainWindow::toggleTaskStatus(QListWidgetItem* item) {
 void MainWindow::addTask() {
     cron->addTask(currentTask);
     cron->save();
-    refreshTasks();
+    showTasks();
 }
 
 void MainWindow::modifyTask() {
     cron->modifyTask(currentTask);
     cron->save();
-    refreshTasks();
+    showTasks();
 }
 
 void MainWindow::createTaskDialog() {
@@ -143,7 +169,7 @@ void MainWindow::deleteTask() {
         return;
     cron->removeTask(currentTask);
     cron->save();
-    refreshTasks();
+    showTasks();
     refreshActions(false);
 }
 
@@ -177,32 +203,28 @@ void MainWindow::showAboutDialog() {
 
 void MainWindow::on_actionSystem_triggered(bool check) {
     selectUser(check);
-    refreshTasks();
+    if(ui->actionPeriodic->isChecked())
+        showTasks();
+    if(ui->actionVariables->isChecked())
+        showVariables();
     refreshActions(false);
 }
 
-void MainWindow::on_actionPeriodic_triggered(bool check) {
+void MainWindow::on_actionPeriodic_triggered() {
     ui->actionSystem->setEnabled(true);
-    ui->actionVariables->setChecked(false);
-    ui->actionNonperiodic->setChecked(false);
+    showTasks();
+}
+
+void MainWindow::on_actionVariables_triggered() {
+    ui->actionSystem->setEnabled(true);
+    showVariables();
+}
+
+void MainWindow::on_actionNonperiodic_triggered() {
+    ui->listWidget->setEnabled(true);
+    ui->listWidget->clear();
     selectUser(false);
-    refreshTasks();
-    refreshActions(false);
-    ui->actionPeriodic->setChecked(true);
-}
-
-void MainWindow::on_actionVariables_triggered(bool check) {
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);
-    ui->actionPeriodic->setChecked(false);
-    ui->actionNonperiodic->setChecked(false);
-    ui->actionVariables->setChecked(true);
-}
-
-void MainWindow::on_actionNonperiodic_triggered(bool check) {
-    ui->actionSystem->setChecked(false);
-    ui->actionSystem->setEnabled(false);
-    ui->actionPeriodic->setChecked(false);
-    ui->actionVariables->setChecked(false);
-    ui->actionNonperiodic->setChecked(true);
+    showNPTasks();
 }

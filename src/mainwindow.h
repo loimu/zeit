@@ -45,7 +45,9 @@ private:
     CTTask* currentTask;
     Ui::MainWindow *ui;
     void refreshActions(bool);
-    void refreshTasks();
+    void showTasks();
+    void showVariables();
+    void showNPTasks();
 
 private slots:
     void selectUser(bool system);
@@ -60,9 +62,9 @@ private slots:
     void createTimerDialog();
     void showAboutDialog();
     void on_actionSystem_triggered(bool);
-    void on_actionPeriodic_triggered(bool);
-    void on_actionVariables_triggered(bool);
-    void on_actionNonperiodic_triggered(bool);
+    void on_actionPeriodic_triggered();
+    void on_actionVariables_triggered();
+    void on_actionNonperiodic_triggered();
 };
 
 #endif // MAINWINDOW_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>809</width>
-    <height>268</height>
+    <width>807</width>
+    <height>266</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>809</width>
+     <width>807</width>
      <height>27</height>
     </rect>
    </property>
@@ -61,6 +61,7 @@
      <string>&amp;View</string>
     </property>
     <addaction name="actionSystem"/>
+    <addaction name="separator"/>
     <addaction name="actionPeriodic"/>
     <addaction name="actionVariables"/>
     <addaction name="actionNonperiodic"/>
@@ -178,7 +179,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;System Tasks</string>
+    <string>&amp;System Mode</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
