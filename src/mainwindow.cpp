@@ -282,9 +282,9 @@ void MainWindow::on_actionVariables_triggered() {
 }
 
 void MainWindow::on_actionNonperiodic_triggered() {
-    ui->actionAddEntry->setText(tr("New One-Shot Task"));
-    ui->actionModifyEntry->setText(tr("Modify One-Shot Task"));
-    ui->actionDeleteEntry->setText(tr("Delete One-Shot Task"));
+    ui->actionAddEntry->setText(tr("New Command"));
+    ui->actionModifyEntry->setText(tr("Modify Command"));
+    ui->actionDeleteEntry->setText(tr("Delete Command"));
     ui->listWidget->setEnabled(true);
     ui->listWidget->clear();
     selectUser(false);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
-    <height>264</height>
+    <width>803</width>
+    <height>262</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>805</width>
+     <width>803</width>
      <height>27</height>
     </rect>
    </property>
@@ -171,7 +171,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Nonperiodic Tasks</string>
+    <string>&amp;Nonperiodic Commands</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
