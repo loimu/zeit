@@ -11,7 +11,7 @@
 mkdir build && cd build
 cmake ..
 make
-./zeit
+./src/zeit
 ```
 
 ### Features: ###
