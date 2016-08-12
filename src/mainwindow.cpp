@@ -194,7 +194,7 @@ void MainWindow::createEntry() {
                                          cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd, SIGNAL(accepted(CTVariable*)), SLOT(modifyVariable(CTVariable*)));
+        connect(vd, SIGNAL(accepted(CTVariable*)), SLOT(addVariable(CTVariable*)));
     }
 }
 
