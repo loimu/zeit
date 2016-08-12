@@ -3,7 +3,7 @@
 
 ### What it does ###
  Provides possibility of quickly adding and editing crontab tasks
- and user-friendly interface. 
+ via user-friendly interface. 
 
 ### Build and run ###
 ```
