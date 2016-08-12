@@ -16,7 +16,6 @@ add_subdirectory(crontablib)
 set(zeit_SRCS
    src/aboutdialog.cpp
    src/alarmdialog.cpp
-   src/listitem.cpp
    src/main.cpp
    src/mainwindow.cpp
    src/taskdialog.cpp

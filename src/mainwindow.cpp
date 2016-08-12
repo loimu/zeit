@@ -27,7 +27,6 @@
 
 #include "aboutdialog.h"
 #include "alarmdialog.h"
-#include "listitem.h"
 #include "taskdialog.h"
 #include "timerdialog.h"
 #include "variabledialog.h"
@@ -97,8 +96,17 @@ void MainWindow::refreshActions(bool enabled) {
 void MainWindow::showTasks() {
     ui->listWidget->setEnabled(cron->isCurrentUserCron());
     ui->listWidget->clear();
-    for(CTTask* ctTask: cron->tasks()) {
-        ListItem* item = new ListItem(ctTask, ui->listWidget);
+    for(CTTask* task: cron->tasks()) {
+        QListWidgetItem* item = new QListWidgetItem();
+        QString text;
+        text.append(QObject::tr("Command") + QString(": %1\n").arg(task->command));
+        text.append(QObject::tr("Description") + QString(": %1\n").arg(task->comment));
+        text.append(QObject::tr("Periodicity") + QString(": %1").arg(task->describe()));
+        item->setText(text);
+        if(task->enabled)
+            item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok-apply")));
+        else
+            item->setIcon(QIcon::fromTheme(QLatin1String("edit-delete")));
         ui->listWidget->addItem(item);
     }
 }
