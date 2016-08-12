@@ -17,6 +17,8 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <QKeyEvent>
+
 #include "ctvariable.h"
 #include "variabledialog.h"
 #include "ui_variabledialog.h"
@@ -66,4 +68,9 @@ void VariableDialog::on_buttonBox_accepted() {
 
 void VariableDialog::on_buttonBox_rejected() {
     this->close();
+}
+
+void VariableDialog::keyPressEvent(QKeyEvent *e) {
+    if(e->key() == Qt::Key_Escape)
+        this->close();
 }

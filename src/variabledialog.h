@@ -34,6 +34,7 @@ class VariableDialog : public QWidget
 
     Ui::VariableDialog* ui;
     CTVariable* variable;
+    void keyPressEvent(QKeyEvent *e);
 
 public:
     explicit VariableDialog(CTVariable*, const QString&, QWidget *parent = nullptr);

@@ -33,16 +33,16 @@ class TaskDialog : public QWidget
 {
     Q_OBJECT
 
-public:
-    explicit TaskDialog(CTTask*, const QString&, QWidget *parent = nullptr);
-    ~TaskDialog();
-
-private:
     CTTask* task;
     Ui::TaskDialog *ui;
     void init();
     void setText(const QString&, const QString&, const QString&, const QString&, const QString&);
     void setUnit(CTUnit&, const QString&);
+    void keyPressEvent(QKeyEvent *e);
+
+public:
+    explicit TaskDialog(CTTask*, const QString&, QWidget *parent = nullptr);
+    ~TaskDialog();
 
 private slots:
     void toggleMode();

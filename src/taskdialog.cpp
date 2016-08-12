@@ -17,7 +17,7 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#include <QMessageBox>
+#include <QKeyEvent>
 
 #include "cttask.h"
 #include "taskdialog.h"
@@ -134,4 +134,9 @@ void TaskDialog::on_buttonBox_accepted() {
 
 void TaskDialog::on_buttonBox_rejected() {
     this->close();
+}
+
+void TaskDialog::keyPressEvent(QKeyEvent *e) {
+    if(e->key() == Qt::Key_Escape)
+        this->close();
 }

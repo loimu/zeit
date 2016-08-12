@@ -17,6 +17,7 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <QKeyEvent>
 #include <QProcess>
 #include <QFileDialog>
 
@@ -94,4 +95,9 @@ void AlarmDialog::on_buttonBox_accepted() {
 
 void AlarmDialog::on_buttonBox_rejected() {
     this->close();
+}
+
+void AlarmDialog::keyPressEvent(QKeyEvent *e) {
+    if(e->key() == Qt::Key_Escape)
+        this->close();
 }

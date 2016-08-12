@@ -32,13 +32,13 @@ class AlarmDialog : public QWidget
 {
     Q_OBJECT
 
+    CTTask* task;
+    Ui::AlarmDialog *ui;
+    void keyPressEvent(QKeyEvent *e);
+
 public:
     explicit AlarmDialog(CTTask*, QWidget *parent = nullptr);
     ~AlarmDialog();
-
-private:
-    CTTask* task;
-    Ui::AlarmDialog *ui;
 
 private slots:
     void showFileDialog();
