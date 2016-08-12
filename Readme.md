@@ -1,9 +1,9 @@
 # Zeit project 
- Qt frontend to crontab and at - [Zeit](http://loimu.tk/zeit/)
+ A Qt frontend for `crontab` and `at` - [Zeit](http://loimu.tk/zeit/)
 
 ### What it does ###
  Provides possibility of quickly adding and editing crontab tasks
- und user-friendly interface. 
+ and user-friendly interface. 
 
 ### Build and run ###
 ```
