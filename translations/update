@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+lupdate -no-obsolete ../src/* -ts *.ts
