@@ -1,7 +1,8 @@
 project(zeit)
-
-#### setup
 cmake_minimum_required (VERSION 3.1.0)
+
+option(BUILD_TESTS        "Build tests"     OFF)
+
 set(QT_MIN_VERSION "5.2.0")
 find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
@@ -40,11 +41,6 @@ find_package(Qt5LinguistTools REQUIRED)
 qt5_add_translation(QM_FILES ${TRANSLATION})
 
 set(qt_LIBS Qt5::Core Qt5::Widgets)
-#tests
-set(test_LIBS Qt5::Core Qt5::Test)
-set(tests_SRCS src/tests.cpp)
-
-#build
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -55,11 +51,12 @@ qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
 qt5_add_resources(zeit_RESOURCES_RCC ${zeit_RSRCS})
 add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS}
                     ${QM_FILES} ${zeit_RESOURCES_RCC})
-add_executable(tests ${tests_SRCS})
 target_link_libraries(zeit crontab ${qt_LIBS})
-target_link_libraries(tests crontab ${test_LIBS})
 target_compile_features(zeit PRIVATE cxx_nullptr)
-target_compile_features(tests PRIVATE cxx_nullptr)
 
 install(TARGETS zeit RUNTIME DESTINATION bin)
 install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zeit/translations)
+
+if(BUILD_TESTS)
+  add_subdirectory(tests)
+endif()
