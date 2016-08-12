@@ -3,6 +3,11 @@ cmake_minimum_required (VERSION 3.1.0)
 
 option(BUILD_TESTS        "Build tests"     OFF)
 
+set(VERSION_MAJOR 0)
+set(VERSION_MINOR 2)
+set(VERSION_PATCH 0)
+set(ZEIT_V "${VERSION_MAJOR}.${VERSION_MINOR}")
+
 set(QT_MIN_VERSION "5.2.0")
 find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
