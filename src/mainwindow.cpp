@@ -99,9 +99,9 @@ void MainWindow::showTasks() {
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
         QString text;
-        text.append(QObject::tr("Command") + QString(": %1\n").arg(task->command));
+        text.append(QObject::tr("Command: %1\n").arg(task->command));
         text.append(QObject::tr("Description") + QString(": %1\n").arg(task->comment));
-        text.append(QObject::tr("Periodicity") + QString(": %1").arg(task->describe()));
+        text.append(QObject::tr("Runs ", "Runs at 'period described'") + task->describe());
         item->setText(text);
         if(task->enabled)
             item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok-apply")));
