@@ -22,11 +22,13 @@
 #include "ui_variabledialog.h"
 
 VariableDialog::VariableDialog(CTVariable* _ctVar, const QString& _caption, QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::VariableDialog),
     variable(_ctVar)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Dialog);
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(_caption);
     //
     ui->varEdit->setText(variable->variable);
@@ -35,8 +37,8 @@ VariableDialog::VariableDialog(CTVariable* _ctVar, const QString& _caption, QWid
     // ButtonBox action
     connect(ui->varEdit, SIGNAL(textChanged(QString)), SLOT(validate()));
     connect(ui->valEdit, SIGNAL(textChanged(QString)), SLOT(validate()));
-    connect(this, SIGNAL(accepted()), SLOT(saveVariable()));
-    ui->buttonBox->setDisabled(true);
+    if(ui->varEdit->text().isEmpty() || ui->valEdit->text().isEmpty())
+        ui->buttonBox->setDisabled(true);
 }
 
 VariableDialog::~VariableDialog()
@@ -54,8 +56,14 @@ void VariableDialog::validate() {
     }
 }
 
-void VariableDialog::saveVariable() {
+void VariableDialog::on_buttonBox_accepted() {
     variable->variable = ui->varEdit->text();
     variable->value = ui->valEdit->text();
     variable->comment = ui->commentEdit->text();
+    emit accepted(variable);
+    this->close();
+}
+
+void VariableDialog::on_buttonBox_rejected() {
+    this->close();
 }

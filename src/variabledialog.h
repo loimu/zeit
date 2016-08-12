@@ -20,7 +20,7 @@
 #ifndef VARIABLEDIALOG_H
 #define VARIABLEDIALOG_H
 
-#include <QDialog>
+#include <QWidget>
 
 namespace Ui {
 class VariableDialog;
@@ -28,7 +28,7 @@ class VariableDialog;
 
 class CTVariable;
 
-class VariableDialog : public QDialog
+class VariableDialog : public QWidget
 {
     Q_OBJECT
 
@@ -41,7 +41,11 @@ public:
 
 private slots:
     void validate();
-    void saveVariable();
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
+
+signals:
+    void accepted(CTVariable* variable);
 };
 
 #endif // VARIABLEDIALOG_H

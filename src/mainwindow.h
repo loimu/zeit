@@ -56,11 +56,11 @@ private slots:
     void toggleStatus(QListWidgetItem*);
     void addTask();
     void modifyTask();
-    void addVariable();
-    void modifyVariable();
+    void addVariable(CTVariable *var);
+    void modifyVariable(CTVariable *var);
     void createEntry();
-    void deleteEntry();
     void modifyEntry();
+    void deleteEntry();
     void createAlarmDialog();
     void createTimerDialog();
     void showAboutDialog();

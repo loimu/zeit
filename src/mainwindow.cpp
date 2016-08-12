@@ -163,15 +163,13 @@ void MainWindow::modifyTask() {
     showTasks();
 }
 
-void MainWindow::addVariable() {
-    CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+void MainWindow::addVariable(CTVariable *var) {
     cron->addVariable(var);
     cron->save();
     showVariables();
 }
 
-void MainWindow::modifyVariable() {
-    CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+void MainWindow::modifyVariable(CTVariable* var) {
     cron->modifyVariable(var);
     cron->save();
     showVariables();
@@ -193,7 +191,21 @@ void MainWindow::createEntry() {
                                          cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd, SIGNAL(accepted()), SLOT(addVariable()));
+        connect(vd, SIGNAL(accepted(CTVariable*)), SLOT(modifyVariable(CTVariable*)));
+    }
+}
+
+void MainWindow::modifyEntry() {
+    if(ui->actionPeriodic->isChecked()) {
+        TaskDialog *td = new TaskDialog(currentTask, tr("Edit Task"), this);
+        td->show();
+        connect(td, SIGNAL(accepted()), SLOT(modifyTask()));
+    }
+    if(ui->actionVariables->isChecked()) {
+        CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+        VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
+        vd->show();
+        connect(vd, SIGNAL(accepted(CTVariable*)), SLOT(modifyVariable(CTVariable*)));
     }
 }
 
@@ -215,20 +227,6 @@ void MainWindow::deleteEntry() {
         cron->save();
         showVariables();
         refreshActions(false);
-    }
-}
-
-void MainWindow::modifyEntry() {
-    if(ui->actionPeriodic->isChecked()) {
-        TaskDialog *td = new TaskDialog(currentTask, tr("Edit Task"), this);
-        td->show();
-        connect(td, SIGNAL(accepted()), SLOT(modifyTask()));
-    }
-    if(ui->actionVariables->isChecked()) {
-        CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
-        VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
-        vd->show();
-        connect(vd, SIGNAL(accepted()), SLOT(modifyVariable()));
     }
 }
 
