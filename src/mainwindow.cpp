@@ -37,7 +37,6 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    currentTask = nullptr;
     ui->setupUi(this);
     ui->statusBar->hide();
     ui->mainToolBar->setMovable(false);
@@ -125,10 +124,6 @@ void MainWindow::showNPTasks() {
 
 void MainWindow::checkActions(QListWidgetItem* item) {
     refreshActions(item->isSelected());
-    if(item->isSelected()) {
-        ListItem* taskItem = static_cast<ListItem*>(item);
-        currentTask = taskItem->task();
-    }
 }
 
 void MainWindow::toggleStatus(QListWidgetItem* item) {
@@ -151,14 +146,14 @@ void MainWindow::toggleStatus(QListWidgetItem* item) {
         item->setIcon(QIcon::fromTheme(QLatin1String("edit-delete")));
 }
 
-void MainWindow::addTask() {
-    cron->addTask(currentTask);
+void MainWindow::addTask(CTTask *task) {
+    cron->addTask(task);
     cron->save();
     showTasks();
 }
 
-void MainWindow::modifyTask() {
-    cron->modifyTask(currentTask);
+void MainWindow::modifyTask(CTTask *task) {
+    cron->modifyTask(task);
     cron->save();
     showTasks();
 }
@@ -177,13 +172,13 @@ void MainWindow::modifyVariable(CTVariable* var) {
 
 void MainWindow::createEntry() {
     if(ui->actionPeriodic->isChecked()) {
-        currentTask = new CTTask(QLatin1String(""),
+        CTTask* task = new CTTask(QLatin1String(""),
                                  QLatin1String(""),
                                  cron->userLogin(),
                                  false);
-        TaskDialog *td = new TaskDialog(currentTask, tr("New Task"), this);
+        TaskDialog *td = new TaskDialog(task, tr("New Task"), this);
         td->show();
-        connect(td, SIGNAL(accepted()), SLOT(addTask()));
+        connect(td, SIGNAL(accepted(CTTask*)), SLOT(addTask(CTTask*)));
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = new CTVariable(QLatin1String(""),
@@ -196,13 +191,17 @@ void MainWindow::createEntry() {
 }
 
 void MainWindow::modifyEntry() {
+    int index = ui->listWidget->currentRow();
+    if(index < 0)
+        return;
     if(ui->actionPeriodic->isChecked()) {
-        TaskDialog *td = new TaskDialog(currentTask, tr("Edit Task"), this);
+        CTTask* task = cron->tasks().at(index);
+        TaskDialog *td = new TaskDialog(task, tr("Edit Task"), this);
         td->show();
-        connect(td, SIGNAL(accepted()), SLOT(modifyTask()));
+        connect(td, SIGNAL(accepted(CTTask*)), SLOT(modifyTask(CTTask*)));
     }
     if(ui->actionVariables->isChecked()) {
-        CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+        CTVariable* var = cron->variables().at(index);
         VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
         vd->show();
         connect(vd, SIGNAL(accepted(CTVariable*)), SLOT(modifyVariable(CTVariable*)));
@@ -215,14 +214,18 @@ void MainWindow::deleteEntry() {
                                   QMessageBox::Yes|QMessageBox::No);
     if(reply == QMessageBox::No)
         return;
+    int index = ui->listWidget->currentRow();
+    if(index < 0)
+        return;
     if(ui->actionPeriodic->isChecked()) {
-        cron->removeTask(currentTask);
+        CTTask* task = cron->tasks().at(index);
+        cron->removeTask(task);
         cron->save();
         showTasks();
         refreshActions(false);
     }
     if(ui->actionVariables->isChecked()) {
-        CTVariable* var = cron->variables().at(ui->listWidget->currentRow());
+        CTVariable* var = cron->variables().at(index);
         cron->removeVariable(var);
         cron->save();
         showVariables();
@@ -231,13 +234,13 @@ void MainWindow::deleteEntry() {
 }
 
 void MainWindow::createAlarmDialog() {
-    currentTask = new CTTask(QLatin1String(""),
+    CTTask* task = new CTTask(QLatin1String(""),
                              QLatin1String(""),
                              cron->userLogin(),
                              false);
-    AlarmDialog *ad = new AlarmDialog(currentTask, this);
+    AlarmDialog *ad = new AlarmDialog(task, this);
     ad->show();
-    connect(ad, SIGNAL(accepted()), SLOT(addTask()));
+    connect(ad, SIGNAL(accepted(CTTask*)), SLOT(addTask(CTTask*)));
 }
 
 void MainWindow::createTimerDialog() {

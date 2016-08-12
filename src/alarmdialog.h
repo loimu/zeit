@@ -20,7 +20,7 @@
 #ifndef ALARMDIALOG_H
 #define ALARMDIALOG_H
 
-#include <QDialog>
+#include <QWidget>
 
 namespace Ui {
 class AlarmDialog;
@@ -28,7 +28,7 @@ class AlarmDialog;
 
 class CTTask;
 
-class AlarmDialog : public QDialog
+class AlarmDialog : public QWidget
 {
     Q_OBJECT
 
@@ -41,9 +41,13 @@ private:
     Ui::AlarmDialog *ui;
 
 private slots:
-    void saveTask();
     void showFileDialog();
     void showPlayerDialog();
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
+
+signals:
+    void accepted(CTTask* task);
 };
 
 #endif // ALARMDIALOG_H

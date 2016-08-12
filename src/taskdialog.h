@@ -20,7 +20,7 @@
 #ifndef TASKDIALOG_H
 #define TASKDIALOG_H
 
-#include <QDialog>
+#include <QWidget>
 
 namespace Ui {
 class TaskDialog;
@@ -29,7 +29,7 @@ class TaskDialog;
 class CTTask;
 class CTUnit;
 
-class TaskDialog : public QDialog
+class TaskDialog : public QWidget
 {
     Q_OBJECT
 
@@ -43,10 +43,15 @@ private:
     void init();
     void setText(const QString&, const QString&, const QString&, const QString&, const QString&);
     void setUnit(CTUnit&, const QString&);
+
 private slots:
     void toggleMode();
-    void saveTask();
     void refresh(int);
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
+
+signals:
+    void accepted(CTTask* task);
 };
 
 #endif // TASKDIALOG_H

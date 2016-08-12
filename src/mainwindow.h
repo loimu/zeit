@@ -43,7 +43,6 @@ public:
 private:
     CTHost* ctHost;
     CTCron* cron;
-    CTTask* currentTask;
     Ui::MainWindow *ui;
     void refreshActions(bool);
     void showTasks();
@@ -54,8 +53,8 @@ private slots:
     void selectUser(bool system);
     void checkActions(QListWidgetItem*);
     void toggleStatus(QListWidgetItem*);
-    void addTask();
-    void modifyTask();
+    void addTask(CTTask* task);
+    void modifyTask(CTTask *task);
     void addVariable(CTVariable *var);
     void modifyVariable(CTVariable *var);
     void createEntry();

@@ -25,11 +25,13 @@
 #include "ui_alarmdialog.h"
 
 AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AlarmDialog)
+    QWidget(parent),
+    ui(new Ui::AlarmDialog),
+    task(_ctTask)
 {
-    task = _ctTask;
     ui->setupUi(this);
+    setWindowFlags(Qt::Dialog);
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("New Alarm"));
     // prepopulate fields
     ui->checkBoxMon->setChecked(true);
@@ -45,8 +47,6 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
     QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(QRegExp("\n"));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
-    // ButtonBox action
-    connect(this, SIGNAL(accepted()), SLOT(saveTask()));
     // FileDialog actions
     connect(ui->pushButtonSoundFile, SIGNAL(released()), SLOT(showFileDialog()));
     connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
@@ -57,7 +57,21 @@ AlarmDialog::~AlarmDialog()
     delete ui;
 }
 
-void AlarmDialog::saveTask() {
+void AlarmDialog::showFileDialog() {
+    QStringList file = QFileDialog::getOpenFileNames(this, "Sound file",
+                                                     QDir::homePath(),
+                                            "Media (*.wav *.ogg *.mp3 *.flac)");
+    if(file.length() > 0)
+        ui->lineEditSoundFile->setText(file.at(0));
+}
+
+void AlarmDialog::showPlayerDialog() {
+    QStringList file = QFileDialog::getOpenFileNames(this,"Executable","/usr/bin","");
+    if(file.length() > 0)
+        ui->lineEditPlayer->setText(file.at(0));
+}
+
+void AlarmDialog::on_buttonBox_accepted() {
     task->comment = ui->lineEditComment->text();
     task->command = QString("%1 %2").arg(ui->lineEditPlayer->text())
                                     .arg(ui->lineEditSoundFile->text());
@@ -74,18 +88,10 @@ void AlarmDialog::saveTask() {
         task->dayOfMonth.setEnabled(dm, true);
     for(int mo = CTMonth::MINIMUM; mo <= CTMonth::MAXIMUM; mo++)
         task->month.setEnabled(mo, true);
+    emit accepted(task);
+    this->close();
 }
 
-void AlarmDialog::showFileDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(this, "Sound file",
-                                                     QDir::homePath(),
-                                            "Media (*.wav *.ogg *.mp3 *.flac)");
-    if(file.length() > 0)
-        ui->lineEditSoundFile->setText(file.at(0));
-}
-
-void AlarmDialog::showPlayerDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(this,"Executable","/usr/bin","");
-    if(file.length() > 0)
-        ui->lineEditPlayer->setText(file.at(0));
+void AlarmDialog::on_buttonBox_rejected() {
+    this->close();
 }

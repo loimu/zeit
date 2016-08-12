@@ -24,11 +24,13 @@
 #include "ui_taskdialog.h"
 
 TaskDialog::TaskDialog(CTTask* _ctTask, const QString& _caption, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::TaskDialog)
+    QWidget(parent),
+    ui(new Ui::TaskDialog),
+    task(_ctTask)
 {
-    task = _ctTask;
     ui->setupUi(this);
+    setWindowFlags(Qt::Dialog);
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(_caption);
     ui->radioBasic->setChecked(true);
     toggleMode();
@@ -45,8 +47,6 @@ TaskDialog::TaskDialog(CTTask* _ctTask, const QString& _caption, QWidget *parent
     connect(ui->radioBasic, SIGNAL(clicked(bool)), SLOT(toggleMode()));
     // ComboBox action
     connect(ui->comboBox, SIGNAL(activated(int)), SLOT(refresh(int)));
-    // ButtonBox action
-    connect(this, SIGNAL(accepted()), SLOT(saveTask()));
 }
 
 TaskDialog::~TaskDialog()
@@ -99,17 +99,6 @@ void TaskDialog::toggleMode() {
     ui->editWeekday->setEnabled(isAdvanced);
 }
 
-void TaskDialog::saveTask() {
-    task->command = ui->commandEdit->text();
-    task->comment = ui->commentEdit->text();
-    // write time tokens into cttask object
-    setUnit(task->minute, ui->editMinute->text());
-    setUnit(task->hour, ui->editHour->text());
-    setUnit(task->dayOfMonth, ui->editDay->text());
-    setUnit(task->dayOfWeek, ui->editWeekday->text());
-    setUnit(task->month, ui->editMonth->text());
-}
-
 void TaskDialog::refresh(int index) {
     switch(index) {
     case 1:
@@ -128,4 +117,21 @@ void TaskDialog::refresh(int index) {
         setText("*","*","*","*","*"); // every minute
         break;
     }
+}
+
+void TaskDialog::on_buttonBox_accepted() {
+    task->command = ui->commandEdit->text();
+    task->comment = ui->commentEdit->text();
+    // write time tokens into cttask object
+    setUnit(task->minute, ui->editMinute->text());
+    setUnit(task->hour, ui->editHour->text());
+    setUnit(task->dayOfMonth, ui->editDay->text());
+    setUnit(task->dayOfWeek, ui->editWeekday->text());
+    setUnit(task->month, ui->editMonth->text());
+    emit accepted(task);
+    this->close();
+}
+
+void TaskDialog::on_buttonBox_rejected() {
+    this->close();
 }
