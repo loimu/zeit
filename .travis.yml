@@ -1,0 +1,21 @@
+sudo: required
+dist: xenial
+language: cpp
+cache: apt
+
+env:
+  - ENV=default
+
+before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+install:
+  - sudo apt-get -qq update
+  - sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev qtbase5-dev cmake
+
+script:
+  - mkdir build; cd build
+  - cmake -DBUILD_TESTS=ON ..
+  - make || exit 1
+  - cd tests && ./tests
