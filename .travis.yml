@@ -12,7 +12,7 @@ before_install:
 
 install:
   - sudo apt-get -qq update
-  - sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev qtbase5-dev cmake
+  - sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev qtbase5-dev cmake qttools5-dev-tools
 
 script:
   - mkdir build; cd build
