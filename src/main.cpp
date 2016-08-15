@@ -30,12 +30,13 @@ int main(int argc, char *argv[])
     if(getuid() == 0)
         qFatal("User should not be root");
     QApplication a(argc, argv);
-    QApplication::setApplicationName("Zeit");
-    QApplication::setOrganizationName("zeit");
-    QApplication::setApplicationVersion(ZEIT_V);
+    QApplication::setApplicationName(QStringLiteral("Zeit"));
+    QApplication::setOrganizationName(QStringLiteral("zeit"));
+    QApplication::setApplicationVersion(QStringLiteral(ZEIT_V));
     QTranslator translator;
     translator.load(QApplication::applicationDirPath() +
-                    "/../share/zeit/translations/" + QLocale::system().name() + ".qm");
+                    QLatin1String("/../share/zeit/translations/") +
+                    QLocale::system().name() + QLatin1String(".qm"));
     a.installTranslator(&translator);
     MainWindow w;
     w.show();
