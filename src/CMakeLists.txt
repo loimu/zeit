@@ -39,7 +39,7 @@ qt5_add_resources(zeit_RESOURCES_RCC ${zeit_RSRCS})
 add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS}
                     ${QM_FILES} ${zeit_RESOURCES_RCC})
 target_link_libraries(zeit crontab ${qt_LIBS})
-target_compile_features(zeit PRIVATE cxx_nullptr)
+target_compile_features(zeit PRIVATE cxx_lambdas cxx_nullptr cxx_unicode_literals)
 
 install(TARGETS zeit RUNTIME DESTINATION bin)
 install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zeit/translations)
