@@ -199,22 +199,16 @@ void MainWindow::modifyVariable(CTVariable* var) {
 
 void MainWindow::createEntry() {
     if(ui->actionPeriodic->isChecked()) {
-        CTTask* task = new CTTask(QStringLiteral(""),
-                                  QStringLiteral(""),
-                                  cron->userLogin(),
-                                  false);
+        CTTask* task = new CTTask(QString(),QString(),cron->userLogin(),false);
         TaskDialog *td = new TaskDialog(task, tr("New Task"), this);
         td->show();
         connect(td, SIGNAL(accepted(CTTask*)), SLOT(addTask(CTTask*)));
     }
     if(ui->actionVariables->isChecked()) {
-        CTVariable* var = new CTVariable(QStringLiteral(""),
-                                         QStringLiteral(""),
-                                         cron->userLogin());
+        CTVariable* var = new CTVariable(QString(),QString(),cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd, SIGNAL(accepted(CTVariable*)),
-                SLOT(addVariable(CTVariable*)));
+        connect(vd,SIGNAL(accepted(CTVariable*)),SLOT(addVariable(CTVariable*)));
     }
 }
 
@@ -239,7 +233,7 @@ void MainWindow::modifyEntry() {
 
 void MainWindow::deleteEntry() {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("Deleting Entry"), tr("Delete entry?"),
+    reply = QMessageBox::question(this,tr("Deleting Entry"),tr("Delete entry?"),
                                   QMessageBox::Yes|QMessageBox::No);
     if(reply == QMessageBox::No)
         return;
@@ -263,10 +257,7 @@ void MainWindow::deleteEntry() {
 }
 
 void MainWindow::createAlarmDialog() {
-    CTTask* task = new CTTask(QStringLiteral(""),
-                              QStringLiteral(""),
-                              cron->userLogin(),
-                              false);
+    CTTask* task = new CTTask(QString(), QString(), cron->userLogin(), false);
     AlarmDialog *ad = new AlarmDialog(task, this);
     ad->show();
     connect(ad, SIGNAL(accepted(CTTask*)), SLOT(addTask(CTTask*)));
