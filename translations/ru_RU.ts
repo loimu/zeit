@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/aboutdialog.ui" line="52"/>
         <source>About &amp;Qt</source>
-        <translation>О библиотеке &amp;Qt</translation>
+        <translation>О &amp;Qt</translation>
     </message>
 </context>
 <context>
@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="38"/>
         <source>&amp;Zeit</source>
-        <translation>&amp;Приложение</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="48"/>
@@ -184,7 +184,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="128"/>
         <source>Ctrl+T</source>
-        <translation>Ctrl+Т</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="133"/>
@@ -194,7 +194,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="136"/>
         <source>Ctrl+L</source>
-        <translation>Ctrl+Б</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="147"/>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="150"/>
         <source>Ctrl+P</source>
-        <translation>Ctrl+П</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="155"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="166"/>
         <source>Ctrl+E</source>
-        <translation>Ctrl+О</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="174"/>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="177"/>
         <source>Ctrl+N</source>
-        <translation>Ctrl+Н</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="185"/>
@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="188"/>
         <source>Ctrl+S</source>
-        <translation>Ctrl+С</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="187"/>
@@ -315,7 +315,8 @@
         <location filename="../src/mainwindow.cpp" line="102"/>
         <source>Command: %1
 </source>
-        <translation>Команда: %1</translation>
+        <translation>Команда: %1
+</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="103"/>
