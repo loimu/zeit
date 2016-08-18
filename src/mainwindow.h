@@ -31,6 +31,7 @@ class CTCron;
 class CTTask;
 class CTVariable;
 class QListWidgetItem;
+class Commands;
 
 class MainWindow : public QMainWindow
 {
@@ -44,6 +45,7 @@ private:
     CTHost* ctHost;
     CTCron* cron;
     Ui::MainWindow *ui;
+    Commands* commands;
     void refreshActions(bool);
     void showTasks();
     void showVariables();

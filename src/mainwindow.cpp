@@ -30,11 +30,13 @@
 #include "taskdialog.h"
 #include "timerdialog.h"
 #include "variabledialog.h"
+#include "commands.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    commands(new Commands())
 {
     ui->setupUi(this);
     ui->statusBar->hide();
@@ -91,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete commands;
 }
 
 void MainWindow::selectUser(bool system) {
@@ -100,7 +103,8 @@ void MainWindow::selectUser(bool system) {
 void MainWindow::refreshActions(bool enabled) {
     bool currentUser = cron->isCurrentUserCron();
     ui->actionAddEntry->setEnabled(currentUser);
-    ui->actionModifyEntry->setEnabled(currentUser && enabled);
+    ui->actionModifyEntry->setEnabled((currentUser && enabled)
+                                      && !ui->actionNonperiodic->isChecked());
     ui->actionDeleteEntry->setEnabled(currentUser && enabled);
     ui->actionAlarm->setEnabled(currentUser);
     ui->actionTimer->setEnabled(currentUser);
@@ -144,7 +148,14 @@ void MainWindow::showVariables() {
 }
 
 void MainWindow::showNPTasks() {
-
+    ui->listWidget->setEnabled(true);
+    ui->listWidget->clear();
+    for(Command c : *commands->getCommands()) {
+        QListWidgetItem* item = new QListWidgetItem(c.description +
+                                                    QLatin1String("\nCommand: ")
+                                                    + c.command);
+        ui->listWidget->addItem(item);
+    }
 }
 
 void MainWindow::checkActions(QListWidgetItem* item) {
@@ -307,8 +318,6 @@ void MainWindow::on_actionNonperiodic_triggered() {
     ui->actionAddEntry->setText(tr("New Command"));
     ui->actionModifyEntry->setText(tr("Modify Command"));
     ui->actionDeleteEntry->setText(tr("Delete Command"));
-    ui->listWidget->setEnabled(true);
-    ui->listWidget->clear();
     selectUser(false);
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);

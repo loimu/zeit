@@ -14,6 +14,7 @@ set(zeit_SRCS
    taskdialog.cpp
    timerdialog.cpp
    variabledialog.cpp
+   commands.cpp
 )
 set(zeit_FRMS
    aboutdialog.ui
