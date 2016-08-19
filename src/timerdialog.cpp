@@ -20,13 +20,15 @@
 #include <QProcess>
 #include <QFileDialog>
 #include <QTime>
+#include <QDebug>
 
+#include "commands.h"
 #include "timerdialog.h"
 #include "ui_timerdialog.h"
 
-TimerDialog::TimerDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::TimerDialog)
+TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : QDialog(parent),
+    ui(new Ui::TimerDialog),
+    commands(commands_)
 {
     ui->setupUi(this);
     setWindowTitle(tr("New Timer"));
@@ -35,9 +37,11 @@ TimerDialog::TimerDialog(QWidget *parent) :
     ui->checkBox->setChecked(true);
     // detect player
     QProcess proc;
-    proc.start("which", QStringList() << "mpv" << "mplayer");
+    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
+                                                    QStringLiteral("mplayer")});
     proc.waitForFinished(-1);
-    QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(QRegExp("\n"));
+    QStringList players = QString::fromUtf8(
+                proc.readAllStandardOutput()).split(QRegExp(QStringLiteral("\n")));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
     // get system time
@@ -56,35 +60,34 @@ TimerDialog::~TimerDialog()
 }
 
 void TimerDialog::saveTask() {
-    /*
-        timer uses the "at" cli utility: echo '/path/to/script' | at 11:15
-    */
-    QString notification = QString();
-    if(ui->checkBox->isChecked())
-        notification.append(QString(" ; notify-send \"Timer\" \"%1\"")
-                       .arg(ui->lineEditComment->text()));
-    QString command = QString("echo '%1 %2%3' | at %4:%5")
+    QString command = QString(QStringLiteral("%1 \\\"%2\\\" & "))
             .arg(ui->lineEditPlayer->text())
-            .arg(ui->lineEditSoundFile->text())
-            .arg(notification)
+            .arg(ui->lineEditSoundFile->text());
+    if(ui->checkBox->isChecked())
+        command.append(QString(QStringLiteral("notify-send Timer \\\"%1\\\""))
+                       .arg(ui->lineEditComment->text()));
+    QString time = QString(QStringLiteral("%1:%2"))
             .arg(ui->spinBoxHours->value())
             .arg(ui->spinBoxMinutes->value());
-    QProcess proc;
-    proc.start("bash", QStringList() << "-c" << command);
-    proc.waitForFinished(-1);
-    QString output = QString::fromUtf8(proc.readAllStandardOutput());
+    commands->addCommand(command, time);
 }
 
 void TimerDialog::showFileDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(this, "Sound file",
-                                                     QDir::homePath(),
-                                            "Media (*.wav *.ogg *.mp3 *.flac)");
+    QStringList file = QFileDialog::getOpenFileNames(
+                this,
+                QStringLiteral("Sound file"),
+                QDir::homePath(),
+                QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
     if(file.length() > 0)
         ui->lineEditSoundFile->setText(file.at(0));
 }
 
 void TimerDialog::showPlayerDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(this,"Executable","/usr/bin","");
+    QStringList file = QFileDialog::getOpenFileNames(
+                this,
+                QStringLiteral("Executable"),
+                QDir::homePath(),
+                QString());
     if(file.length() > 0)
         ui->lineEditPlayer->setText(file.at(0));
 }

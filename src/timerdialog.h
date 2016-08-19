@@ -26,16 +26,18 @@ namespace Ui {
 class TimerDialog;
 }
 
+class Commands;
+
 class TimerDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit TimerDialog(QWidget *parent = nullptr);
-    ~TimerDialog();
-
-private:
     Ui::TimerDialog *ui;
+    Commands* commands;
+
+public:
+    explicit TimerDialog(Commands* commands, QWidget *parent = nullptr);
+    ~TimerDialog();
 
 private slots:
     void saveTask();

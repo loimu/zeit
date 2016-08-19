@@ -23,12 +23,24 @@
 
 #include "commands.h"
 
-Commands::Commands() : commands(new QList<Command>)
+Commands::Commands() : commands(new QList<Command>),
+    map(new QMap<QString, QString>)
 {
-    QProcess proc;
-    proc.start(QStringLiteral("atq"));
-    proc.waitForFinished(-1);
-    QString output = QString::fromUtf8(proc.readAllStandardOutput());
+
+}
+
+Commands::~Commands()
+{
+    delete map;
+    delete commands;
+}
+
+void Commands::refresh() {
+    commands->clear();
+    QProcess p;
+    p.start(QStringLiteral("atq"));
+    p.waitForFinished(-1);
+    QString output = QString::fromUtf8(p.readAllStandardOutput());
     QStringList entries;
     if(!output.isEmpty())
         entries = output.split("\n", QString::SkipEmptyParts);
@@ -39,28 +51,33 @@ Commands::Commands() : commands(new QList<Command>)
         Command command;
         command.id = match.cap(1);
         command.description = match.cap(2);
-        command.command = QStringLiteral("n/a");
+        command.command = map->value(command.id, QStringLiteral("n/a"));
         commands->append(command);
     }
 }
 
-bool Commands::execute(QString program, QStringList options) {
-    QProcess proc;
-    proc.start(program, options);
-    proc.waitForFinished(-1);
-    // returns true (success) if no output in standard error
-    return proc.readAllStandardError().isEmpty();
-}
-
 void Commands::addCommand(QString command, QString time) {
-    QString cmdline = QString(QStringLiteral("echo '%1' | at %2"))
+    QString cmdline = QString(QStringLiteral("echo \"%1\" | at %2"))
             .arg(command)
             .arg(time);
-    execute(QStringLiteral("bash"), QStringList{QStringLiteral("-c"), cmdline});
+    QProcess p;
+    p.start(QStringLiteral("bash"), QStringList{QStringLiteral("-c"), cmdline});
+    p.waitForFinished(-1);
+    QString output = QString::fromUtf8(p.readAllStandardError());
+    QRegExp match(QStringLiteral("job\\s(\\d+)\\s(.*)"));
+    match.setMinimal(true);
+    match.indexIn(output);
+    QString id = match.cap(1);
+    if(!id.isEmpty())
+        map->insert(id, command);
+    refresh();
 }
 
 void Commands::deleteCommand(int index) {
-    if(execute(QStringLiteral("atrm"), QStringList{commands->at(index).id}))
+    QProcess p;
+    p.start(QStringLiteral("atrm"), QStringList{commands->at(index).id});
+    p.waitForFinished(-1);
+    if(p.readAllStandardError().isEmpty())
         commands->removeAt(index);
 }
 

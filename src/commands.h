@@ -21,6 +21,7 @@
 #define COMMANDS_H
 
 #include <QList>
+#include <QMap>
 
 struct Command {
     QString description;
@@ -32,10 +33,12 @@ struct Command {
 class Commands
 {
     QList<Command>* commands;
-    bool execute(QString, QStringList);
+    QMap<QString, QString>* map;
 
 public:
     Commands();
+    ~Commands();
+    void refresh();
     void addCommand(QString command, QString time);
     void deleteCommand(int index);
     QList<Command>* getCommands();

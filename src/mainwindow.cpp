@@ -92,8 +92,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 MainWindow::~MainWindow()
 {
-    delete ui;
     delete commands;
+    delete ctHost;
+    delete ui;
 }
 
 void MainWindow::selectUser(bool system) {
@@ -158,6 +159,16 @@ void MainWindow::showNPTasks() {
     }
 }
 
+void MainWindow::refresh() {
+    if(ui->actionPeriodic->isChecked())
+        showTasks();
+    if(ui->actionVariables->isChecked())
+        showVariables();
+    if(ui->actionNonperiodic->isChecked())
+        showNPTasks();
+    refreshActions(false);
+}
+
 void MainWindow::checkActions(QListWidgetItem* item) {
     refreshActions(item->isSelected());
 }
@@ -187,25 +198,25 @@ void MainWindow::toggleStatus(QListWidgetItem* item) {
 void MainWindow::addTask(CTTask *task) {
     cron->addTask(task);
     cron->save();
-    showTasks();
+    refresh();
 }
 
 void MainWindow::modifyTask(CTTask *task) {
     cron->modifyTask(task);
     cron->save();
-    showTasks();
+    refresh();
 }
 
 void MainWindow::addVariable(CTVariable *var) {
     cron->addVariable(var);
     cron->save();
-    showVariables();
+    refresh();
 }
 
 void MainWindow::modifyVariable(CTVariable* var) {
     cron->modifyVariable(var);
     cron->save();
-    showVariables();
+    refresh();
 }
 
 void MainWindow::createEntry() {
@@ -255,16 +266,16 @@ void MainWindow::deleteEntry() {
         CTTask* task = cron->tasks().at(index);
         cron->removeTask(task);
         cron->save();
-        showTasks();
-        refreshActions(false);
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = cron->variables().at(index);
         cron->removeVariable(var);
         cron->save();
-        showVariables();
-        refreshActions(false);
     }
+    if(ui->actionNonperiodic->isChecked()) {
+        commands->deleteCommand(index);
+    }
+    refresh();
 }
 
 void MainWindow::createAlarmDialog() {
@@ -275,8 +286,9 @@ void MainWindow::createAlarmDialog() {
 }
 
 void MainWindow::createTimerDialog() {
-    TimerDialog *td = new TimerDialog(this);
+    TimerDialog *td = new TimerDialog(commands, this);
     td->show();
+    connect(td, SIGNAL(accepted()), SLOT(refresh()));
 }
 
 void MainWindow::showAboutDialog() {
@@ -289,11 +301,7 @@ void MainWindow::showAboutDialog() {
 
 void MainWindow::on_actionSystem_triggered(bool check) {
     selectUser(check);
-    if(ui->actionPeriodic->isChecked())
-        showTasks();
-    if(ui->actionVariables->isChecked())
-        showVariables();
-    refreshActions(false);
+    refresh();
 }
 
 void MainWindow::on_actionPeriodic_triggered() {
@@ -321,6 +329,7 @@ void MainWindow::on_actionNonperiodic_triggered() {
     selectUser(false);
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);
+    commands->refresh();
     showNPTasks();
     refreshActions(false);
 }

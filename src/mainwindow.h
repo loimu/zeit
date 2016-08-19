@@ -53,6 +53,7 @@ private:
 
 private slots:
     void selectUser(bool system);
+    void refresh();
     void checkActions(QListWidgetItem*);
     void toggleStatus(QListWidgetItem*);
     void addTask(CTTask* task);
