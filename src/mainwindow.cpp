@@ -28,6 +28,7 @@
 #include "aboutdialog.h"
 #include "alarmdialog.h"
 #include "taskdialog.h"
+#include "commanddialog.h"
 #include "timerdialog.h"
 #include "variabledialog.h"
 #include "commands.h"
@@ -231,6 +232,11 @@ void MainWindow::createEntry() {
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
         connect(vd,SIGNAL(accepted(CTVariable*)),SLOT(addVariable(CTVariable*)));
+    }
+    if(ui->actionNonperiodic->isChecked()) {
+        CommandDialog *cd = new CommandDialog(commands, this);
+        cd->show();
+        connect(cd, SIGNAL(accepted()), SLOT(refresh()));
     }
 }
 

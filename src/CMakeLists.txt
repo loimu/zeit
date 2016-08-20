@@ -15,6 +15,7 @@ set(zeit_SRCS
    timerdialog.cpp
    variabledialog.cpp
    commands.cpp
+   commanddialog.cpp
 )
 set(zeit_FRMS
    aboutdialog.ui
@@ -23,6 +24,7 @@ set(zeit_FRMS
    taskdialog.ui
    timerdialog.ui
    variabledialog.ui
+   commanddialog.ui
 )
 set(zeit_RSRCS ../zeit.qrc)
 
