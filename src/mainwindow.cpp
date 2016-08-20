@@ -305,7 +305,7 @@ void MainWindow::on_actionSystem_triggered(bool check) {
 }
 
 void MainWindow::on_actionPeriodic_triggered() {
-    ui->actionAddEntry->setText(tr("New Task"));
+    ui->actionAddEntry->setText(tr("Add Task"));
     ui->actionModifyEntry->setText(tr("Modify Task"));
     ui->actionDeleteEntry->setText(tr("Delete Task"));
     ui->actionSystem->setEnabled(true);
@@ -314,7 +314,7 @@ void MainWindow::on_actionPeriodic_triggered() {
 }
 
 void MainWindow::on_actionVariables_triggered() {
-    ui->actionAddEntry->setText(tr("New Variable"));
+    ui->actionAddEntry->setText(tr("Add Variable"));
     ui->actionModifyEntry->setText(tr("Modify Variable"));
     ui->actionDeleteEntry->setText(tr("Delete Variable"));
     ui->actionSystem->setEnabled(true);
@@ -323,7 +323,7 @@ void MainWindow::on_actionVariables_triggered() {
 }
 
 void MainWindow::on_actionNonperiodic_triggered() {
-    ui->actionAddEntry->setText(tr("New Command"));
+    ui->actionAddEntry->setText(tr("Add Command"));
     ui->actionModifyEntry->setText(tr("Modify Command"));
     ui->actionDeleteEntry->setText(tr("Delete Command"));
     selectUser(false);

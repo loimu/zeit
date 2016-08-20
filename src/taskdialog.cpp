@@ -56,7 +56,7 @@ TaskDialog::~TaskDialog()
 
 void TaskDialog::init() {
     if(task->command.isEmpty()) {
-        ui->commentEdit->setText(tr("Undefined"));
+        ui->commentEdit->setText(tr("New Task"));
         setText("*","*","*","*","*");
     }
     else {
