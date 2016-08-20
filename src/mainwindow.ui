@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>803</width>
-    <height>262</height>
+    <width>801</width>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>803</width>
+     <width>801</width>
      <height>27</height>
     </rect>
    </property>
@@ -60,6 +60,7 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <addaction name="actionRefresh"/>
     <addaction name="actionSystem"/>
     <addaction name="separator"/>
     <addaction name="actionPeriodic"/>
@@ -84,13 +85,16 @@
    <property name="text">
     <string>&amp;About</string>
    </property>
+   <property name="shortcut">
+    <string notr="true"/>
+   </property>
   </action>
   <action name="actionAddEntry">
    <property name="text">
     <string>&amp;Add Entry</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+A</string>
+    <string notr="true">Ctrl+A</string>
    </property>
   </action>
   <action name="actionQuit">
@@ -98,7 +102,7 @@
     <string>&amp;Quit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string notr="true">Ctrl+Q</string>
    </property>
   </action>
   <action name="actionDeleteEntry">
@@ -109,7 +113,7 @@
     <string>Delete Entry</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+D</string>
+    <string notr="true">Ctrl+D</string>
    </property>
   </action>
   <action name="actionModifyEntry">
@@ -117,7 +121,7 @@
     <string>&amp;Modify Entry</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+M</string>
+    <string notr="true">Ctrl+M</string>
    </property>
   </action>
   <action name="actionTimer">
@@ -125,7 +129,7 @@
     <string>&amp;Timer</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+T</string>
+    <string notr="true">Ctrl+T</string>
    </property>
   </action>
   <action name="actionAlarm">
@@ -133,7 +137,7 @@
     <string>&amp;Alarm</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+L</string>
+    <string notr="true">Ctrl+L</string>
    </property>
   </action>
   <action name="actionPeriodic">
@@ -147,7 +151,7 @@
     <string>&amp;Periodic Tasks</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string notr="true">Ctrl+P</string>
    </property>
   </action>
   <action name="action_Root_Mode">
@@ -163,7 +167,7 @@
     <string>&amp;Environment Variables</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+E</string>
+    <string notr="true">Ctrl+E</string>
    </property>
   </action>
   <action name="actionNonperiodic">
@@ -174,7 +178,7 @@
     <string>&amp;Nonperiodic Commands</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+N</string>
+    <string notr="true">Ctrl+N</string>
    </property>
   </action>
   <action name="actionSystem">
@@ -185,7 +189,15 @@
     <string>&amp;System Mode</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string notr="true">Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionRefresh">
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+R</string>
    </property>
   </action>
  </widget>

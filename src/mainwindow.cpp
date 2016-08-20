@@ -333,3 +333,9 @@ void MainWindow::on_actionNonperiodic_triggered() {
     showNPTasks();
     refreshActions(false);
 }
+
+void MainWindow::on_actionRefresh_triggered() {
+    if(ui->actionNonperiodic->isChecked())
+        commands->refresh();
+    refresh();
+}

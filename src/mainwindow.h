@@ -70,6 +70,7 @@ private slots:
     void on_actionPeriodic_triggered();
     void on_actionVariables_triggered();
     void on_actionNonperiodic_triggered();
+    void on_actionRefresh_triggered();
 };
 
 #endif // MAINWINDOW_H
