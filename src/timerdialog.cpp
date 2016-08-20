@@ -20,7 +20,6 @@
 #include <QProcess>
 #include <QFileDialog>
 #include <QTime>
-#include <QDebug>
 
 #include "commands.h"
 #include "timerdialog.h"
@@ -68,7 +67,7 @@ void TimerDialog::saveTask() {
                        .arg(ui->lineEditComment->text()));
     QString time = QString(QStringLiteral("%1:%2"))
             .arg(ui->spinBoxHours->value())
-            .arg(ui->spinBoxMinutes->value());
+            .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
     commands->addCommand(command, time);
 }
 
