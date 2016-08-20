@@ -54,23 +54,27 @@ private:
 private slots:
     void selectUser(bool system);
     void refresh();
-    void checkActions(QListWidgetItem*);
-    void toggleStatus(QListWidgetItem*);
     void addTask(CTTask* task);
     void modifyTask(CTTask *task);
     void addVariable(CTVariable *var);
     void modifyVariable(CTVariable *var);
-    void createEntry();
-    void modifyEntry();
-    void deleteEntry();
-    void createAlarmDialog();
-    void createTimerDialog();
-    void showAboutDialog();
+    void on_listWidget_itemClicked(QListWidgetItem*);
+    void on_listWidget_itemDoubleClicked(QListWidgetItem*);
+    // Zeit Menu
+    void on_actionAddEntry_triggered();
+    void on_actionModifyEntry_triggered();
+    void on_actionDeleteEntry_triggered();
+    // View Menu
+    void on_actionRefresh_triggered();
     void on_actionSystem_triggered(bool);
     void on_actionPeriodic_triggered();
     void on_actionVariables_triggered();
     void on_actionNonperiodic_triggered();
-    void on_actionRefresh_triggered();
+    // Tools Menu
+    void on_actionAlarm_triggered();
+    void on_actionTimer_triggered();
+    // Help Menu
+    void on_actionAbout_triggered();
 };
 
 #endif // MAINWINDOW_H
