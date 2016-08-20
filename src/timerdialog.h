@@ -20,7 +20,7 @@
 #ifndef TIMERDIALOG_H
 #define TIMERDIALOG_H
 
-#include <QDialog>
+#include <QWidget>
 
 namespace Ui {
 class TimerDialog;
@@ -28,23 +28,29 @@ class TimerDialog;
 
 class Commands;
 
-class TimerDialog : public QDialog
+class TimerDialog : public QWidget
 {
     Q_OBJECT
 
     Ui::TimerDialog *ui;
     Commands* commands;
+    void keyPressEvent(QKeyEvent *e);
 
 public:
     explicit TimerDialog(Commands* commands, QWidget *parent = nullptr);
     ~TimerDialog();
 
+signals:
+    void accepted();
+
 private slots:
-    void saveTask();
     void showFileDialog();
     void showPlayerDialog();
     void on_pushButtonCurrent_released();
     void on_pushButtonReset_released();
+    void validate();
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
 };
 
 #endif // TIMERDIALOG_H

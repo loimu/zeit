@@ -20,16 +20,19 @@
 #include <QProcess>
 #include <QFileDialog>
 #include <QTime>
+#include <QKeyEvent>
 
 #include "commands.h"
 #include "timerdialog.h"
 #include "ui_timerdialog.h"
 
-TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : QDialog(parent),
+TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : QWidget(parent),
     ui(new Ui::TimerDialog),
     commands(commands_)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Dialog);
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("New Timer"));
     // prepopulate fields
     ui->lineEditComment->setText(tr("New Timer"));
@@ -46,8 +49,6 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : QDialog(parent)
     // get system time
     ui->spinBoxHours->setValue(QTime::currentTime().hour());
     ui->spinBoxMinutes->setValue(QTime::currentTime().minute() + 5);
-    // save task action
-    connect(this, SIGNAL(accepted()), SLOT(saveTask()));
     // FileDialog actions
     connect(ui->pushButtonSoundFile, SIGNAL(released()), SLOT(showFileDialog()));
     connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
@@ -56,19 +57,6 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : QDialog(parent)
 TimerDialog::~TimerDialog()
 {
     delete ui;
-}
-
-void TimerDialog::saveTask() {
-    QString command = QString(QStringLiteral("%1 \\\"%2\\\" & "))
-            .arg(ui->lineEditPlayer->text())
-            .arg(ui->lineEditSoundFile->text());
-    if(ui->checkBox->isChecked())
-        command.append(QString(QStringLiteral("notify-send Timer \\\"%1\\\""))
-                       .arg(ui->lineEditComment->text()));
-    QString time = QString(QStringLiteral("%1:%2"))
-            .arg(ui->spinBoxHours->value())
-            .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
-    commands->addCommand(command, time);
 }
 
 void TimerDialog::showFileDialog() {
@@ -99,4 +87,32 @@ void TimerDialog::on_pushButtonCurrent_released() {
 void TimerDialog::on_pushButtonReset_released() {
     ui->spinBoxHours->setValue(0);
     ui->spinBoxMinutes->setValue(0);
+}
+
+void TimerDialog::validate() {
+
+}
+
+void TimerDialog::on_buttonBox_accepted() {
+    QString command = QString(QStringLiteral("%1 \\\"%2\\\" & "))
+            .arg(ui->lineEditPlayer->text())
+            .arg(ui->lineEditSoundFile->text());
+    if(ui->checkBox->isChecked())
+        command.append(QString(QStringLiteral("notify-send Timer \\\"%1\\\""))
+                       .arg(ui->lineEditComment->text()));
+    QString time = QString(QStringLiteral("%1:%2"))
+            .arg(ui->spinBoxHours->value())
+            .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
+    commands->addCommand(command, time);
+    emit accepted();
+    this->close();
+}
+
+void TimerDialog::on_buttonBox_rejected() {
+    this->close();
+}
+
+void TimerDialog::keyPressEvent(QKeyEvent *e) {
+    if(e->key() == Qt::Key_Escape)
+        this->close();
 }

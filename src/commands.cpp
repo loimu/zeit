@@ -19,7 +19,6 @@
 
 #include <QProcess>
 #include <QRegExp>
-#include <QDate>
 
 #include "commands.h"
 
