@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>384</width>
+    <width>382</width>
     <height>370</height>
    </rect>
   </property>
@@ -30,7 +30,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="commentEdit"/>
+      <widget class="QLineEdit" name="commentEdit">
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -50,7 +54,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="commandEdit"/>
+      <widget class="QLineEdit" name="commandEdit">
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
