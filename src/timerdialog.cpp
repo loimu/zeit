@@ -20,19 +20,16 @@
 #include <QProcess>
 #include <QFileDialog>
 #include <QTime>
-#include <QKeyEvent>
 
 #include "commands.h"
 #include "timerdialog.h"
 #include "ui_timerdialog.h"
 
-TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : QWidget(parent),
+TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : BaseDialog(parent),
     ui(new Ui::TimerDialog),
     commands(commands_)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Dialog);
-    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("New Timer"));
     // prepopulate fields
     ui->lineEditComment->setText(tr("New Timer"));
@@ -110,9 +107,4 @@ void TimerDialog::on_buttonBox_accepted() {
 
 void TimerDialog::on_buttonBox_rejected() {
     this->close();
-}
-
-void TimerDialog::keyPressEvent(QKeyEvent *e) {
-    if(e->key() == Qt::Key_Escape)
-        this->close();
 }

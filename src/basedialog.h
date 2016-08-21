@@ -17,39 +17,18 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#ifndef TIMERDIALOG_H
-#define TIMERDIALOG_H
+#ifndef BASEDIALOG_H
+#define BASEDIALOG_H
 
-#include "basedialog.h"
+#include <QWidget>
 
-namespace Ui {
-class TimerDialog;
-}
-
-class Commands;
-
-class TimerDialog : public BaseDialog
+class BaseDialog : public QWidget
 {
-    Q_OBJECT
-
-    Ui::TimerDialog *ui;
-    Commands* commands;
+    void keyPressEvent(QKeyEvent *e);
 
 public:
-    explicit TimerDialog(Commands* commands, QWidget *parent = nullptr);
-    ~TimerDialog();
+    explicit BaseDialog(QWidget *parent = nullptr);
 
-signals:
-    void accepted();
-
-private slots:
-    void showFileDialog();
-    void showPlayerDialog();
-    void on_pushButtonCurrent_released();
-    void on_pushButtonReset_released();
-    void validate();
-    void on_buttonBox_accepted();
-    void on_buttonBox_rejected();
 };
 
-#endif // TIMERDIALOG_H
+#endif // BASEDIALOG_H

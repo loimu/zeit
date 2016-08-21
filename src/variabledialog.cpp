@@ -17,22 +17,17 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#include <QKeyEvent>
-
 #include "ctvariable.h"
 #include "variabledialog.h"
 #include "ui_variabledialog.h"
 
 VariableDialog::VariableDialog(CTVariable* _ctVar, const QString& _caption, QWidget *parent) :
-    QWidget(parent),
+    BaseDialog(parent),
     ui(new Ui::VariableDialog),
     variable(_ctVar)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Dialog);
-    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(_caption);
-    //
     ui->varEdit->setText(variable->variable);
     ui->valEdit->setText(variable->value);
     ui->commentEdit->setText(variable->comment);
@@ -68,9 +63,4 @@ void VariableDialog::on_buttonBox_accepted() {
 
 void VariableDialog::on_buttonBox_rejected() {
     this->close();
-}
-
-void VariableDialog::keyPressEvent(QKeyEvent *e) {
-    if(e->key() == Qt::Key_Escape)
-        this->close();
 }

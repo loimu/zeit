@@ -17,17 +17,13 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#include <QKeyEvent>
-
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-AboutDialog::AboutDialog(QWidget *parent) : QWidget(parent),
+AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent),
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Dialog);
-    setAttribute(Qt::WA_DeleteOnClose);
     addText();
 }
 
@@ -54,11 +50,6 @@ void AboutDialog::addText() {
                 .arg(QT_VERSION_STR));
     ui->label->setText(text);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
-}
-
-void AboutDialog::keyPressEvent(QKeyEvent *e) {
-    if(e->key() == Qt::Key_Escape)
-        this->close();
 }
 
 void AboutDialog::on_aboutQt_released() {

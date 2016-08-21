@@ -19,20 +19,18 @@
 
 #include <QProcess>
 #include <QFileDialog>
-#include <QKeyEvent>
 #include <QTime>
 
 #include "commands.h"
 #include "commanddialog.h"
 #include "ui_commanddialog.h"
 
-CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) : QWidget(parent),
+CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
+    BaseDialog(parent),
     ui(new Ui::CommandDialog),
     commands(commands_)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Dialog);
-    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("New Command"));
     ui->lineEditComment->setText(tr("New Command"));
     ui->checkBox->setChecked(true);
@@ -86,9 +84,4 @@ void CommandDialog::on_buttonBox_accepted() {
 
 void CommandDialog::on_buttonBox_rejected() {
     this->close();
-}
-
-void CommandDialog::keyPressEvent(QKeyEvent *e) {
-    if(e->key() == Qt::Key_Escape)
-        this->close();
 }

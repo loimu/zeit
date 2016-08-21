@@ -20,7 +20,7 @@
 #ifndef ALARMDIALOG_H
 #define ALARMDIALOG_H
 
-#include <QWidget>
+#include "basedialog.h"
 
 namespace Ui {
 class AlarmDialog;
@@ -28,13 +28,12 @@ class AlarmDialog;
 
 class CTTask;
 
-class AlarmDialog : public QWidget
+class AlarmDialog : public BaseDialog
 {
     Q_OBJECT
 
     CTTask* task;
     Ui::AlarmDialog *ui;
-    void keyPressEvent(QKeyEvent *e);
 
 public:
     explicit AlarmDialog(CTTask*, QWidget *parent = nullptr);

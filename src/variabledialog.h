@@ -20,7 +20,7 @@
 #ifndef VARIABLEDIALOG_H
 #define VARIABLEDIALOG_H
 
-#include <QWidget>
+#include "basedialog.h"
 
 namespace Ui {
 class VariableDialog;
@@ -28,13 +28,12 @@ class VariableDialog;
 
 class CTVariable;
 
-class VariableDialog : public QWidget
+class VariableDialog : public BaseDialog
 {
     Q_OBJECT
 
     Ui::VariableDialog* ui;
     CTVariable* variable;
-    void keyPressEvent(QKeyEvent *e);
 
 public:
     explicit VariableDialog(CTVariable*, const QString&, QWidget *parent = nullptr);

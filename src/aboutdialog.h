@@ -20,19 +20,18 @@
 #ifndef ABOUTDIALOG_H
 #define ABOUTDIALOG_H
 
-#include <QWidget>
+#include "basedialog.h"
 
 namespace Ui {
 class AboutDialog;
 }
 
-class AboutDialog : public QWidget
+class AboutDialog : public BaseDialog
 {
     Q_OBJECT
 
     Ui::AboutDialog* ui;
     void addText();
-    void keyPressEvent(QKeyEvent *e);
 
 public:
     AboutDialog(QWidget *parent = nullptr);

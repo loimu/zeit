@@ -20,7 +20,7 @@
 #ifndef TASKDIALOG_H
 #define TASKDIALOG_H
 
-#include <QWidget>
+#include "basedialog.h"
 
 namespace Ui {
 class TaskDialog;
@@ -29,7 +29,7 @@ class TaskDialog;
 class CTTask;
 class CTUnit;
 
-class TaskDialog : public QWidget
+class TaskDialog : public BaseDialog
 {
     Q_OBJECT
 
@@ -38,7 +38,6 @@ class TaskDialog : public QWidget
     void init();
     void setText(const QString&, const QString&, const QString&, const QString&, const QString&);
     void setUnit(CTUnit&, const QString&);
-    void keyPressEvent(QKeyEvent *e);
 
 public:
     explicit TaskDialog(CTTask*, const QString&, QWidget *parent = nullptr);

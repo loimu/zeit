@@ -20,7 +20,7 @@
 #ifndef COMMANDDIALOG_H
 #define COMMANDDIALOG_H
 
-#include <QWidget>
+#include "basedialog.h"
 
 namespace Ui {
 class CommandDialog;
@@ -28,13 +28,12 @@ class CommandDialog;
 
 class Commands;
 
-class CommandDialog : public QWidget
+class CommandDialog : public BaseDialog
 {
     Q_OBJECT
 
     Ui::CommandDialog *ui;
     Commands* commands;
-    void keyPressEvent(QKeyEvent *e);
 
 public:
     explicit CommandDialog(Commands* commands, QWidget *parent = nullptr);

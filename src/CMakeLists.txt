@@ -7,24 +7,25 @@ include_directories(
 )
 
 set(zeit_SRCS
-   aboutdialog.cpp
-   alarmdialog.cpp
-   main.cpp
-   mainwindow.cpp
-   taskdialog.cpp
-   timerdialog.cpp
-   variabledialog.cpp
-   commands.cpp
-   commanddialog.cpp
+    aboutdialog.cpp
+    alarmdialog.cpp
+    basedialog.cpp
+    commanddialog.cpp
+    commands.cpp
+    main.cpp
+    mainwindow.cpp
+    taskdialog.cpp
+    timerdialog.cpp
+    variabledialog.cpp
 )
 set(zeit_FRMS
-   aboutdialog.ui
-   alarmdialog.ui
-   mainwindow.ui
-   taskdialog.ui
-   timerdialog.ui
-   variabledialog.ui
-   commanddialog.ui
+    aboutdialog.ui
+    alarmdialog.ui
+    commanddialog.ui
+    mainwindow.ui
+    taskdialog.ui
+    timerdialog.ui
+    variabledialog.ui
 )
 set(zeit_RSRCS ../zeit.qrc)
 

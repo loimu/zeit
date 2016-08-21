@@ -17,20 +17,16 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#include <QKeyEvent>
-
 #include "cttask.h"
 #include "taskdialog.h"
 #include "ui_taskdialog.h"
 
 TaskDialog::TaskDialog(CTTask* _ctTask, const QString& _caption, QWidget *parent) :
-    QWidget(parent),
+    BaseDialog(parent),
     ui(new Ui::TaskDialog),
     task(_ctTask)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Dialog);
-    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(_caption);
     ui->radioBasic->setChecked(true);
     toggleMode();
@@ -134,9 +130,4 @@ void TaskDialog::on_buttonBox_accepted() {
 
 void TaskDialog::on_buttonBox_rejected() {
     this->close();
-}
-
-void TaskDialog::keyPressEvent(QKeyEvent *e) {
-    if(e->key() == Qt::Key_Escape)
-        this->close();
 }
