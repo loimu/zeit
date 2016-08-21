@@ -49,6 +49,10 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : BaseDialog(pare
     // FileDialog actions
     connect(ui->pushButtonSoundFile, SIGNAL(released()), SLOT(showFileDialog()));
     connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
+    ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
+                                      QStringLiteral("document-open")));
+    ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
+                                         QStringLiteral("document-open")));
 }
 
 TimerDialog::~TimerDialog()

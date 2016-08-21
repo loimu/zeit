@@ -36,22 +36,11 @@ CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
     ui->checkBox->setChecked(true);
     ui->spinBoxHours->setValue(QTime::currentTime().hour());
     ui->spinBoxMinutes->setValue(QTime::currentTime().minute() + 5);
-    connect(ui->pushButtonCommand, SIGNAL(released()), SLOT(showCommandDialog()));
 }
 
 CommandDialog::~CommandDialog()
 {
     delete ui;
-}
-
-void CommandDialog::showCommandDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(
-                this,
-                QStringLiteral("Executable"),
-                QDir::homePath(),
-                QString());
-    if(file.length() > 0)
-        ui->lineEditCommand->setText(file.at(0));
 }
 
 void CommandDialog::on_pushButtonCurrent_released() {

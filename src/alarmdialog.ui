@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>390</width>
+    <width>388</width>
     <height>213</height>
    </rect>
   </property>
@@ -63,7 +63,7 @@
      <item>
       <widget class="QPushButton" name="pushButtonPlayer">
        <property name="text">
-        <string>...</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -94,7 +94,7 @@
      <item>
       <widget class="QPushButton" name="pushButtonSoundFile">
        <property name="text">
-        <string>...</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>

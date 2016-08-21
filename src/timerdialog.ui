@@ -63,7 +63,7 @@
      <item>
       <widget class="QPushButton" name="pushButtonPlayer">
        <property name="text">
-        <string>...</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -94,7 +94,7 @@
      <item>
       <widget class="QPushButton" name="pushButtonSoundFile">
        <property name="text">
-        <string>...</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>

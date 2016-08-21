@@ -43,7 +43,6 @@ signals:
     void accepted();
 
 private slots:
-    void showCommandDialog();
     void on_pushButtonCurrent_released();
     void on_pushButtonReset_released();
     void validate();

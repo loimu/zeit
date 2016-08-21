@@ -24,8 +24,7 @@
 #include "alarmdialog.h"
 #include "ui_alarmdialog.h"
 
-AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
-    BaseDialog(parent),
+AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) : BaseDialog(parent),
     ui(new Ui::AlarmDialog),
     task(_ctTask)
 {
@@ -40,14 +39,20 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
     ui->lineEditComment->setText(tr("New Alarm"));
     // detect player
     QProcess proc;
-    proc.start("which", QStringList() << "mpv" << "mplayer");
+    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
+                                                    QStringLiteral("mplayer")});
     proc.waitForFinished(-1);
-    QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(QRegExp("\n"));
+    QStringList players = QString::fromUtf8(
+                proc.readAllStandardOutput()).split(QRegExp(QStringLiteral("\n")));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
     // FileDialog actions
     connect(ui->pushButtonSoundFile, SIGNAL(released()), SLOT(showFileDialog()));
     connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
+    ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
+                                      QStringLiteral("document-open")));
+    ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
+                                         QStringLiteral("document-open")));
 }
 
 AlarmDialog::~AlarmDialog()
@@ -56,23 +61,30 @@ AlarmDialog::~AlarmDialog()
 }
 
 void AlarmDialog::showFileDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(this, "Sound file",
-                                                     QDir::homePath(),
-                                            "Media (*.wav *.ogg *.mp3 *.flac)");
+    QStringList file = QFileDialog::getOpenFileNames(
+                this,
+                QStringLiteral("Sound file"),
+                QDir::homePath(),
+                QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
     if(file.length() > 0)
         ui->lineEditSoundFile->setText(file.at(0));
 }
 
 void AlarmDialog::showPlayerDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(this,"Executable","/usr/bin","");
+    QStringList file = QFileDialog::getOpenFileNames(
+                this,
+                QStringLiteral("Executable"),
+                QDir::homePath(),
+                QString());
     if(file.length() > 0)
         ui->lineEditPlayer->setText(file.at(0));
 }
 
 void AlarmDialog::on_buttonBox_accepted() {
     task->comment = ui->lineEditComment->text();
-    task->command = QString("%1 %2").arg(ui->lineEditPlayer->text())
-                                    .arg(ui->lineEditSoundFile->text());
+    task->command = QString(QStringLiteral("%1 \"%2\""))
+            .arg(ui->lineEditPlayer->text())
+            .arg(ui->lineEditSoundFile->text());
     task->hour.setEnabled(ui->spinBoxHour->value(), true);
     task->minute.setEnabled(ui->spinBoxMinute->value(), true);
     task->dayOfWeek.setEnabled(1, ui->checkBoxMon->isChecked());
