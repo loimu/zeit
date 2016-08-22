@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>388</width>
-    <height>213</height>
+    <width>429</width>
+    <height>218</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -138,6 +138,20 @@
        </property>
        <property name="maximum">
         <number>59</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonCurrent">
+       <property name="text">
+        <string>Now</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonReset">
+       <property name="text">
+        <string>Reset</string>
        </property>
       </widget>
      </item>

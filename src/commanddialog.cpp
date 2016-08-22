@@ -34,8 +34,10 @@ CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
     setWindowTitle(tr("New Command"));
     ui->lineEditComment->setText(tr("New Command"));
     ui->checkBox->setChecked(true);
-    ui->spinBoxHours->setValue(QTime::currentTime().hour());
-    ui->spinBoxMinutes->setValue(QTime::currentTime().minute() + 5);
+    // get system time with a positive offset of 5 minutes
+    QTime time = QTime::currentTime().addSecs(60 * 5);
+    ui->spinBoxHours->setValue(time.hour());
+    ui->spinBoxMinutes->setValue(time.minute());
 }
 
 CommandDialog::~CommandDialog()
@@ -51,10 +53,6 @@ void CommandDialog::on_pushButtonCurrent_released() {
 void CommandDialog::on_pushButtonReset_released() {
     ui->spinBoxHours->setValue(0);
     ui->spinBoxMinutes->setValue(0);
-}
-
-void CommandDialog::validate() {
-
 }
 
 void CommandDialog::on_buttonBox_accepted() {

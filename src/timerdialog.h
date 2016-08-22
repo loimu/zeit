@@ -47,7 +47,6 @@ private slots:
     void showPlayerDialog();
     void on_pushButtonCurrent_released();
     void on_pushButtonReset_released();
-    void validate();
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
 };

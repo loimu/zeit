@@ -43,9 +43,10 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : BaseDialog(pare
                 proc.readAllStandardOutput()).split(QRegExp(QStringLiteral("\n")));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
-    // get system time
-    ui->spinBoxHours->setValue(QTime::currentTime().hour());
-    ui->spinBoxMinutes->setValue(QTime::currentTime().minute() + 5);
+    // get system time with a positive offset of 5 minutes
+    QTime time = QTime::currentTime().addSecs(60 * 5);
+    ui->spinBoxHours->setValue(time.hour());
+    ui->spinBoxMinutes->setValue(time.minute());
     // FileDialog actions
     connect(ui->pushButtonSoundFile, SIGNAL(released()), SLOT(showFileDialog()));
     connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
@@ -61,37 +62,35 @@ TimerDialog::~TimerDialog()
 }
 
 void TimerDialog::showFileDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(
+    QString file = QFileDialog::getOpenFileName(
                 this,
-                QStringLiteral("Sound file"),
+                QStringLiteral("Sound File"),
                 QDir::homePath(),
                 QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
-    if(file.length() > 0)
-        ui->lineEditSoundFile->setText(file.at(0));
+    ui->lineEditSoundFile->setText(file);
 }
 
 void TimerDialog::showPlayerDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(
-                this,
-                QStringLiteral("Executable"),
-                QDir::homePath(),
-                QString());
-    if(file.length() > 0)
-        ui->lineEditPlayer->setText(file.at(0));
+    QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
+                                      QDir::homePath());
+    fd->setMimeTypeFilters(
+                QStringList{QStringLiteral("application/x-executable"),
+                            QStringLiteral("application/x-sharedlib"),
+                            QStringLiteral("application/x-shellscript"),
+                            QStringLiteral("text/x-python")});
+    if(fd->exec())
+        ui->lineEditPlayer->setText(fd->getOpenFileName());
 }
 
 void TimerDialog::on_pushButtonCurrent_released() {
-    ui->spinBoxHours->setValue(QTime::currentTime().hour());
-    ui->spinBoxMinutes->setValue(QTime::currentTime().minute());
+    QTime time = QTime::currentTime();
+    ui->spinBoxHours->setValue(time.hour());
+    ui->spinBoxMinutes->setValue(time.minute());
 }
 
 void TimerDialog::on_pushButtonReset_released() {
     ui->spinBoxHours->setValue(0);
     ui->spinBoxMinutes->setValue(0);
-}
-
-void TimerDialog::validate() {
-
 }
 
 void TimerDialog::on_buttonBox_accepted() {

@@ -19,6 +19,7 @@
 
 #include <QProcess>
 #include <QFileDialog>
+#include <QTime>
 
 #include "cttask.h"
 #include "alarmdialog.h"
@@ -53,6 +54,7 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) : BaseDialog(parent),
                                       QStringLiteral("document-open")));
     ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
                                          QStringLiteral("document-open")));
+    on_pushButtonCurrent_released();
 }
 
 AlarmDialog::~AlarmDialog()
@@ -61,23 +63,35 @@ AlarmDialog::~AlarmDialog()
 }
 
 void AlarmDialog::showFileDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(
+    QString file = QFileDialog::getOpenFileName(
                 this,
-                QStringLiteral("Sound file"),
+                QStringLiteral("Sound File"),
                 QDir::homePath(),
                 QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
-    if(file.length() > 0)
-        ui->lineEditSoundFile->setText(file.at(0));
+    ui->lineEditSoundFile->setText(file);
 }
 
 void AlarmDialog::showPlayerDialog() {
-    QStringList file = QFileDialog::getOpenFileNames(
-                this,
-                QStringLiteral("Executable"),
-                QDir::homePath(),
-                QString());
-    if(file.length() > 0)
-        ui->lineEditPlayer->setText(file.at(0));
+    QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
+                                      QDir::homePath());
+    fd->setMimeTypeFilters(
+                QStringList{QStringLiteral("application/x-executable"),
+                            QStringLiteral("application/x-sharedlib"),
+                            QStringLiteral("application/x-shellscript"),
+                            QStringLiteral("text/x-python")});
+    if(fd->exec())
+        ui->lineEditPlayer->setText(fd->getOpenFileName());
+}
+
+void AlarmDialog::on_pushButtonCurrent_released() {
+    QTime time = QTime::currentTime();
+    ui->spinBoxHour->setValue(time.hour());
+    ui->spinBoxMinute->setValue(time.minute());
+}
+
+void AlarmDialog::on_pushButtonReset_released() {
+    ui->spinBoxHour->setValue(0);
+    ui->spinBoxMinute->setValue(0);
 }
 
 void AlarmDialog::on_buttonBox_accepted() {
