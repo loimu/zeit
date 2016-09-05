@@ -34,17 +34,21 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::addText() {
     QString text;
-    text.append(QString("<p><b>Zeit</b> v%1 &copy; 2015-2016 Blaze<br />"
+    text.append(QString(
+                    QStringLiteral(
+                        "<p><b>Zeit</b> v%1 &copy; 2015-2016 Blaze<br />"
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
                         "Licensed under GPL v3 or later.</p>"
                         "<p><b>Links:</b><br />"
-                        "News: <a href=\"http://loimu.tk/zeit/\">"
-                        "http://loimu.tk/zeit/</a><br />"
+                        "Project: <a href=\"https://bitbucket.org/blaze/zeit\">"
+                        "https://bitbucket.org/blaze/zeit</a><br />"
                         "Patreon: <a href=\"https://patreon.com/blazy\">"
                         "https://patreon.com/blazy</a><br />"
-                        "Project: <a href=\"https://bitbucket.org/blaze/zeit\">"
-                        "https://bitbucket.org/blaze/zeit</a></p>")
+                        "News: <a href=\"https://weblog-loimu.rhcloud.com/zeit/\">"
+                        "weblog-loimu.rhcloud.com/zeit/</a></p>"
+                        )
+                    )
                 .arg(qApp->applicationVersion())
                 .arg(qVersion())
                 .arg(QT_VERSION_STR));
