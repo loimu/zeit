@@ -42,9 +42,9 @@ void AboutDialog::addText() {
                         "Licensed under GPL v3 or later.</p>"
                         "<p><b>Links:</b><br />"
                         "Project: <a href=\"https://bitbucket.org/blaze/zeit\">"
-                        "https://bitbucket.org/blaze/zeit</a><br />"
+                        "bitbucket.org/blaze/zeit</a><br />"
                         "Patreon: <a href=\"https://patreon.com/blazy\">"
-                        "https://patreon.com/blazy</a><br />"
+                        "patreon.com/blazy</a><br />"
                         "News: <a href=\"https://weblog-loimu.rhcloud.com/zeit/\">"
                         "weblog-loimu.rhcloud.com/zeit/</a></p>"
                         )
