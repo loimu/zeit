@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2016 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2017 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
@@ -17,45 +17,60 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <QApplication>
+#include <QDialogButtonBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
+
 #include "aboutdialog.h"
-#include "ui_aboutdialog.h"
 
-AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent),
-    ui(new Ui::AboutDialog)
+AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
 {
-    ui->setupUi(this);
-    addText();
-}
-
-AboutDialog::~AboutDialog()
-{
-    emit destroyed(true);
-}
-
-void AboutDialog::addText() {
-    QString text;
-    text.append(QString(
+    this->setWindowTitle(tr("About Zeit"));
+    QHBoxLayout* horizontalLayout = new QHBoxLayout(this);
+    QLabel* label = new QLabel(this);
+    label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
+    horizontalLayout->addWidget(label);
+    QVBoxLayout* verticalLayout = new QVBoxLayout();
+    verticalLayout->setSpacing(6);
+    verticalLayout->setSizeConstraint(QLayout::SetMaximumSize);
+    QLabel* iconLabel = new QLabel(this);
+    QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(iconLabel->sizePolicy().hasHeightForWidth());
+    iconLabel->setSizePolicy(sizePolicy);
+    iconLabel->setPixmap(QPixmap(QLatin1String(":/zeit.png")));
+    iconLabel->setAlignment(Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing);
+    verticalLayout->addWidget(iconLabel);
+    QPushButton* aboutQt = new QPushButton(this);
+    aboutQt->setText(tr("About &Qt"));
+    connect(aboutQt, SIGNAL(released()), qApp, SLOT(aboutQt()));
+    verticalLayout->addWidget(aboutQt);
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
+    buttonBox->setMaximumSize(QSize(128, 16777215));
+    buttonBox->setOrientation(Qt::Vertical);
+    buttonBox->setStandardButtons(QDialogButtonBox::Close);
+    buttonBox->setCenterButtons(false);
+    verticalLayout->addWidget(buttonBox);
+    horizontalLayout->addLayout(verticalLayout);
+    connect(buttonBox, SIGNAL(rejected()), SLOT(close()));
+    label->setText(
+                QString(
                     QStringLiteral(
-                        "<p><b>Zeit</b> v%1 &copy; 2015-2016 Blaze<br />"
+                        "<p><b>Zeit</b> v%1 &copy; 2015-2017 Blaze<br />"
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
                         "Licensed under GPL v3 or later.</p>"
                         "<p><b>Links:</b><br />"
                         "Project: <a href=\"https://bitbucket.org/blaze/zeit\">"
-                        "bitbucket.org/blaze/zeit</a><br />"
+                        "https://bitbucket.org/blaze/zeit</a><br />"
                         "Patreon: <a href=\"https://patreon.com/blazy\">"
-                        "patreon.com/blazy</a><br />"
-                        "News: <a href=\"https://weblog-loimu.rhcloud.com/zeit/\">"
-                        "weblog-loimu.rhcloud.com/zeit/</a></p>"
-                        )
-                    )
+                        "https://patreon.com/blazy</a></p>"))
                 .arg(qApp->applicationVersion())
                 .arg(qVersion())
                 .arg(QT_VERSION_STR));
-    ui->label->setText(text);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
-}
-
-void AboutDialog::on_aboutQt_released() {
-    qApp->aboutQt();
 }

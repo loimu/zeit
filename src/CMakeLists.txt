@@ -19,7 +19,6 @@ set(zeit_SRCS
     variabledialog.cpp
 )
 set(zeit_FRMS
-    aboutdialog.ui
     alarmdialog.ui
     commanddialog.ui
     mainwindow.ui

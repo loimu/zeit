@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2016 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2017 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
@@ -22,25 +22,16 @@
 
 #include "basedialog.h"
 
-namespace Ui {
-class AboutDialog;
-}
-
 class AboutDialog : public BaseDialog
 {
     Q_OBJECT
 
-    Ui::AboutDialog* ui;
-    void addText();
-
 public:
-    AboutDialog(QWidget *parent = nullptr);
-    ~AboutDialog();
+    explicit AboutDialog(QWidget *parent = nullptr);
+    ~AboutDialog() { emit destroyed(true); }
+
 signals:
     void destroyed(bool);
-
-private slots:
-    void on_aboutQt_released();
 };
 
 #endif // ABOUTDIALOG_H
