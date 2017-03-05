@@ -29,15 +29,12 @@ VariableDialog::VariableDialog(CTVariable* _ctVar,
     variable(_ctVar)
 {
     ui->setupUi(this);
+    ui->errorLabel->setVisible(false);
+    errorLabel = ui->errorLabel;
     setWindowTitle(_caption);
     ui->varEdit->setText(variable->variable);
     ui->valEdit->setText(variable->value);
     ui->commentEdit->setText(variable->comment);
-    // ButtonBox action
-    connect(ui->varEdit, SIGNAL(textChanged(QString)), SLOT(validate()));
-    connect(ui->valEdit, SIGNAL(textChanged(QString)), SLOT(validate()));
-    if(ui->varEdit->text().isEmpty() || ui->valEdit->text().isEmpty())
-        ui->buttonBox->setDisabled(true);
 }
 
 VariableDialog::~VariableDialog()
@@ -45,17 +42,15 @@ VariableDialog::~VariableDialog()
     delete ui;
 }
 
-void VariableDialog::validate() {
-    if(ui->varEdit->text().isEmpty() || ui->valEdit->text().isEmpty()) {
-        ui->errorLabel->setText("<b>fill both var and value</b>");
-        ui->buttonBox->setDisabled(true);
-    } else {
-        ui->errorLabel->clear();
-        ui->buttonBox->setEnabled(true);
-    }
-}
-
 void VariableDialog::on_buttonBox_accepted() {
+    if(ui->varEdit->text().isEmpty()) {
+        showError(tr("Variable field should not be empty"));
+        return;
+    }
+    if(ui->varEdit->text().contains(QRegExp(QStringLiteral("\\W")))) {
+        showError(tr("Invalid variable name"));
+        return;
+    }
     variable->variable = ui->varEdit->text();
     variable->value = ui->valEdit->text();
     variable->comment = ui->commentEdit->text();

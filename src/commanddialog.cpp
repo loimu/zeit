@@ -31,6 +31,8 @@ CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
     commands(commands_)
 {
     ui->setupUi(this);
+    ui->errorLabel->setVisible(false);
+    errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Command"));
     ui->lineEditComment->setText(tr("New Command"));
     ui->checkBox->setChecked(true);
@@ -56,6 +58,10 @@ void CommandDialog::on_pushButtonReset_released() {
 }
 
 void CommandDialog::on_buttonBox_accepted() {
+    if(ui->lineEditCommand->text().isEmpty()) {
+        showError(tr("Command field should not be empty"));
+        return;
+    }
     QString command = QString(QStringLiteral("%1 & "))
             .arg(ui->lineEditCommand->text());
     if(ui->checkBox->isChecked())

@@ -28,6 +28,8 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     task(_ctTask)
 {
     ui->setupUi(this);
+    ui->errorLabel->setVisible(false);
+    errorLabel = ui->errorLabel;
     setWindowTitle(_caption);
     ui->radioBasic->setChecked(true);
     toggleMode();

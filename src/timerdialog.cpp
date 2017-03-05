@@ -32,6 +32,8 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
     commands(commands_)
 {
     ui->setupUi(this);
+    ui->errorLabel->setVisible(false);
+    errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Timer"));
     // prepopulate fields
     ui->lineEditComment->setText(tr("New Timer"));
@@ -96,6 +98,14 @@ void TimerDialog::on_pushButtonReset_released() {
 }
 
 void TimerDialog::on_buttonBox_accepted() {
+    if(ui->lineEditPlayer->text().isEmpty()) {
+        showError(tr("Player field should not be empty"));
+        return;
+    }
+    if(ui->lineEditSoundFile->text().isEmpty()) {
+        showError(tr("Soundfile field should not be empty"));
+        return;
+    }
     QString command = QString(QStringLiteral("%1 \\\"%2\\\" & "))
             .arg(ui->lineEditPlayer->text())
             .arg(ui->lineEditSoundFile->text());

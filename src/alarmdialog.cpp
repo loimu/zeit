@@ -32,6 +32,8 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
     task(_ctTask)
 {
     ui->setupUi(this);
+    ui->errorLabel->setVisible(false);
+    errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Alarm"));
     // prepopulate fields
     ui->checkBoxMon->setChecked(true);
@@ -97,6 +99,14 @@ void AlarmDialog::on_pushButtonReset_released() {
 }
 
 void AlarmDialog::on_buttonBox_accepted() {
+    if(ui->lineEditPlayer->text().isEmpty()) {
+        showError(tr("Player field should not be empty"));
+        return;
+    }
+    if(ui->lineEditSoundFile->text().isEmpty()) {
+        showError(tr("Soundfile field should not be empty"));
+        return;
+    }
     task->comment = ui->lineEditComment->text();
     task->command = QString(QStringLiteral("%1 \"%2\""))
             .arg(ui->lineEditPlayer->text())
