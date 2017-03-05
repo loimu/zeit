@@ -20,7 +20,7 @@
 #ifndef ALARMDIALOG_H
 #define ALARMDIALOG_H
 
-#include "basedialog.h"
+#include "baseeditdialog.h"
 
 namespace Ui {
 class AlarmDialog;
@@ -28,7 +28,7 @@ class AlarmDialog;
 
 class CTTask;
 
-class AlarmDialog : public BaseDialog
+class AlarmDialog : public BaseEditDialog
 {
     Q_OBJECT
 

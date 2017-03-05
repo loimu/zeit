@@ -26,7 +26,7 @@
 #include "ui_commanddialog.h"
 
 CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
-    BaseDialog(parent),
+    BaseEditDialog(parent),
     ui(new Ui::CommandDialog),
     commands(commands_)
 {

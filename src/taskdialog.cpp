@@ -21,8 +21,9 @@
 #include "taskdialog.h"
 #include "ui_taskdialog.h"
 
-TaskDialog::TaskDialog(CTTask* _ctTask, const QString& _caption, QWidget *parent) :
-    BaseDialog(parent),
+TaskDialog::TaskDialog(CTTask* _ctTask,
+                       const QString& _caption, QWidget *parent) :
+    BaseEditDialog(parent),
     ui(new Ui::TaskDialog),
     task(_ctTask)
 {

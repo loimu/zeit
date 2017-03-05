@@ -20,7 +20,7 @@
 #ifndef COMMANDDIALOG_H
 #define COMMANDDIALOG_H
 
-#include "basedialog.h"
+#include "baseeditdialog.h"
 
 namespace Ui {
 class CommandDialog;
@@ -28,7 +28,7 @@ class CommandDialog;
 
 class Commands;
 
-class CommandDialog : public BaseDialog
+class CommandDialog : public BaseEditDialog
 {
     Q_OBJECT
 

@@ -25,7 +25,9 @@
 #include "alarmdialog.h"
 #include "ui_alarmdialog.h"
 
-AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) : BaseDialog(parent),
+
+AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
+    BaseEditDialog(parent),
     ui(new Ui::AlarmDialog),
     task(_ctTask)
 {

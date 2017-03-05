@@ -20,7 +20,7 @@
 #ifndef TIMERDIALOG_H
 #define TIMERDIALOG_H
 
-#include "basedialog.h"
+#include "baseeditdialog.h"
 
 namespace Ui {
 class TimerDialog;
@@ -28,7 +28,7 @@ class TimerDialog;
 
 class Commands;
 
-class TimerDialog : public BaseDialog
+class TimerDialog : public BaseEditDialog
 {
     Q_OBJECT
 

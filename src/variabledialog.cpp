@@ -21,8 +21,10 @@
 #include "variabledialog.h"
 #include "ui_variabledialog.h"
 
-VariableDialog::VariableDialog(CTVariable* _ctVar, const QString& _caption, QWidget *parent) :
-    BaseDialog(parent),
+
+VariableDialog::VariableDialog(CTVariable* _ctVar,
+                               const QString& _caption, QWidget *parent) :
+    BaseEditDialog(parent),
     ui(new Ui::VariableDialog),
     variable(_ctVar)
 {

@@ -20,7 +20,7 @@
 #ifndef TASKDIALOG_H
 #define TASKDIALOG_H
 
-#include "basedialog.h"
+#include "baseeditdialog.h"
 
 namespace Ui {
 class TaskDialog;
@@ -29,7 +29,7 @@ class TaskDialog;
 class CTTask;
 class CTUnit;
 
-class TaskDialog : public BaseDialog
+class TaskDialog : public BaseEditDialog
 {
     Q_OBJECT
 

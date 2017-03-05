@@ -25,7 +25,9 @@
 #include "timerdialog.h"
 #include "ui_timerdialog.h"
 
-TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) : BaseDialog(parent),
+
+TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
+    BaseEditDialog(parent),
     ui(new Ui::TimerDialog),
     commands(commands_)
 {

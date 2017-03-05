@@ -20,7 +20,7 @@
 #ifndef VARIABLEDIALOG_H
 #define VARIABLEDIALOG_H
 
-#include "basedialog.h"
+#include "baseeditdialog.h"
 
 namespace Ui {
 class VariableDialog;
@@ -28,7 +28,7 @@ class VariableDialog;
 
 class CTVariable;
 
-class VariableDialog : public BaseDialog
+class VariableDialog : public BaseEditDialog
 {
     Q_OBJECT
 
