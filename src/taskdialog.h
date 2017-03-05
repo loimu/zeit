@@ -36,7 +36,8 @@ class TaskDialog : public BaseEditDialog
     CTTask* task;
     Ui::TaskDialog *ui;
     void init();
-    void setText(const QString&, const QString&, const QString&, const QString&, const QString&);
+    void setText(const QString&, const QString&,
+                 const QString&, const QString&, const QString&);
     void setUnit(CTUnit&, const QString&);
 
 public:

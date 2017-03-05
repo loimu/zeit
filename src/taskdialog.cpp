@@ -59,8 +59,10 @@ void TaskDialog::init() {
         setText("*","*","*","*","*");
     }
     else {
-        QStringList tokenList = task->schedulingCronFormat().split(QRegExp("\\s"));
-        setText(tokenList.at(0),tokenList.at(1),tokenList.at(2),tokenList.at(4),tokenList.at(3));
+        QStringList tokenList = task->schedulingCronFormat()
+                .split(QRegExp("\\s"));
+        setText(tokenList.at(0), tokenList.at(1),
+                tokenList.at(2), tokenList.at(4), tokenList.at(3));
     }
 }
 

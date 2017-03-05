@@ -46,16 +46,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     // actions setup
     ui->actionAddEntry->setIcon(
                 QIcon::fromTheme(QStringLiteral("document-new"),
-                                 QIcon(QStringLiteral(":/icons/document-new"))));
+                                 QIcon(QStringLiteral(
+                                           ":/icons/document-new"))));
     ui->actionModifyEntry->setIcon(
                 QIcon::fromTheme(QStringLiteral("document-edit"),
-                                 QIcon(QStringLiteral(":/icons/document-edit"))));
+                                 QIcon(QStringLiteral(
+                                           ":/icons/document-edit"))));
     ui->actionDeleteEntry->setIcon(
                 QIcon::fromTheme(QStringLiteral("document-close"),
-                                 QIcon(QStringLiteral(":/icons/document-close"))));
+                                 QIcon(QStringLiteral(
+                                           ":/icons/document-close"))));
     ui->actionQuit->setIcon(
                 QIcon::fromTheme(QStringLiteral("application-exit"),
-                                 QIcon(QStringLiteral(":/icons/application-exit"))));
+                                 QIcon(QStringLiteral(
+                                           ":/icons/application-exit"))));
     ui->actionAlarm->setIcon(
                 QIcon::fromTheme(QStringLiteral("chronometer"),
                                  QIcon(QStringLiteral(":/icons/chronometer"))));
@@ -105,14 +109,16 @@ void MainWindow::showTasks() {
         QListWidgetItem* item = new QListWidgetItem();
         QString text;
         text.append(QObject::tr("Command: %1\n").arg(task->command));
-        text.append(QObject::tr("Description") + QString(": %1\n").arg(task->comment));
+        text.append(QObject::tr("Description")
+                    + QString(": %1\n").arg(task->comment));
         text.append(QObject::tr("Runs ", "Runs at 'period described'")
                     + task->describe());
         item->setText(text);
         if(task->enabled)
             item->setIcon(QIcon::fromTheme(
                               QStringLiteral("dialog-ok-apply"),
-                              QIcon(QStringLiteral(":/icons/dialog-ok-apply"))));
+                              QIcon(
+                                  QStringLiteral(":/icons/dialog-ok-apply"))));
         else
             item->setIcon(QIcon::fromTheme(
                               QStringLiteral("edit-delete"),
@@ -127,12 +133,14 @@ void MainWindow::showVariables() {
     for(CTVariable* var : cron->variables()) {
         QListWidgetItem* item = new QListWidgetItem();
         QString comment = !var->comment.isEmpty() ? QLatin1String("#")
-                        + var->comment + QLatin1String("\n") : QLatin1String("");
-        item->setText(comment + var->variable + QLatin1String("=") + var->value);
+                        + var->comment + QLatin1String("\n") : QString();
+        item->setText(comment + var->variable
+                      + QLatin1String("=") + var->value);
         if(var->enabled)
             item->setIcon(QIcon::fromTheme(
                               QStringLiteral("dialog-ok-apply"),
-                              QIcon(QStringLiteral(":/icons/dialog-ok-apply"))));
+                              QIcon(
+                                  QStringLiteral(":/icons/dialog-ok-apply"))));
         else
             item->setIcon(QIcon::fromTheme(
                               QStringLiteral("edit-delete"),
@@ -220,16 +228,19 @@ void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem* item) {
 
 void MainWindow::on_actionAddEntry_triggered() {
     if(ui->actionPeriodic->isChecked()) {
-        CTTask* task = new CTTask(QString(),QString(),cron->userLogin(),false);
+        CTTask* task = new CTTask(QString(), QString(),
+                                  cron->userLogin(), false);
         TaskDialog *td = new TaskDialog(task, tr("New Task"), this);
         td->show();
         connect(td, SIGNAL(accepted(CTTask*)), SLOT(addTask(CTTask*)));
     }
     if(ui->actionVariables->isChecked()) {
-        CTVariable* var = new CTVariable(QString(),QString(),cron->userLogin());
+        CTVariable* var = new CTVariable(QString(),
+                                         QString(), cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd,SIGNAL(accepted(CTVariable*)),SLOT(addVariable(CTVariable*)));
+        connect(vd, SIGNAL(accepted(CTVariable*)),
+                SLOT(addVariable(CTVariable*)));
     }
     if(ui->actionNonperiodic->isChecked()) {
         CommandDialog *cd = new CommandDialog(commands, this);
@@ -259,7 +270,8 @@ void MainWindow::on_actionModifyEntry_triggered() {
 
 void MainWindow::on_actionDeleteEntry_triggered() {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this,tr("Deleting Entry"),tr("Delete entry?"),
+    reply = QMessageBox::question(this,
+                                  tr("Deleting Entry"), tr("Delete entry?"),
                                   QMessageBox::Yes|QMessageBox::No);
     if(reply == QMessageBox::No)
         return;

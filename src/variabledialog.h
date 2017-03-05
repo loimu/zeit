@@ -36,7 +36,8 @@ class VariableDialog : public BaseEditDialog
     CTVariable* variable;
 
 public:
-    explicit VariableDialog(CTVariable*, const QString&, QWidget *parent = nullptr);
+    explicit VariableDialog(CTVariable*,
+                            const QString&, QWidget *parent = nullptr);
     ~VariableDialog();
 
 private slots:

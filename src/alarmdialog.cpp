@@ -48,11 +48,12 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
                                                     QStringLiteral("mplayer")});
     proc.waitForFinished(-1);
     QStringList players = QString::fromUtf8(
-                proc.readAllStandardOutput()).split(QRegExp(QStringLiteral("\n")));
+                proc.readAllStandardOutput()).split(QRegExp(
+                                                        QStringLiteral("\n")));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
     // FileDialog actions
-    connect(ui->pushButtonSoundFile, SIGNAL(released()), SLOT(showFileDialog()));
+    connect(ui->pushButtonSoundFile, SIGNAL(released()),SLOT(showFileDialog()));
     connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
     ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
                                       QStringLiteral("document-open")));
