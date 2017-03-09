@@ -121,6 +121,18 @@ void TaskDialog::refresh(int index) {
 }
 
 void TaskDialog::on_buttonBox_accepted() {
+    if(ui->commandEdit->text().isEmpty()) {
+        showError(tr("Command field should not be empty"));
+        return;
+    }
+    QRegExp rx("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"); // validates time token
+    for(QLineEdit* le : QVector<QLineEdit*> {ui->editMinute, ui->editHour,
+        ui->editDay, ui->editWeekday, ui->editMonth}) {
+        if(!rx.exactMatch(le->text())) {
+            showError(tr("Invalid input in ") + le->objectName());
+            return;
+        }
+    }
     task->command = ui->commandEdit->text();
     task->comment = ui->commentEdit->text();
     // write time tokens into cttask object
