@@ -77,12 +77,24 @@ void TaskDialog::setText(const QString& minute, const QString& hour,
 }
 
 void TaskDialog::setUnit(CTUnit& unit, const QString& token) {
-    if(token != "*") {
+    if(token != QStringLiteral("*")) {
         for(int i = unit.minimum(); i <= unit.maximum(); i++)
             unit.setEnabled(i, false);
-        QStringList items = token.split(",");
-        for(QString string: items)
-            unit.setEnabled(string.toInt(), true);
+        for(QString string : token.split(QLatin1Char(','))) {
+            /* range detection and interpretation procedure */
+            QStringList subStrings = string.split(QLatin1Char('-'));
+            int beg = subStrings.at(0).toInt();
+            if(subStrings.size() > 1) {
+                QStringList subSubStrings = subStrings.at(1)
+                        .split(QLatin1Char('/'));
+                int end = subSubStrings.at(0).toInt();
+                int step = subSubStrings.size() > 1
+                        ? subSubStrings.at(1).toInt() : 1;
+                for(int i = beg; i <= end; i+=step)
+                    unit.setEnabled(i, true);
+            } else
+            unit.setEnabled(beg, true); // in case if it is not a range
+        }
     } else
         for(int i = unit.minimum(); i <= unit.maximum(); i++)
             unit.setEnabled(i, true);
