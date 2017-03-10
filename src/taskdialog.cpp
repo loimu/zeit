@@ -37,6 +37,19 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     entries << tr("Every minute") << tr("Every hour") << tr("Every day")
                                   << tr("Every week") << tr("Every month");
     ui->comboBox->addItems(entries);
+    QString helpToolTip = tr(
+                "Valid input examples:"
+                "<br/><b>*</b> – all elements are enabled"
+                "<br/><b>3</b> – one element is enabled"
+                "<br/><b>1,2,5</b> – sequence of three elements"
+                "<br/><b>2-7</b> – range from 2 to 7"
+                "<br/><b>3-15/2</b> – range from 3 to 15 with step 2"
+                "<br/><b>3-15,18,21</b> – combination of the above");
+    ui->editMinute->setToolTip(helpToolTip);
+    ui->editHour->setToolTip(helpToolTip);
+    ui->editDay->setToolTip(helpToolTip);
+    ui->editWeekday->setToolTip(helpToolTip);
+    ui->editMonth->setToolTip(helpToolTip);
     // fill form fields
     ui->commandEdit->setText(task->command);
     ui->commentEdit->setText(task->comment);
