@@ -53,9 +53,6 @@ private:
     void selectUser(bool system);
     void refresh();
     void addTask(CTTask* task);
-    void modifyTask(CTTask *task);
-    void addVariable(CTVariable *var);
-    void modifyVariable(CTVariable *var);
 
 private slots:
     void on_listWidget_itemClicked(QListWidgetItem*);

@@ -180,24 +180,6 @@ void MainWindow::addTask(CTTask *task) {
     refresh();
 }
 
-void MainWindow::modifyTask(CTTask *task) {
-    cron->modifyTask(task);
-    cron->save();
-    refresh();
-}
-
-void MainWindow::addVariable(CTVariable *var) {
-    cron->addVariable(var);
-    cron->save();
-    refresh();
-}
-
-void MainWindow::modifyVariable(CTVariable* var) {
-    cron->modifyVariable(var);
-    cron->save();
-    refresh();
-}
-
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem* item) {
     refreshActions(item->isSelected());
 }
@@ -239,7 +221,11 @@ void MainWindow::on_actionAddEntry_triggered() {
                                          QString(), cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd, &VariableDialog::accepted, this, &MainWindow::addVariable);
+        connect(vd, &VariableDialog::accepted, this, [=] (CTVariable *var) {
+            cron->addVariable(var);
+            cron->save();
+            refresh();
+        });
     }
     if(ui->actionNonperiodic->isChecked()) {
         CommandDialog *cd = new CommandDialog(commands, this);
@@ -256,14 +242,21 @@ void MainWindow::on_actionModifyEntry_triggered() {
         CTTask* task = cron->tasks().at(index);
         TaskDialog *td = new TaskDialog(task, tr("Edit Task"), this);
         td->show();
-        connect(td, &TaskDialog::accepted, this, &MainWindow::modifyTask);
+        connect(td, &TaskDialog::accepted, this, [=] (CTTask *task) {
+            cron->modifyTask(task);
+            cron->save();
+            refresh();
+        });
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = cron->variables().at(index);
         VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
         vd->show();
-        connect(vd, &VariableDialog::accepted,
-                this, &MainWindow::modifyVariable);
+        connect(vd, &VariableDialog::accepted, this, [=] (CTVariable* var) {
+            cron->modifyVariable(var);
+            cron->save();
+            refresh();
+        });
     }
 }
 
