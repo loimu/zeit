@@ -42,7 +42,7 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(iconLabel->sizePolicy().hasHeightForWidth());
     iconLabel->setSizePolicy(sizePolicy);
-    iconLabel->setPixmap(QPixmap(QLatin1String(":/zeit.png")));
+    iconLabel->setPixmap(QPixmap(QStringLiteral(":/zeit.png")));
     iconLabel->setAlignment(Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing);
     verticalLayout->addWidget(iconLabel);
     QPushButton* aboutQt = new QPushButton(this);
@@ -59,7 +59,7 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
     connect(buttonBox, SIGNAL(rejected()), SLOT(close()));
     label->setText(
                 QString(
-                    QStringLiteral(
+                    QLatin1String(
                         "<p><b>Zeit</b> v%1 &copy; 2015-2017 Blaze<br />"
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"

@@ -44,8 +44,8 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
     ui->lineEditComment->setText(tr("New Alarm"));
     // detect player
     QProcess proc;
-    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
-                                                    QStringLiteral("mplayer")});
+    proc.start(QStringLiteral("which"), QStringList{QLatin1String("mpv"),
+                                                    QLatin1String("mplayer")});
     proc.waitForFinished(-1);
     QStringList players = QString::fromUtf8(
                 proc.readAllStandardOutput()).split(QRegExp(
@@ -80,10 +80,10 @@ void AlarmDialog::showPlayerDialog() {
     QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
                                       QDir::homePath());
     fd->setMimeTypeFilters(
-                QStringList{QStringLiteral("application/x-executable"),
-                            QStringLiteral("application/x-sharedlib"),
-                            QStringLiteral("application/x-shellscript"),
-                            QStringLiteral("text/x-python")});
+                QStringList{QLatin1String("application/x-executable"),
+                            QLatin1String("application/x-sharedlib"),
+                            QLatin1String("application/x-shellscript"),
+                            QLatin1String("text/x-python")});
     if(fd->exec())
         ui->lineEditPlayer->setText(fd->getOpenFileName());
 }
@@ -109,7 +109,7 @@ void AlarmDialog::on_buttonBox_accepted() {
         return;
     }
     task->comment = ui->lineEditComment->text();
-    task->command = QString(QStringLiteral("%1 \"%2\""))
+    task->command = QString(QLatin1String("%1 \"%2\""))
             .arg(ui->lineEditPlayer->text())
             .arg(ui->lineEditSoundFile->text());
     task->hour.setEnabled(ui->spinBoxHour->value(), true);

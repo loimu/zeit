@@ -60,7 +60,7 @@ void Commands::addCommand(QString command, QString time) {
             .arg(command)
             .arg(time);
     QProcess p;
-    p.start(QStringLiteral("bash"), QStringList{QStringLiteral("-c"), cmdline});
+    p.start(QStringLiteral("bash"), QStringList{QLatin1String("-c"), cmdline});
     p.waitForFinished(-1);
     QString output = QString::fromUtf8(p.readAllStandardError());
     QRegExp match(QStringLiteral("job\\s(\\d+)\\s(.*)"));

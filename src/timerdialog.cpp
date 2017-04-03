@@ -40,8 +40,8 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
     ui->checkBox->setChecked(true);
     // detect player
     QProcess proc;
-    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
-                                                    QStringLiteral("mplayer")});
+    proc.start(QStringLiteral("which"), QStringList{QLatin1String("mpv"),
+                                                    QLatin1String("mplayer")});
     proc.waitForFinished(-1);
     QStringList players = QString::fromUtf8(
                 proc.readAllStandardOutput())
@@ -80,10 +80,10 @@ void TimerDialog::showPlayerDialog() {
     QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
                                       QDir::homePath());
     fd->setMimeTypeFilters(
-                QStringList{QStringLiteral("application/x-executable"),
-                            QStringLiteral("application/x-sharedlib"),
-                            QStringLiteral("application/x-shellscript"),
-                            QStringLiteral("text/x-python")});
+                QStringList{QLatin1String("application/x-executable"),
+                            QLatin1String("application/x-sharedlib"),
+                            QLatin1String("application/x-shellscript"),
+                            QLatin1String("text/x-python")});
     if(fd->exec())
         ui->lineEditPlayer->setText(fd->getOpenFileName());
 }
@@ -108,13 +108,13 @@ void TimerDialog::on_buttonBox_accepted() {
         showError(tr("Soundfile field should not be empty"));
         return;
     }
-    QString command = QString(QStringLiteral("%1 \\\"%2\\\" & "))
+    QString command = QString(QLatin1String("%1 \\\"%2\\\" & "))
             .arg(ui->lineEditPlayer->text())
             .arg(ui->lineEditSoundFile->text());
     if(ui->checkBox->isChecked())
-        command.append(QString(QStringLiteral("notify-send Timer \\\"%1\\\""))
+        command.append(QString(QLatin1String("notify-send Timer \\\"%1\\\""))
                        .arg(ui->lineEditComment->text()));
-    QString time = QString(QStringLiteral("%1:%2"))
+    QString time = QString(QLatin1String("%1:%2"))
             .arg(ui->spinBoxHours->value())
             .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
     commands->addCommand(command, time);
