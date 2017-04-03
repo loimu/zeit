@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->actionPeriodic->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
     ui->actionNonperiodic->setActionGroup(group);
-    connect(ui->actionQuit, SIGNAL(triggered()), SLOT(close()));
+    connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     // init crontab host
     CTInitializationError error;
     ctHost = new CTHost(QStringLiteral("crontab"), error);
@@ -232,20 +232,19 @@ void MainWindow::on_actionAddEntry_triggered() {
                                   cron->userLogin(), false);
         TaskDialog *td = new TaskDialog(task, tr("New Task"), this);
         td->show();
-        connect(td, SIGNAL(accepted(CTTask*)), SLOT(addTask(CTTask*)));
+        connect(td, &TaskDialog::accepted, this, &MainWindow::addTask);
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = new CTVariable(QString(),
                                          QString(), cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd, SIGNAL(accepted(CTVariable*)),
-                SLOT(addVariable(CTVariable*)));
+        connect(vd, &VariableDialog::accepted, this, &MainWindow::addVariable);
     }
     if(ui->actionNonperiodic->isChecked()) {
         CommandDialog *cd = new CommandDialog(commands, this);
         cd->show();
-        connect(cd, SIGNAL(accepted()), SLOT(refresh()));
+        connect(cd, &CommandDialog::accepted, this, &MainWindow::refresh);
     }
 }
 
@@ -257,14 +256,14 @@ void MainWindow::on_actionModifyEntry_triggered() {
         CTTask* task = cron->tasks().at(index);
         TaskDialog *td = new TaskDialog(task, tr("Edit Task"), this);
         td->show();
-        connect(td, SIGNAL(accepted(CTTask*)), SLOT(modifyTask(CTTask*)));
+        connect(td, &TaskDialog::accepted, this, &MainWindow::modifyTask);
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = cron->variables().at(index);
         VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
         vd->show();
-        connect(vd, SIGNAL(accepted(CTVariable*)),
-                SLOT(modifyVariable(CTVariable*)));
+        connect(vd, &VariableDialog::accepted,
+                this, &MainWindow::modifyVariable);
     }
 }
 
@@ -339,19 +338,19 @@ void MainWindow::on_actionAlarm_triggered() {
     CTTask* task = new CTTask(QString(), QString(), cron->userLogin(), false);
     AlarmDialog *ad = new AlarmDialog(task, this);
     ad->show();
-    connect(ad, SIGNAL(accepted(CTTask*)), SLOT(addTask(CTTask*)));
+    connect(ad, &AlarmDialog::accepted, this, &MainWindow::addTask);
 }
 
 void MainWindow::on_actionTimer_triggered() {
     TimerDialog *td = new TimerDialog(commands, this);
     td->show();
-    connect(td, SIGNAL(accepted()), SLOT(refresh()));
+    connect(td, &TimerDialog::accepted, this, &MainWindow::refresh);
 }
 
 void MainWindow::on_actionAbout_triggered() {
     ui->actionAbout->setDisabled(true);
     AboutDialog* about = new AboutDialog(this);
     about->show();
-    connect(about, SIGNAL(destroyed(bool)),
-            ui->actionAbout,SLOT(setEnabled(bool)));
+    connect(about, &AboutDialog::destroyed,
+            ui->actionAbout, &QAction::setEnabled);
 }
