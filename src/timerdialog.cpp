@@ -53,9 +53,25 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
     ui->spinBoxHours->setValue(time.hour());
     ui->spinBoxMinutes->setValue(time.minute());
     // FileDialog actions
-    connect(ui->pushButtonSoundFile, SIGNAL(released()),
-            SLOT(showFileDialog()));
-    connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
+    connect(ui->pushButtonSoundFile, &QPushButton::released, this, [=] {
+        QString file = QFileDialog::getOpenFileName(
+                    this,
+                    QStringLiteral("Sound File"),
+                    QDir::homePath(),
+                    QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
+        ui->lineEditSoundFile->setText(file);
+    });
+    connect(ui->pushButtonPlayer, &QPushButton::released, this, [=] {
+        QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
+                                          QDir::homePath());
+        fd->setMimeTypeFilters(
+                    QStringList{QLatin1String("application/x-executable"),
+                                QLatin1String("application/x-sharedlib"),
+                                QLatin1String("application/x-shellscript"),
+                                QLatin1String("text/x-python")});
+        if(fd->exec())
+            ui->lineEditPlayer->setText(fd->getOpenFileName());
+    });
     ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
                                       QStringLiteral("document-open")));
     ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
@@ -65,27 +81,6 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
 TimerDialog::~TimerDialog()
 {
     delete ui;
-}
-
-void TimerDialog::showFileDialog() {
-    QString file = QFileDialog::getOpenFileName(
-                this,
-                QStringLiteral("Sound File"),
-                QDir::homePath(),
-                QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
-    ui->lineEditSoundFile->setText(file);
-}
-
-void TimerDialog::showPlayerDialog() {
-    QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
-                                      QDir::homePath());
-    fd->setMimeTypeFilters(
-                QStringList{QLatin1String("application/x-executable"),
-                            QLatin1String("application/x-sharedlib"),
-                            QLatin1String("application/x-shellscript"),
-                            QLatin1String("text/x-python")});
-    if(fd->exec())
-        ui->lineEditPlayer->setText(fd->getOpenFileName());
 }
 
 void TimerDialog::on_pushButtonCurrent_released() {

@@ -53,8 +53,25 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
     // FileDialog actions
-    connect(ui->pushButtonSoundFile, SIGNAL(released()),SLOT(showFileDialog()));
-    connect(ui->pushButtonPlayer, SIGNAL(released()), SLOT(showPlayerDialog()));
+    connect(ui->pushButtonSoundFile, &QPushButton::released, this, [=] {
+        QString file = QFileDialog::getOpenFileName(
+                    this,
+                    QStringLiteral("Sound File"),
+                    QDir::homePath(),
+                    QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
+        ui->lineEditSoundFile->setText(file);
+    });
+    connect(ui->pushButtonPlayer, &QPushButton::released, this, [=] {
+        QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
+                                          QDir::homePath());
+        fd->setMimeTypeFilters(
+                    QStringList{QLatin1String("application/x-executable"),
+                                QLatin1String("application/x-sharedlib"),
+                                QLatin1String("application/x-shellscript"),
+                                QLatin1String("text/x-python")});
+        if(fd->exec())
+            ui->lineEditPlayer->setText(fd->getOpenFileName());
+    });
     ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
                                       QStringLiteral("document-open")));
     ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
@@ -65,27 +82,6 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
 AlarmDialog::~AlarmDialog()
 {
     delete ui;
-}
-
-void AlarmDialog::showFileDialog() {
-    QString file = QFileDialog::getOpenFileName(
-                this,
-                QStringLiteral("Sound File"),
-                QDir::homePath(),
-                QStringLiteral("Media (*.wav *.ogg *.mp3 *.flac)"));
-    ui->lineEditSoundFile->setText(file);
-}
-
-void AlarmDialog::showPlayerDialog() {
-    QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
-                                      QDir::homePath());
-    fd->setMimeTypeFilters(
-                QStringList{QLatin1String("application/x-executable"),
-                            QLatin1String("application/x-sharedlib"),
-                            QLatin1String("application/x-shellscript"),
-                            QLatin1String("text/x-python")});
-    if(fd->exec())
-        ui->lineEditPlayer->setText(fd->getOpenFileName());
 }
 
 void AlarmDialog::on_pushButtonCurrent_released() {

@@ -40,8 +40,6 @@ public:
     ~AlarmDialog();
 
 private slots:
-    void showFileDialog();
-    void showPlayerDialog();
     void on_pushButtonCurrent_released();
     void on_pushButtonReset_released();
     void on_buttonBox_accepted();
