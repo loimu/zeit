@@ -221,7 +221,7 @@ void MainWindow::on_actionAddEntry_triggered() {
                                          QString(), cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd, &VariableDialog::accepted, this, [=] (CTVariable *var) {
+        connect(vd, &VariableDialog::accepted, this, [=] {
             cron->addVariable(var);
             cron->save();
             refresh();
@@ -242,7 +242,7 @@ void MainWindow::on_actionModifyEntry_triggered() {
         CTTask* task = cron->tasks().at(index);
         TaskDialog *td = new TaskDialog(task, tr("Edit Task"), this);
         td->show();
-        connect(td, &TaskDialog::accepted, this, [=] (CTTask *task) {
+        connect(td, &TaskDialog::accepted, this, [=] {
             cron->modifyTask(task);
             cron->save();
             refresh();
@@ -252,7 +252,7 @@ void MainWindow::on_actionModifyEntry_triggered() {
         CTVariable* var = cron->variables().at(index);
         VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
         vd->show();
-        connect(vd, &VariableDialog::accepted, this, [=] (CTVariable* var) {
+        connect(vd, &VariableDialog::accepted, this, [=] {
             cron->modifyVariable(var);
             cron->save();
             refresh();
