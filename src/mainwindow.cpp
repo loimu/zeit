@@ -132,7 +132,7 @@ void MainWindow::showVariables() {
     ui->listWidget->clear();
     for(CTVariable* var : cron->variables()) {
         QListWidgetItem* item = new QListWidgetItem();
-        QString comment = !var->comment.isEmpty() ? QLatin1String("#")
+        QString comment = !var->comment.isEmpty() ? QLatin1String("## ")
                         + var->comment + QLatin1String("\n") : QString();
         item->setText(comment + var->variable
                       + QLatin1String("=") + var->value);
