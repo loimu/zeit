@@ -56,7 +56,7 @@ void Commands::refresh() {
 }
 
 void Commands::addCommand(QString command, QString time) {
-    QString cmdline = QString(QStringLiteral("echo \"%1\" | at %2"))
+    QString cmdline = QString(QLatin1String("echo \"%1\" | at %2"))
             .arg(command)
             .arg(time);
     QProcess p;
