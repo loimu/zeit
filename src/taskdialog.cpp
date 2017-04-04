@@ -55,10 +55,10 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     ui->commentEdit->setText(task->comment);
     init();
     // switch modes
-    connect(ui->radioAdvanced, SIGNAL(clicked(bool)), SLOT(toggleMode()));
-    connect(ui->radioBasic, SIGNAL(clicked(bool)), SLOT(toggleMode()));
-    // ComboBox action
-    connect(ui->comboBox, SIGNAL(activated(int)), SLOT(refresh(int)));
+    connect(ui->radioAdvanced, &QRadioButton::clicked,
+            this, &TaskDialog::toggleMode);
+    connect(ui->radioBasic, &QRadioButton::clicked,
+            this, &TaskDialog::toggleMode);
 }
 
 TaskDialog::~TaskDialog()
@@ -69,11 +69,11 @@ TaskDialog::~TaskDialog()
 void TaskDialog::init() {
     if(task->command.isEmpty()) {
         ui->commentEdit->setText(tr("New Task"));
-        setText("*","*","*","*","*");
+        setText("*", "*", "*", "*", "*");
     }
     else {
         QStringList tokenList = task->schedulingCronFormat()
-                .split(QRegExp("\\s"));
+                .split(QRegExp(QStringLiteral("\\s")));
         setText(tokenList.at(0), tokenList.at(1),
                 tokenList.at(2), tokenList.at(4), tokenList.at(3));
     }
@@ -125,22 +125,22 @@ void TaskDialog::toggleMode() {
     ui->editWeekday->setEnabled(isAdvanced);
 }
 
-void TaskDialog::refresh(int index) {
+void TaskDialog::on_comboBox_activated(int index) {
     switch(index) {
     case 1:
-        setText("0","*","*","*","*"); // every hour
+        setText("0", "*", "*", "*", "*"); // every hour
         break;
     case 2:
-        setText("0","0","*","*","*"); // every day
+        setText("0", "0", "*", "*", "*"); // every day
         break;
     case 3:
-        setText("0","0","*","1","*"); // every week
+        setText("0", "0", "*", "1", "*"); // every week
         break;
     case 4:
-        setText("0","0","1","*","*"); // every month
+        setText("0", "0", "1", "*", "*"); // every month
         break;
     default:
-        setText("*","*","*","*","*"); // every minute
+        setText("*", "*", "*", "*", "*"); // every minute
         break;
     }
 }
@@ -150,9 +150,9 @@ void TaskDialog::on_buttonBox_accepted() {
         showError(tr("Command field should not be empty"));
         return;
     }
-    QRegExp rx("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"); // validates time token
-    for(QLineEdit* le : QVector<QLineEdit*> {ui->editMinute, ui->editHour,
-        ui->editDay, ui->editWeekday, ui->editMonth}) {
+    QRegExp rx(QStringLiteral("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"));
+    for(QLineEdit* le : QVector<QLineEdit*> { ui->editMinute, ui->editHour,
+        ui->editDay, ui->editWeekday, ui->editMonth }) {
         if(!rx.exactMatch(le->text())) {
             showError(tr("Invalid input in ") + le->objectName());
             return;

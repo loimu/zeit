@@ -39,14 +39,14 @@ class TaskDialog : public BaseEditDialog
     void setText(const QString&, const QString&,
                  const QString&, const QString&, const QString&);
     void setUnit(CTUnit&, const QString&);
+    void toggleMode();
 
 public:
     explicit TaskDialog(CTTask*, const QString&, QWidget *parent = nullptr);
     ~TaskDialog();
 
 private slots:
-    void toggleMode();
-    void refresh(int);
+    void on_comboBox_activated(int);
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
 
