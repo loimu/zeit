@@ -235,7 +235,7 @@ QString CTTask::schedulingCronFormat() const {
 QString CTTask::describe() const {
 
 	if (reboot) {
-        return tr("At system startup");
+        return tr("at system startup");
 	}
 
 	QString dateFormat = createDateFormat();
@@ -322,7 +322,7 @@ QString CTTask::describeDateAndHours() const {
 			}
 		}
 	}
-    return tr("At %1", "Hour::Minute list").arg(timeDesc);
+    return tr("at %1", "Hour::Minute list").arg(timeDesc);
 }
 
 QString CTTask::createTimeFormat() const {
