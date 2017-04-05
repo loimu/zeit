@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>152</height>
+    <width>378</width>
+    <height>175</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,6 +45,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLineEdit" name="varEdit">
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="clearButtonEnabled">
           <bool>true</bool>
          </property>
@@ -76,8 +82,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="errorLabel">
-    </widget>
+    <widget class="QLabel" name="errorLabel"/>
    </item>
   </layout>
  </widget>

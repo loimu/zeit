@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
-    <height>378</height>
+    <width>376</width>
+    <height>404</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,6 +94,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLineEdit" name="commentEdit">
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="clearButtonEnabled">
           <bool>true</bool>
          </property>

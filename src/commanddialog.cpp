@@ -32,6 +32,7 @@ CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->errorLabel->setVisible(false);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
     errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Command"));
     ui->lineEditComment->setText(tr("New Command"));

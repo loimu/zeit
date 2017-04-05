@@ -30,6 +30,7 @@ VariableDialog::VariableDialog(CTVariable* _ctVar,
 {
     ui->setupUi(this);
     ui->errorLabel->setVisible(false);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
     errorLabel = ui->errorLabel;
     setWindowTitle(_caption);
     ui->varEdit->setText(variable->variable);
