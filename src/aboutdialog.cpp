@@ -64,11 +64,9 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
                         "Licensed under GPL v3 or later.</p>"
-                        "<p><b>Links:</b><br />"
-                        "Project: <a href=\"https://bitbucket.org/blaze/zeit\">"
-                        "https://bitbucket.org/blaze/zeit</a><br />"
-                        "Patreon: <a href=\"https://patreon.com/blazy\">"
-                        "https://patreon.com/blazy</a></p>"))
+                        "Project:<br />"
+                        "<a href=\"https://bitbucket.org/blaze/zeit\">"
+                        "https://bitbucket.org/blaze/zeit</a>"))
                 .arg(qApp->applicationVersion())
                 .arg(qVersion())
                 .arg(QT_VERSION_STR));
