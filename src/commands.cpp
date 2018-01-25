@@ -43,7 +43,7 @@ void Commands::refresh() {
     QStringList entries;
     if(!output.isEmpty())
         entries = output.split("\n", QString::SkipEmptyParts);
-    for(QString entry : entries) {
+    for(QString& entry : entries) {
         QRegExp match(QStringLiteral("^(\\d+)\\s+(.*)$"));
         match.setMinimal(true);
         match.indexIn(entry);

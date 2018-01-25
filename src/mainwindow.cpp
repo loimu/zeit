@@ -152,7 +152,7 @@ void MainWindow::showVariables() {
 void MainWindow::showNPTasks() {
     ui->listWidget->setEnabled(true);
     ui->listWidget->clear();
-    for(Command c : *commands->getCommands()) {
+    for(Command& c : *commands->getCommands()) {
         QListWidgetItem* item = new QListWidgetItem(c.description +
                                                     QLatin1String("\nCommand: ")
                                                     + c.command);

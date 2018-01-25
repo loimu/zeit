@@ -94,7 +94,7 @@ void TaskDialog::setUnit(CTUnit& unit, const QString& token) {
     if(token != QStringLiteral("*")) {
         for(int i = unit.minimum(); i <= unit.maximum(); i++)
             unit.setEnabled(i, false);
-        for(QString string : token.split(QLatin1Char(','))) {
+        for(QString& string : token.split(QLatin1Char(','))) {
             /* range detection and interpretation procedure */
             QStringList subStrings = string.split(QLatin1Char('-'));
             int beg = subStrings.at(0).toInt();
