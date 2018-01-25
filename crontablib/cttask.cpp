@@ -242,7 +242,8 @@ QString CTTask::describe() const {
 
 	QString timeFormat = createTimeFormat();
 
-    return tr("%1, %2", "1:Time Description, 2:Date Description").arg(timeFormat).arg(dateFormat);
+    return tr("%1, %2", "1:Time Description, 2:Date Description").arg(
+                timeFormat, dateFormat);
 }
 
 QString CTTask::describeDayOfWeek() const {
@@ -250,7 +251,8 @@ QString CTTask::describeDayOfWeek() const {
 }
 
 QString CTTask::describeDayOfMonth() const {
-    return tr("%1 of %2", "'Days of month' of 'Months'").arg(dayOfMonth.describe()).arg(month.describe());
+    return tr("%1 of %2", "'Days of month' of 'Months'").arg(
+                dayOfMonth.describe(), month.describe());
 }
 
 QString CTTask::createDateFormat() const {
@@ -260,7 +262,8 @@ QString CTTask::createDateFormat() const {
 	 * every day of month versus every day of week.
 	 */
 	QString dateFormat;
-	if ((dayOfMonth.enabledCount() == CTDayOfMonth::MAXIMUM) && (dayOfWeek.enabledCount() == CTDayOfWeek::MAXIMUM)) {
+    if ((dayOfMonth.enabledCount() == CTDayOfMonth::MAXIMUM)
+            && (dayOfWeek.enabledCount() == CTDayOfWeek::MAXIMUM)) {
         dateFormat = tr("every day ");
 	}
 	// Day of month not specified, so use day of week.
@@ -272,7 +275,9 @@ QString CTTask::createDateFormat() const {
 		dateFormat = describeDayOfMonth();
 	}
 	else {
-        dateFormat = tr("%1 as well as %2", "1:Day of month, 2:Day of week").arg(describeDayOfMonth()).arg(describeDayOfWeek());
+        dateFormat = tr("%1 as well as %2",
+                        "1:Day of month, 2:Day of week").arg(
+                    describeDayOfMonth(), describeDayOfWeek());
 	}
 
 	return dateFormat;
@@ -302,7 +307,8 @@ QString CTTask::describeDateAndHours() const {
 					else
 						minuteString = QString::number(m);
 
-                    QString tmpStr = tr("%1:%2", "1:Hour, 2:Minute").arg(hourString).arg(minuteString);
+                    QString tmpStr = tr("%1:%2", "1:Hour, 2:Minute").arg(
+                                hourString, minuteString);
 
 					timeDesc += tmpStr;
 					count++;
@@ -349,7 +355,8 @@ QIcon CTTask::commandIcon() const {
 
 	QMimeType mimeType = QMimeDatabase().mimeTypeForUrl(commandPath);
 	//logDebug() << mimeType->name() << endl;
-	if (mimeType.name() == QLatin1String( "application/x-executable" ) || mimeType.name() == QLatin1String( "application/octet-stream" )) {
+    if (mimeType.name() == QLatin1String( "application/x-executable" )
+            || mimeType.name() == QLatin1String( "application/octet-stream" )) {
 
 		//The next line is identical as SmallIcon(commandPath.fileName()), but is able to return a isNull() QPixmap
         //QPixmap pixmap = KIconLoader::global()->loadIcon(commandPath.fileName(), KIconLoader::Small, 0, KIconLoader::DefaultState, QStringList(), 0L, true);

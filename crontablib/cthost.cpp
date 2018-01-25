@@ -136,7 +136,10 @@ CTSaveStatus CTHost::save() {
 		CTSaveStatus ctSaveStatus = ctCron->save();
 
 		if (ctSaveStatus.isError() == true) {
-            return CTSaveStatus(tr("User %1: %2", "User login: errorMessage").arg(ctCron->userLogin()).arg(ctSaveStatus.errorMessage()), ctSaveStatus.detailErrorMessage());
+            return CTSaveStatus(tr("User %1: %2", "User login: errorMessage")
+                                .arg(ctCron->userLogin(),
+                                     ctSaveStatus.errorMessage()),
+                                ctSaveStatus.detailErrorMessage());
 		}
 	}
 
