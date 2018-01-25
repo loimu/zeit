@@ -67,8 +67,6 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
                         "Project:<br />"
                         "<a href=\"https://bitbucket.org/blaze/zeit\">"
                         "https://bitbucket.org/blaze/zeit</a>"))
-                .arg(qApp->applicationVersion())
-                .arg(qVersion())
-                .arg(QT_VERSION_STR));
+                .arg(qApp->applicationVersion(), qVersion(), QT_VERSION_STR));
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }

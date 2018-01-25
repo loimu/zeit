@@ -107,8 +107,8 @@ void AlarmDialog::on_buttonBox_accepted() {
     }
     task->comment = ui->lineEditComment->text();
     task->command = QString(QLatin1String("%1 \"%2\""))
-            .arg(ui->lineEditPlayer->text())
-            .arg(ui->lineEditSoundFile->text());
+            .arg(ui->lineEditPlayer->text(),
+                 ui->lineEditSoundFile->text());
     task->hour.setEnabled(ui->spinBoxHour->value(), true);
     task->minute.setEnabled(ui->spinBoxMinute->value(), true);
     task->dayOfWeek.setEnabled(1, ui->checkBoxMon->isChecked());

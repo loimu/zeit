@@ -56,9 +56,8 @@ void Commands::refresh() {
 }
 
 void Commands::addCommand(QString command, QString time) {
-    QString cmdline = QString(QLatin1String("echo \"%1\" | at %2"))
-            .arg(command)
-            .arg(time);
+    QString cmdline = QString(QLatin1String("echo \"%1\" | at %2")).arg(
+                command, time);
     QProcess p;
     p.start(QStringLiteral("bash"), QStringList{QLatin1String("-c"), cmdline});
     p.waitForFinished(-1);
