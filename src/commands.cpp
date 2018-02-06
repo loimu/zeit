@@ -28,8 +28,7 @@ Commands::Commands() : commands(new QList<Command>),
 
 }
 
-Commands::~Commands()
-{
+Commands::~Commands() {
     delete map;
     delete commands;
 }

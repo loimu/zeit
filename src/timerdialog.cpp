@@ -41,8 +41,8 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
     ui->checkBox->setChecked(true);
     // detect player
     QProcess proc;
-    proc.start(QStringLiteral("which"), QStringList{QLatin1String("mpv"),
-                                                    QLatin1String("mplayer")});
+    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
+                                                    QStringLiteral("mplayer")});
     proc.waitForFinished(-1);
     QStringList players = QString::fromUtf8(
                 proc.readAllStandardOutput())
@@ -66,10 +66,10 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
         QFileDialog* fd = new QFileDialog(this, QStringLiteral("Player"),
                                           QDir::homePath());
         fd->setMimeTypeFilters(
-                    QStringList{QLatin1String("application/x-executable"),
-                                QLatin1String("application/x-sharedlib"),
-                                QLatin1String("application/x-shellscript"),
-                                QLatin1String("text/x-python")});
+                    QStringList{QStringLiteral("application/x-executable"),
+                                QStringLiteral("application/x-sharedlib"),
+                                QStringLiteral("application/x-shellscript"),
+                                QStringLiteral("text/x-python")});
         if(fd->exec())
             ui->lineEditPlayer->setText(fd->getOpenFileName());
     });
@@ -79,8 +79,7 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
                                          QStringLiteral("document-open")));
 }
 
-TimerDialog::~TimerDialog()
-{
+TimerDialog::~TimerDialog() {
     delete ui;
 }
 
