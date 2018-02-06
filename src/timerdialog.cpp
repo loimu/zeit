@@ -104,12 +104,12 @@ void TimerDialog::on_buttonBox_accepted() {
         showError(tr("Soundfile field should not be empty"));
         return;
     }
-    QString command = QString(QLatin1String("%1 \\\"%2\\\" & "))
+    QString command = QString(QStringLiteral("%1 \"%2\" & "))
             .arg(ui->lineEditPlayer->text(), ui->lineEditSoundFile->text());
     if(ui->checkBox->isChecked())
-        command.append(QString(QLatin1String("notify-send Timer \\\"%1\\\""))
+        command.append(QString(QStringLiteral("notify-send Timer \"%1\""))
                        .arg(ui->lineEditComment->text()));
-    QString time = QString(QLatin1String("%1:%2"))
+    QString time = QString(QStringLiteral("%1:%2"))
             .arg(ui->spinBoxHours->value())
             .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
     commands->addCommand(command, time);

@@ -38,7 +38,7 @@ void Commands::refresh() {
     commands->clear();
     QProcess p;
     p.start(QStringLiteral("atq"));
-    p.waitForFinished(-1);
+    p.waitForFinished();
     QString output = QString::fromUtf8(p.readAllStandardOutput());
     QStringList entries;
     if(!output.isEmpty())
@@ -56,11 +56,12 @@ void Commands::refresh() {
 }
 
 void Commands::addCommand(QString command, QString time) {
-    QString cmdline = QString(QLatin1String("echo \"%1\" | at %2")).arg(
-                command, time);
+    command.replace("\"", "\\\""); // escape all double quotes
+    QString cmdline = QString(
+                QStringLiteral("echo \"%1\" | at %2")).arg(command, time);
     QProcess p;
-    p.start(QStringLiteral("bash"), QStringList{QLatin1String("-c"), cmdline});
-    p.waitForFinished(-1);
+    p.start(QStringLiteral("bash"), QStringList{QStringLiteral("-c"), cmdline});
+    p.waitForFinished();
     QString output = QString::fromUtf8(p.readAllStandardError());
     QRegExp match(QStringLiteral("job\\s(\\d+)\\s(.*)"));
     match.setMinimal(true);
@@ -74,7 +75,7 @@ void Commands::addCommand(QString command, QString time) {
 void Commands::deleteCommand(int index) {
     QProcess p;
     p.start(QStringLiteral("atrm"), QStringList{commands->at(index).id});
-    p.waitForFinished(-1);
+    p.waitForFinished();
     if(p.readAllStandardError().isEmpty())
         commands->removeAt(index);
 }
