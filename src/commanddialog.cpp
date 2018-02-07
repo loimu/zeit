@@ -42,11 +42,11 @@ CommandDialog::CommandDialog(Commands* commands_, QWidget* parent) :
     ui->spinBoxHours->setValue(time.hour());
     ui->spinBoxMinutes->setValue(time.minute());
     /* dialog actions */
-    connect(ui->pushButtonCurrent, &QPushButton::released, [=] {
+    connect(ui->pushButtonCurrent, &QPushButton::released, this, [=] {
         ui->spinBoxHours->setValue(QTime::currentTime().hour());
         ui->spinBoxMinutes->setValue(QTime::currentTime().minute());
     });
-    connect(ui->pushButtonReset, &QPushButton::released, [=] {
+    connect(ui->pushButtonReset, &QPushButton::released, this, [=] {
         ui->spinBoxHours->setValue(0);
         ui->spinBoxMinutes->setValue(0);
     });
