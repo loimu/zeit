@@ -51,19 +51,24 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     ui->editDay->setToolTip(helpToolTip);
     ui->editWeekday->setToolTip(helpToolTip);
     ui->editMonth->setToolTip(helpToolTip);
-    // fill form fields
-    ui->commandEdit->setText(task->command);
+    ui->commandEdit->setText(task->command); // fill form fields
     ui->commentEdit->setText(task->comment);
     init();
-    // switch modes
+    /* switch modes */
     connect(ui->radioAdvanced, &QRadioButton::clicked,
             this, &TaskDialog::toggleMode);
     connect(ui->radioBasic, &QRadioButton::clicked,
             this, &TaskDialog::toggleMode);
+    /* other actions */
+    connect(ui->comboBox, QOverload<int>::of(&QComboBox::activated),
+            this, &TaskDialog::switchPreset);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &TaskDialog::save);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected,
+            this, &TaskDialog::close);
 }
 
-TaskDialog::~TaskDialog()
-{
+TaskDialog::~TaskDialog() {
     delete ui;
 }
 
@@ -126,7 +131,7 @@ void TaskDialog::toggleMode() {
     ui->editWeekday->setEnabled(isAdvanced);
 }
 
-void TaskDialog::on_comboBox_activated(int index) {
+void TaskDialog::switchPreset(int index) {
     switch(index) {
     case 1:
         setText("0", "*", "*", "*", "*"); // every hour
@@ -146,7 +151,7 @@ void TaskDialog::on_comboBox_activated(int index) {
     }
 }
 
-void TaskDialog::on_buttonBox_accepted() {
+void TaskDialog::save() {
     if(ui->commandEdit->text().isEmpty()) {
         showError(tr("Command field should not be empty"));
         return;
@@ -161,16 +166,12 @@ void TaskDialog::on_buttonBox_accepted() {
     }
     task->command = ui->commandEdit->text();
     task->comment = ui->commentEdit->text();
-    // write time tokens into cttask object
+    /* write time tokens into cttask object */
     setUnit(task->minute, ui->editMinute->text());
     setUnit(task->hour, ui->editHour->text());
     setUnit(task->dayOfMonth, ui->editDay->text());
     setUnit(task->dayOfWeek, ui->editWeekday->text());
     setUnit(task->month, ui->editMonth->text());
     emit accepted(task);
-    this->close();
-}
-
-void TaskDialog::on_buttonBox_rejected() {
     this->close();
 }
