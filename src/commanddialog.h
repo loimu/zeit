@@ -34,19 +34,14 @@ class CommandDialog : public BaseEditDialog
 
     Ui::CommandDialog *ui;
     Commands* commands;
+    void save();
 
 public:
-    explicit CommandDialog(Commands* commands, QWidget *parent = nullptr);
+    explicit CommandDialog(Commands* commands, QWidget* parent = nullptr);
     ~CommandDialog();
 
 signals:
     void accepted();
-
-private slots:
-    void on_pushButtonCurrent_released();
-    void on_pushButtonReset_released();
-    void on_buttonBox_accepted();
-    void on_buttonBox_rejected();
 };
 
 #endif // COMMANDDIALOG_H

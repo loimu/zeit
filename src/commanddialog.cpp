@@ -25,7 +25,7 @@
 #include "commanddialog.h"
 #include "ui_commanddialog.h"
 
-CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
+CommandDialog::CommandDialog(Commands* commands_, QWidget* parent) :
     BaseEditDialog(parent),
     ui(new Ui::CommandDialog),
     commands(commands_)
@@ -37,28 +37,30 @@ CommandDialog::CommandDialog(Commands* commands_, QWidget *parent) :
     setWindowTitle(tr("New Command"));
     ui->lineEditComment->setText(tr("New Command"));
     ui->checkBox->setChecked(true);
-    // get system time with a positive offset of 5 minutes
+    /* get system time with a positive offset of 5 minutes */
     QTime time = QTime::currentTime().addSecs(60 * 5);
     ui->spinBoxHours->setValue(time.hour());
     ui->spinBoxMinutes->setValue(time.minute());
+    /* dialog actions */
+    connect(ui->pushButtonCurrent, &QPushButton::released, [=] {
+        ui->spinBoxHours->setValue(QTime::currentTime().hour());
+        ui->spinBoxMinutes->setValue(QTime::currentTime().minute());
+    });
+    connect(ui->pushButtonReset, &QPushButton::released, [=] {
+        ui->spinBoxHours->setValue(0);
+        ui->spinBoxMinutes->setValue(0);
+    });
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &CommandDialog::save);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected,
+            this, &CommandDialog::close);
 }
 
-CommandDialog::~CommandDialog()
-{
+CommandDialog::~CommandDialog() {
     delete ui;
 }
 
-void CommandDialog::on_pushButtonCurrent_released() {
-    ui->spinBoxHours->setValue(QTime::currentTime().hour());
-    ui->spinBoxMinutes->setValue(QTime::currentTime().minute());
-}
-
-void CommandDialog::on_pushButtonReset_released() {
-    ui->spinBoxHours->setValue(0);
-    ui->spinBoxMinutes->setValue(0);
-}
-
-void CommandDialog::on_buttonBox_accepted() {
+void CommandDialog::save() {
     if(ui->lineEditCommand->text().isEmpty()) {
         showError(tr("Command field should not be empty"));
         return;
@@ -73,9 +75,5 @@ void CommandDialog::on_buttonBox_accepted() {
             .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
     commands->addCommand(command, time);
     emit accepted();
-    this->close();
-}
-
-void CommandDialog::on_buttonBox_rejected() {
     this->close();
 }
