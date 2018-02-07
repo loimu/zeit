@@ -26,7 +26,7 @@
 #include "ui_alarmdialog.h"
 
 
-AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
+AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
     BaseEditDialog(parent),
     ui(new Ui::AlarmDialog),
     task(_ctTask)
@@ -36,14 +36,14 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
     layout()->setSizeConstraint(QLayout::SetFixedSize);
     errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Alarm"));
-    // prepopulate fields
+    /* prepopulate fields */
     ui->checkBoxMon->setChecked(true);
     ui->checkBoxTue->setChecked(true);
     ui->checkBoxWed->setChecked(true);
     ui->checkBoxThu->setChecked(true);
     ui->checkBoxFri->setChecked(true);
     ui->lineEditComment->setText(tr("New Alarm"));
-    // detect player
+    /* detect player */
     QProcess proc;
     proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
                                                     QStringLiteral("mplayer")});
@@ -52,7 +52,11 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
             .split(QRegExp(QStringLiteral("\n")));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
-    // FileDialog actions
+    /* file dialog actions */
+    ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
+                                      QStringLiteral("document-open")));
+    ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
+                                         QStringLiteral("document-open")));
     connect(ui->pushButtonSoundFile, &QPushButton::released, this, [=] {
         QString file = QFileDialog::getOpenFileName(
                     this,
@@ -72,30 +76,30 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget *parent) :
         if(fd->exec())
             ui->lineEditPlayer->setText(fd->getOpenFileName());
     });
-    ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
-                                      QStringLiteral("document-open")));
-    ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
-                                         QStringLiteral("document-open")));
-    on_pushButtonCurrent_released();
+    /* dialog actions */
+    connect(ui->pushButtonReset, &QPushButton::released, this, [=] {
+        ui->spinBoxHour->setValue(0);
+        ui->spinBoxMinute->setValue(0);
+    });
+    connect(ui->pushButtonCurrent, &QPushButton::released,
+            this, &AlarmDialog::setCurrentTime);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &AlarmDialog::save);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected,
+            this, &AlarmDialog::close);
+    setCurrentTime();
 }
 
-AlarmDialog::~AlarmDialog()
-{
+AlarmDialog::~AlarmDialog() {
     delete ui;
 }
 
-void AlarmDialog::on_pushButtonCurrent_released() {
-    QTime time = QTime::currentTime();
-    ui->spinBoxHour->setValue(time.hour());
-    ui->spinBoxMinute->setValue(time.minute());
+void AlarmDialog::setCurrentTime() {
+    ui->spinBoxHour->setValue(QTime::currentTime().hour());
+    ui->spinBoxMinute->setValue(QTime::currentTime().minute());
 }
 
-void AlarmDialog::on_pushButtonReset_released() {
-    ui->spinBoxHour->setValue(0);
-    ui->spinBoxMinute->setValue(0);
-}
-
-void AlarmDialog::on_buttonBox_accepted() {
+void AlarmDialog::save() {
     if(ui->lineEditPlayer->text().isEmpty()) {
         showError(tr("Player field should not be empty"));
         return;
@@ -122,9 +126,5 @@ void AlarmDialog::on_buttonBox_accepted() {
     for(int mo = CTMonth::MINIMUM; mo <= CTMonth::MAXIMUM; mo++)
         task->month.setEnabled(mo, true);
     emit accepted(task);
-    this->close();
-}
-
-void AlarmDialog::on_buttonBox_rejected() {
     this->close();
 }

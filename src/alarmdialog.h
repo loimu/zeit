@@ -33,17 +33,13 @@ class AlarmDialog : public BaseEditDialog
     Q_OBJECT
 
     CTTask* task;
-    Ui::AlarmDialog *ui;
+    Ui::AlarmDialog* ui;
+    void setCurrentTime();
+    void save();
 
 public:
-    explicit AlarmDialog(CTTask*, QWidget *parent = nullptr);
+    explicit AlarmDialog(CTTask*, QWidget* parent = nullptr);
     ~AlarmDialog();
-
-private slots:
-    void on_pushButtonCurrent_released();
-    void on_pushButtonReset_released();
-    void on_buttonBox_accepted();
-    void on_buttonBox_rejected();
 
 signals:
     void accepted(CTTask* task);
