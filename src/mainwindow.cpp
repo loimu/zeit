@@ -35,7 +35,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui(new Ui::MainWindow),
     commands(new Commands())
 {
@@ -43,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->statusBar->hide();
     ui->mainToolBar->setMovable(false);
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    // actions setup
     ui->actionAddEntry->setIcon(
                 QIcon::fromTheme(QStringLiteral("document-new"),
                                  QIcon(QStringLiteral(
@@ -66,27 +65,60 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->actionTimer->setIcon(
                 QIcon::fromTheme(QStringLiteral("player-time"),
                                  QIcon(QStringLiteral(":/icons/player-time"))));
+    /* init crontab host */
+    CTInitializationError error;
+    ctHost = new CTHost(QStringLiteral("crontab"), error);
+    selectUser(false);
+    /* window actions */
     ui->mainToolBar->addAction(ui->actionAddEntry);
     ui->mainToolBar->addAction(ui->actionModifyEntry);
     ui->mainToolBar->addAction(ui->actionDeleteEntry);
     ui->mainToolBar->addAction(ui->actionAlarm);
     ui->mainToolBar->addAction(ui->actionTimer);
     QActionGroup* group = new QActionGroup(this);
-    ui->actionPeriodic->setActionGroup(group);
+    ui->actionTasks->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
-    ui->actionNonperiodic->setActionGroup(group);
+    ui->actionCommands->setActionGroup(group);
+    connect(ui->listWidget,
+            &QListWidget::itemClicked, this, [=] (QListWidgetItem* item) {
+        refreshActions(item->isSelected()); });
+    connect(ui->listWidget, &QListWidget::itemDoubleClicked,
+            this, &MainWindow::toggleItem);
+    // Main menu
+    connect(ui->actionAddEntry, &QAction::triggered,
+            this, &MainWindow::addEntry);
+    connect(ui->actionModifyEntry, &QAction::triggered,
+            this, &MainWindow::modifyEntry);
+    connect(ui->actionDeleteEntry, &QAction::triggered,
+            this, &MainWindow::deleteEntry);
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
-    // init crontab host
-    CTInitializationError error;
-    ctHost = new CTHost(QStringLiteral("crontab"), error);
-    selectUser(false);
-    // refresh state
-    on_actionPeriodic_triggered();
+    // View menu
+    connect(ui->actionRefresh, &QAction::triggered, this, [=] {
+        if(ui->actionCommands->isChecked())
+            commands->refresh();
+        refresh(); });
+    connect(ui->actionSystem, &QAction::triggered, this, [=] (bool check) {
+        selectUser(check);
+        refresh(); });
+    connect(ui->actionTasks, &QAction::triggered, this, &MainWindow::viewTasks);
+    connect(ui->actionVariables, &QAction::triggered,
+            this, &MainWindow::viewVariables);
+    connect(ui->actionCommands, &QAction::triggered,
+            this, &MainWindow::viewCommands);
+    // Tools menu
+    connect(ui->actionAlarm, &QAction::triggered,
+            this, &MainWindow::showAlarmDialog);
+    connect(ui->actionTimer, &QAction::triggered,
+            this, &MainWindow::showTimerDialog);
+    // Help menu
+    connect(ui->actionAbout, &QAction::triggered,
+            this, &MainWindow::showAboutDialog);
+    /* refresh state */
+    viewTasks();
     refreshActions(false);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete commands;
     delete ctHost;
     delete ui;
@@ -96,7 +128,7 @@ void MainWindow::refreshActions(bool enabled) {
     bool currentUser = cron->isCurrentUserCron();
     ui->actionAddEntry->setEnabled(currentUser);
     ui->actionModifyEntry->setEnabled((currentUser && enabled)
-                                      && !ui->actionNonperiodic->isChecked());
+                                      && !ui->actionCommands->isChecked());
     ui->actionDeleteEntry->setEnabled(currentUser && enabled);
     ui->actionAlarm->setEnabled(currentUser);
     ui->actionTimer->setEnabled(currentUser);
@@ -149,7 +181,7 @@ void MainWindow::showVariables() {
     }
 }
 
-void MainWindow::showNPTasks() {
+void MainWindow::showCommands() {
     ui->listWidget->setEnabled(true);
     ui->listWidget->clear();
     for(Command& c : *commands->getCommands()) {
@@ -164,31 +196,27 @@ void MainWindow::selectUser(bool system) {
 }
 
 void MainWindow::refresh() {
-    if(ui->actionPeriodic->isChecked())
+    if(ui->actionTasks->isChecked())
         showTasks();
     if(ui->actionVariables->isChecked())
         showVariables();
-    if(ui->actionNonperiodic->isChecked())
-        showNPTasks();
+    if(ui->actionCommands->isChecked())
+        showCommands();
     refreshActions(false);
 }
 
-void MainWindow::addTask(CTTask *task) {
+void MainWindow::addTask(CTTask* task) {
     cron->addTask(task);
     cron->save();
     refresh();
 }
 
-void MainWindow::on_listWidget_itemClicked(QListWidgetItem* item) {
-    refreshActions(item->isSelected());
-}
-
-void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem* item) {
+void MainWindow::toggleItem(QListWidgetItem* item) {
     int index = ui->listWidget->currentRow();
     if(index < 0)
         return;
     bool enabled = false;
-    if(ui->actionPeriodic->isChecked()) {
+    if(ui->actionTasks->isChecked()) {
         CTTask* task = cron->tasks().at(index);
         enabled = task->enabled = !task->enabled;
     }
@@ -207,8 +235,8 @@ void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem* item) {
                           QIcon(QStringLiteral(":/icons/edit-delete"))));
 }
 
-void MainWindow::on_actionAddEntry_triggered() {
-    if(ui->actionPeriodic->isChecked()) {
+void MainWindow::addEntry() {
+    if(ui->actionTasks->isChecked()) {
         CTTask* task = new CTTask(QString(), QString(),
                                   cron->userLogin(), false);
         TaskDialog *td = new TaskDialog(task, tr("New Task"), this);
@@ -223,43 +251,40 @@ void MainWindow::on_actionAddEntry_triggered() {
         connect(vd, &VariableDialog::accepted, this, [=] {
             cron->addVariable(var);
             cron->save();
-            refresh();
-        });
+            refresh(); });
     }
-    if(ui->actionNonperiodic->isChecked()) {
-        CommandDialog *cd = new CommandDialog(commands, this);
+    if(ui->actionCommands->isChecked()) {
+        CommandDialog* cd = new CommandDialog(commands, this);
         cd->show();
         connect(cd, &CommandDialog::accepted, this, &MainWindow::refresh);
     }
 }
 
-void MainWindow::on_actionModifyEntry_triggered() {
+void MainWindow::modifyEntry() {
     int index = ui->listWidget->currentRow();
     if(index < 0)
         return;
-    if(ui->actionPeriodic->isChecked()) {
+    if(ui->actionTasks->isChecked()) {
         CTTask* task = cron->tasks().at(index);
-        TaskDialog *td = new TaskDialog(task, tr("Edit Task"), this);
+        TaskDialog* td = new TaskDialog(task, tr("Edit Task"), this);
         td->show();
         connect(td, &TaskDialog::accepted, this, [=] {
             cron->modifyTask(task);
             cron->save();
-            refresh();
-        });
+            refresh(); });
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = cron->variables().at(index);
-        VariableDialog *vd = new VariableDialog(var, tr("Edit Variable"), this);
+        VariableDialog* vd = new VariableDialog(var, tr("Edit Variable"), this);
         vd->show();
         connect(vd, &VariableDialog::accepted, this, [=] {
             cron->modifyVariable(var);
             cron->save();
-            refresh();
-        });
+            refresh(); });
     }
 }
 
-void MainWindow::on_actionDeleteEntry_triggered() {
+void MainWindow::deleteEntry() {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this,
                                   tr("Deleting Entry"), tr("Delete entry?"),
@@ -269,7 +294,7 @@ void MainWindow::on_actionDeleteEntry_triggered() {
     int index = ui->listWidget->currentRow();
     if(index < 0)
         return;
-    if(ui->actionPeriodic->isChecked()) {
+    if(ui->actionTasks->isChecked()) {
         CTTask* task = cron->tasks().at(index);
         cron->removeTask(task);
         cron->save();
@@ -279,24 +304,13 @@ void MainWindow::on_actionDeleteEntry_triggered() {
         cron->removeVariable(var);
         cron->save();
     }
-    if(ui->actionNonperiodic->isChecked()) {
+    if(ui->actionCommands->isChecked()) {
         commands->deleteCommand(index);
     }
     refresh();
 }
 
-void MainWindow::on_actionRefresh_triggered() {
-    if(ui->actionNonperiodic->isChecked())
-        commands->refresh();
-    refresh();
-}
-
-void MainWindow::on_actionSystem_triggered(bool check) {
-    selectUser(check);
-    refresh();
-}
-
-void MainWindow::on_actionPeriodic_triggered() {
+void MainWindow::viewTasks() {
     ui->actionAddEntry->setText(tr("Add Task"));
     ui->actionModifyEntry->setText(tr("Modify Task"));
     ui->actionDeleteEntry->setText(tr("Delete Task"));
@@ -305,7 +319,7 @@ void MainWindow::on_actionPeriodic_triggered() {
     refreshActions(false);
 }
 
-void MainWindow::on_actionVariables_triggered() {
+void MainWindow::viewVariables() {
     ui->actionAddEntry->setText(tr("Add Variable"));
     ui->actionModifyEntry->setText(tr("Modify Variable"));
     ui->actionDeleteEntry->setText(tr("Delete Variable"));
@@ -314,7 +328,7 @@ void MainWindow::on_actionVariables_triggered() {
     refreshActions(false);
 }
 
-void MainWindow::on_actionNonperiodic_triggered() {
+void MainWindow::viewCommands() {
     ui->actionAddEntry->setText(tr("Add Command"));
     ui->actionModifyEntry->setText(tr("Modify Command"));
     ui->actionDeleteEntry->setText(tr("Delete Command"));
@@ -322,24 +336,24 @@ void MainWindow::on_actionNonperiodic_triggered() {
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);
     commands->refresh();
-    showNPTasks();
+    showCommands();
     refreshActions(false);
 }
 
-void MainWindow::on_actionAlarm_triggered() {
+void MainWindow::showAlarmDialog() {
     CTTask* task = new CTTask(QString(), QString(), cron->userLogin(), false);
     AlarmDialog *ad = new AlarmDialog(task, this);
     ad->show();
     connect(ad, &AlarmDialog::accepted, this, &MainWindow::addTask);
 }
 
-void MainWindow::on_actionTimer_triggered() {
+void MainWindow::showTimerDialog() {
     TimerDialog *td = new TimerDialog(commands, this);
     td->show();
     connect(td, &TimerDialog::accepted, this, &MainWindow::refresh);
 }
 
-void MainWindow::on_actionAbout_triggered() {
+void MainWindow::showAboutDialog() {
     ui->actionAbout->setDisabled(true);
     AboutDialog* about = new AboutDialog(this);
     about->show();

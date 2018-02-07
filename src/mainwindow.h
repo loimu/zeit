@@ -37,11 +37,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
-private:
     CTHost* ctHost;
     CTCron* cron;
     Ui::MainWindow *ui;
@@ -49,29 +44,28 @@ private:
     void refreshActions(bool);
     void showTasks();
     void showVariables();
-    void showNPTasks();
+    void showCommands();
     void selectUser(bool system);
     void refresh();
     void addTask(CTTask* task);
+    void toggleItem(QListWidgetItem*);
+    /* Main menu */
+    void addEntry();
+    void modifyEntry();
+    void deleteEntry();
+    /* View menu */
+    void viewTasks();
+    void viewVariables();
+    void viewCommands();
+    /* Tools menu */
+    void showAlarmDialog();
+    void showTimerDialog();
+    /* Help menu */
+    void showAboutDialog();
 
-private slots:
-    void on_listWidget_itemClicked(QListWidgetItem*);
-    void on_listWidget_itemDoubleClicked(QListWidgetItem*);
-    // Zeit Menu
-    void on_actionAddEntry_triggered();
-    void on_actionModifyEntry_triggered();
-    void on_actionDeleteEntry_triggered();
-    // View Menu
-    void on_actionRefresh_triggered();
-    void on_actionSystem_triggered(bool);
-    void on_actionPeriodic_triggered();
-    void on_actionVariables_triggered();
-    void on_actionNonperiodic_triggered();
-    // Tools Menu
-    void on_actionAlarm_triggered();
-    void on_actionTimer_triggered();
-    // Help Menu
-    void on_actionAbout_triggered();
+public:
+    explicit MainWindow(QWidget* parent = nullptr);
+    ~MainWindow();
 };
 
 #endif // MAINWINDOW_H

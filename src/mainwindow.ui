@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>801</width>
-    <height>260</height>
+    <width>799</width>
+    <height>258</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,8 +29,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>801</width>
-     <height>27</height>
+     <width>799</width>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAdd">
@@ -63,9 +63,9 @@
     <addaction name="actionRefresh"/>
     <addaction name="actionSystem"/>
     <addaction name="separator"/>
-    <addaction name="actionPeriodic"/>
+    <addaction name="actionTasks"/>
     <addaction name="actionVariables"/>
-    <addaction name="actionNonperiodic"/>
+    <addaction name="actionCommands"/>
    </widget>
    <addaction name="menuAdd"/>
    <addaction name="menuView"/>
@@ -140,7 +140,7 @@
     <string notr="true">Ctrl+L</string>
    </property>
   </action>
-  <action name="actionPeriodic">
+  <action name="actionTasks">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -170,7 +170,7 @@
     <string notr="true">Ctrl+E</string>
    </property>
   </action>
-  <action name="actionNonperiodic">
+  <action name="actionCommands">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -194,7 +194,7 @@
   </action>
   <action name="actionRefresh">
    <property name="text">
-    <string>Refresh</string>
+    <string>&amp;Refresh</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+R</string>
