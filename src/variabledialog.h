@@ -34,15 +34,12 @@ class VariableDialog : public BaseEditDialog
 
     Ui::VariableDialog* ui;
     CTVariable* variable;
+    void save();
 
 public:
     explicit VariableDialog(CTVariable*,
-                            const QString&, QWidget *parent = nullptr);
+                            const QString&, QWidget* parent = nullptr);
     ~VariableDialog();
-
-private slots:
-    void on_buttonBox_accepted();
-    void on_buttonBox_rejected();
 
 signals:
     void accepted(CTVariable* variable);

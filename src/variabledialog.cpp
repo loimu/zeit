@@ -23,7 +23,7 @@
 
 
 VariableDialog::VariableDialog(CTVariable* _ctVar,
-                               const QString& _caption, QWidget *parent) :
+                               const QString& _caption, QWidget* parent) :
     BaseEditDialog(parent),
     ui(new Ui::VariableDialog),
     variable(_ctVar)
@@ -36,14 +36,18 @@ VariableDialog::VariableDialog(CTVariable* _ctVar,
     ui->varEdit->setText(variable->variable);
     ui->valEdit->setText(variable->value);
     ui->commentEdit->setText(variable->comment);
+    /* dialog actions */
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &VariableDialog::save);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected,
+            this, &VariableDialog::close);
 }
 
-VariableDialog::~VariableDialog()
-{
+VariableDialog::~VariableDialog() {
     delete ui;
 }
 
-void VariableDialog::on_buttonBox_accepted() {
+void VariableDialog::save() {
     if(ui->varEdit->text().isEmpty()) {
         showError(tr("Variable field should not be empty"));
         return;
@@ -56,9 +60,5 @@ void VariableDialog::on_buttonBox_accepted() {
     variable->value = ui->valEdit->text();
     variable->comment = ui->commentEdit->text();
     emit accepted(variable);
-    this->close();
-}
-
-void VariableDialog::on_buttonBox_rejected() {
     this->close();
 }
