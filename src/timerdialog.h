@@ -32,21 +32,16 @@ class TimerDialog : public BaseEditDialog
 {
     Q_OBJECT
 
-    Ui::TimerDialog *ui;
+    Ui::TimerDialog* ui;
     Commands* commands;
+    void save();
 
 public:
-    explicit TimerDialog(Commands* commands, QWidget *parent = nullptr);
+    explicit TimerDialog(Commands* commands, QWidget* parent = nullptr);
     ~TimerDialog();
 
 signals:
     void accepted();
-
-private slots:
-    void on_pushButtonCurrent_released();
-    void on_pushButtonReset_released();
-    void on_buttonBox_accepted();
-    void on_buttonBox_rejected();
 };
 
 #endif // TIMERDIALOG_H

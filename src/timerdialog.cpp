@@ -26,7 +26,7 @@
 #include "ui_timerdialog.h"
 
 
-TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
+TimerDialog::TimerDialog(Commands* commands_, QWidget* parent) :
     BaseEditDialog(parent),
     ui(new Ui::TimerDialog),
     commands(commands_)
@@ -36,24 +36,23 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
     layout()->setSizeConstraint(QLayout::SetFixedSize);
     errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Timer"));
-    // prepopulate fields
+    /* prepopulate fields */
     ui->lineEditComment->setText(tr("New Timer"));
     ui->checkBox->setChecked(true);
-    // detect player
+    /* detect player */
     QProcess proc;
     proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
                                                     QStringLiteral("mplayer")});
     proc.waitForFinished(-1);
-    QStringList players = QString::fromUtf8(
-                proc.readAllStandardOutput())
-            .split(QRegExp(QStringLiteral("\n")));
+    QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(
+                QRegExp(QStringLiteral("\n")));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
-    // get system time with a positive offset of 5 minutes
+    /* get system time with a positive offset of 5 minutes */
     QTime time = QTime::currentTime().addSecs(60 * 5);
     ui->spinBoxHours->setValue(time.hour());
     ui->spinBoxMinutes->setValue(time.minute());
-    // FileDialog actions
+    /* file dialog actions */
     connect(ui->pushButtonSoundFile, &QPushButton::released, this, [=] {
         QString file = QFileDialog::getOpenFileName(
                     this,
@@ -77,24 +76,26 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget *parent) :
                                       QStringLiteral("document-open")));
     ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
                                          QStringLiteral("document-open")));
+    /* dialog actions */
+    connect(ui->pushButtonCurrent, &QPushButton::released, [=] {
+        ui->spinBoxHours->setValue(QTime::currentTime().hour());
+        ui->spinBoxMinutes->setValue(QTime::currentTime().minute());
+    });
+    connect(ui->pushButtonReset, &QPushButton::released, [=] {
+        ui->spinBoxHours->setValue(0);
+        ui->spinBoxMinutes->setValue(0);
+    });
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &TimerDialog::save);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected,
+            this, &TimerDialog::close);
 }
 
 TimerDialog::~TimerDialog() {
     delete ui;
 }
 
-void TimerDialog::on_pushButtonCurrent_released() {
-    QTime time = QTime::currentTime();
-    ui->spinBoxHours->setValue(time.hour());
-    ui->spinBoxMinutes->setValue(time.minute());
-}
-
-void TimerDialog::on_pushButtonReset_released() {
-    ui->spinBoxHours->setValue(0);
-    ui->spinBoxMinutes->setValue(0);
-}
-
-void TimerDialog::on_buttonBox_accepted() {
+void TimerDialog::save() {
     if(ui->lineEditPlayer->text().isEmpty()) {
         showError(tr("Player field should not be empty"));
         return;
@@ -113,9 +114,5 @@ void TimerDialog::on_buttonBox_accepted() {
             .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
     commands->addCommand(command, time);
     emit accepted();
-    this->close();
-}
-
-void TimerDialog::on_buttonBox_rejected() {
     this->close();
 }
