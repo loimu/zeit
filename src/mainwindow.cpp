@@ -304,31 +304,35 @@ void MainWindow::deleteEntry() {
         cron->removeVariable(var);
         cron->save();
     }
-    if(ui->actionCommands->isChecked()) {
+    if(ui->actionCommands->isChecked())
         commands->deleteCommand(index);
-    }
     refresh();
 }
 
 void MainWindow::viewTasks() {
+    ui->menuAdd->setTitle(tr("Task"));
     ui->actionAddEntry->setText(tr("Add Task"));
     ui->actionModifyEntry->setText(tr("Modify Task"));
     ui->actionDeleteEntry->setText(tr("Delete Task"));
     ui->actionSystem->setEnabled(true);
     showTasks();
     refreshActions(false);
+    ui->listWidget->setToolTip(tr("crontab tasks, running periodically"));
 }
 
 void MainWindow::viewVariables() {
+    ui->menuAdd->setTitle(tr("Variable"));
     ui->actionAddEntry->setText(tr("Add Variable"));
     ui->actionModifyEntry->setText(tr("Modify Variable"));
     ui->actionDeleteEntry->setText(tr("Delete Variable"));
     ui->actionSystem->setEnabled(true);
     showVariables();
     refreshActions(false);
+    ui->listWidget->setToolTip(tr("environment variables for crontab"));
 }
 
 void MainWindow::viewCommands() {
+    ui->menuAdd->setTitle(tr("Command"));
     ui->actionAddEntry->setText(tr("Add Command"));
     ui->actionModifyEntry->setText(tr("Modify Command"));
     ui->actionDeleteEntry->setText(tr("Delete Command"));
@@ -338,17 +342,18 @@ void MainWindow::viewCommands() {
     commands->refresh();
     showCommands();
     refreshActions(false);
+    ui->listWidget->setToolTip(tr("commands, scheduled to be executed once"));
 }
 
 void MainWindow::showAlarmDialog() {
     CTTask* task = new CTTask(QString(), QString(), cron->userLogin(), false);
-    AlarmDialog *ad = new AlarmDialog(task, this);
+    AlarmDialog* ad = new AlarmDialog(task, this);
     ad->show();
     connect(ad, &AlarmDialog::accepted, this, &MainWindow::addTask);
 }
 
 void MainWindow::showTimerDialog() {
-    TimerDialog *td = new TimerDialog(commands, this);
+    TimerDialog* td = new TimerDialog(commands, this);
     td->show();
     connect(td, &TimerDialog::accepted, this, &MainWindow::refresh);
 }
