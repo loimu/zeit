@@ -77,11 +77,11 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget* parent) :
     ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
                                          QStringLiteral("document-open")));
     /* dialog actions */
-    connect(ui->pushButtonCurrent, &QPushButton::released, [=] {
+    connect(ui->pushButtonCurrent, &QPushButton::released, this, [=] {
         ui->spinBoxHours->setValue(QTime::currentTime().hour());
         ui->spinBoxMinutes->setValue(QTime::currentTime().minute());
     });
-    connect(ui->pushButtonReset, &QPushButton::released, [=] {
+    connect(ui->pushButtonReset, &QPushButton::released, this, [=] {
         ui->spinBoxHours->setValue(0);
         ui->spinBoxMinutes->setValue(0);
     });
@@ -104,15 +104,15 @@ void TimerDialog::save() {
         showError(tr("Soundfile field should not be empty"));
         return;
     }
-    QString command = QString(QStringLiteral("%1 \"%2\" & "))
+    QString command = QString(QStringLiteral("%1 \"%2\""))
             .arg(ui->lineEditPlayer->text(), ui->lineEditSoundFile->text());
     if(ui->checkBox->isChecked())
-        command.append(QString(QStringLiteral("notify-send Timer \"%1\""))
+        command.append(QString(QStringLiteral(" & notify-send Timer \"%1\""))
                        .arg(ui->lineEditComment->text()));
     QString time = QString(QStringLiteral("%1:%2"))
             .arg(ui->spinBoxHours->value())
             .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
-    commands->addCommand(command, time);
+    commands->addCommand(command.toLocal8Bit(), time);
     emit accepted();
     this->close();
 }

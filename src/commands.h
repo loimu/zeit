@@ -39,7 +39,7 @@ public:
     Commands();
     ~Commands();
     void refresh();
-    void addCommand(QString command, QString time);
+    void addCommand(const QByteArray &command, const QString &time);
     void deleteCommand(int index);
     QList<Command>* getCommands();
 };

@@ -22,6 +22,7 @@
 
 #include "commands.h"
 
+
 Commands::Commands() : commands(new QList<Command>),
     map(new QMap<QString, QString>)
 {
@@ -54,12 +55,11 @@ void Commands::refresh() {
     }
 }
 
-void Commands::addCommand(QString command, QString time) {
-    command.replace("\"", "\\\""); // escape all double quotes
-    QString cmdline = QString(
-                QStringLiteral("echo \"%1\" | at %2")).arg(command, time);
+void Commands::addCommand(const QByteArray& command, const QString& time) {
     QProcess p;
-    p.start(QStringLiteral("bash"), QStringList{QStringLiteral("-c"), cmdline});
+    p.start(QStringLiteral("at"), QStringList{time});
+    p.write(command);
+    p.closeWriteChannel();
     p.waitForFinished();
     QString output = QString::fromUtf8(p.readAllStandardError());
     QRegExp match(QStringLiteral("job\\s(\\d+)\\s(.*)"));
