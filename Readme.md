@@ -1,5 +1,5 @@
 # Zeit project
- A Qt frontend for `crontab` and `at`
+ Qt frontend to `crontab` and `at`
 
 ### Features: ###
 * Add, edit and delete `crontab` tasks
@@ -18,7 +18,7 @@ make -j2
 ### Screenshot ###
 ![Screenshot of the Zeit app](https://lh3.googleusercontent.com/-Ju_EuEcBNcY/V63bFFcrWJI/AAAAAAAAAiQ/Uz0SAuiMpTgs0ncY5B988chnFboTqRgpQCL0B/s0/zeit.png)
 
-### Installation on Ubuntu: ###
+### Installation on Ubuntu ###
 ```
 sudo add-apt-repository ppa:blaze/main
 sudo apt update
