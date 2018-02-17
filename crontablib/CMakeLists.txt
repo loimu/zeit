@@ -40,10 +40,7 @@ set(crontablib_HDRS
 
 add_library(crontab SHARED ${crontablib_SRCS})
 
-target_link_libraries(crontab
-    Qt5::Core
-    Qt5::Widgets
-)
+target_link_libraries(crontab Qt5::Core)
 target_compile_features(crontab PRIVATE cxx_lambdas cxx_nullptr cxx_unicode_literals)
 set_target_properties(crontab PROPERTIES VERSION ${CRONTAB_V} SOVERSION ${VERSION_MAJOR})
 
