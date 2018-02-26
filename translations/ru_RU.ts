@@ -103,12 +103,12 @@
         <translation>Новый будильник</translation>
     </message>
     <message>
-        <location filename="../src/alarmdialog.cpp" line="101"/>
+        <location filename="../src/alarmdialog.cpp" line="104"/>
         <source>Player field should not be empty</source>
         <translation>Поле Плеер не должно быть пустым</translation>
     </message>
     <message>
-        <location filename="../src/alarmdialog.cpp" line="105"/>
+        <location filename="../src/alarmdialog.cpp" line="108"/>
         <source>Soundfile field should not be empty</source>
         <translation>Поле Зв. файл не должно быть пустым</translation>
     </message>
@@ -127,37 +127,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../crontablib/ctcron.cpp" line="275"/>
+        <location filename="../crontablib/ctcron.cpp" line="277"/>
         <source>&lt;em&gt;No output.&lt;/em&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../crontablib/ctcron.cpp" line="281"/>
+        <location filename="../crontablib/ctcron.cpp" line="283"/>
         <source>&lt;em&gt;No error.&lt;/em&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../crontablib/ctcron.cpp" line="287"/>
+        <location filename="../crontablib/ctcron.cpp" line="289"/>
         <source>&lt;p&gt;&lt;strong&gt;Command:&lt;/strong&gt; %1&lt;/p&gt;&lt;strong&gt;Command could not be started&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../crontablib/ctcron.cpp" line="289"/>
+        <location filename="../crontablib/ctcron.cpp" line="293"/>
         <source>&lt;p&gt;&lt;strong&gt;Command:&lt;/strong&gt; %1&lt;/p&gt;&lt;strong&gt;Standard Output :&lt;/strong&gt;&lt;pre&gt;%2&lt;/pre&gt;&lt;strong&gt;Error Output :&lt;/strong&gt;&lt;pre&gt;%3&lt;/pre&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../crontablib/ctcron.cpp" line="291"/>
+        <location filename="../crontablib/ctcron.cpp" line="300"/>
         <source>An error occurred while updating crontab.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../crontablib/ctcron.cpp" line="298"/>
+        <location filename="../crontablib/ctcron.cpp" line="309"/>
         <source>Unable to open crontab file for writing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../crontablib/ctcron.cpp" line="298"/>
+        <location filename="../crontablib/ctcron.cpp" line="310"/>
         <source>The file %1 could not be opened.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -527,57 +527,57 @@ Check the crontab man page for further details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="249"/>
+        <location filename="../crontablib/cttask.cpp" line="250"/>
         <source>every %1</source>
         <comment>Every &apos;days of week&apos;</comment>
         <translation>каждые %1</translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="253"/>
+        <location filename="../crontablib/cttask.cpp" line="254"/>
         <source>%1 of %2</source>
         <comment>&apos;Days of month&apos; of &apos;Months&apos;</comment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="264"/>
+        <location filename="../crontablib/cttask.cpp" line="267"/>
         <source>every day </source>
         <translation>каждый день </translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="275"/>
+        <location filename="../crontablib/cttask.cpp" line="278"/>
         <source>%1 as well as %2</source>
         <comment>1:Day of month, 2:Day of week</comment>
         <translation>%1 при этом %2</translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="305"/>
+        <location filename="../crontablib/cttask.cpp" line="310"/>
         <source>%1:%2</source>
         <comment>1:Hour, 2:Minute</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="314"/>
+        <location filename="../crontablib/cttask.cpp" line="320"/>
         <source>, and </source>
         <translation>, и </translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="316"/>
+        <location filename="../crontablib/cttask.cpp" line="322"/>
         <source> and </source>
         <translation> и </translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="319"/>
+        <location filename="../crontablib/cttask.cpp" line="325"/>
         <source>, </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="325"/>
+        <location filename="../crontablib/cttask.cpp" line="331"/>
         <source>at %1</source>
         <comment>Hour::Minute list</comment>
         <translation>в %1</translation>
     </message>
     <message>
-        <location filename="../crontablib/cttask.cpp" line="332"/>
+        <location filename="../crontablib/cttask.cpp" line="338"/>
         <source>Every minute</source>
         <comment>Every minute</comment>
         <translation>каждую минуту</translation>
@@ -688,7 +688,7 @@ Check the crontab man page for further details.</source>
         <translation>Новая команда</translation>
     </message>
     <message>
-        <location filename="../src/commanddialog.cpp" line="63"/>
+        <location filename="../src/commanddialog.cpp" line="65"/>
         <source>Command field should not be empty</source>
         <translation>Поле Команда не должно быть пустым</translation>
     </message>
@@ -751,11 +751,6 @@ Check the crontab man page for further details.</source>
         <translation>&amp;Изменить элемент</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="197"/>
-        <source>Refresh</source>
-        <translation>Обновить</translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="129"/>
         <source>&amp;Timer</source>
         <translation>&amp;Таймер</translation>
@@ -791,77 +786,106 @@ Check the crontab man page for further details.</source>
         <translation>&amp;Системный режим</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="215"/>
+        <location filename="../src/mainwindow.ui" line="197"/>
+        <source>&amp;Refresh</source>
+        <translation>О&amp;бновить</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="242"/>
         <source>New Task</source>
         <translation>Новое задание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="222"/>
+        <location filename="../src/mainwindow.cpp" line="249"/>
         <source>New Variable</source>
         <translation>Новая переменная</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="253"/>
+        <location filename="../src/mainwindow.cpp" line="278"/>
         <source>Edit Variable</source>
         <translation>Изменить переменную</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="290"/>
         <source>Deleting Entry</source>
         <translation>Удалить элемент</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="290"/>
         <source>Delete entry?</source>
         <translation>Удалить элемент?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="301"/>
+        <location filename="../src/mainwindow.cpp" line="313"/>
+        <location filename="../src/mainwindow.cpp" line="317"/>
         <source>Add Task</source>
         <translation>Новое Задание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="303"/>
+        <location filename="../src/mainwindow.cpp" line="315"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
         <source>Delete Task</source>
         <translation>Удалить задание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="310"/>
+        <location filename="../src/mainwindow.cpp" line="323"/>
+        <source>crontab tasks, running periodically</source>
+        <translation>Задания crontab, выполняются периодически</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="327"/>
+        <location filename="../src/mainwindow.cpp" line="331"/>
         <source>Add Variable</source>
         <translation>Новая Переменная</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="311"/>
+        <location filename="../src/mainwindow.cpp" line="328"/>
+        <location filename="../src/mainwindow.cpp" line="332"/>
         <source>Modify Variable</source>
         <translation>Изменить переменную</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="312"/>
+        <location filename="../src/mainwindow.cpp" line="329"/>
+        <location filename="../src/mainwindow.cpp" line="333"/>
         <source>Delete Variable</source>
         <translation>Удалить переменную</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="337"/>
+        <source>environment variables for crontab</source>
+        <translation>Переменные окружения для crontab</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="341"/>
+        <location filename="../src/mainwindow.cpp" line="345"/>
         <source>Add Command</source>
         <translation>Новая Команда</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="320"/>
+        <location filename="../src/mainwindow.cpp" line="342"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>Modify Command</source>
         <translation>Изменить команду</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="321"/>
+        <location filename="../src/mainwindow.cpp" line="343"/>
+        <location filename="../src/mainwindow.cpp" line="347"/>
         <source>Delete Command</source>
         <translation>Удалить команду</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="302"/>
+        <location filename="../src/mainwindow.cpp" line="354"/>
+        <source>commands, scheduled to be executed once</source>
+        <translation>Команды, выполняются один раз</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="314"/>
+        <location filename="../src/mainwindow.cpp" line="318"/>
         <source>Modify Task</source>
         <translation>Изменить задание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="243"/>
+        <location filename="../src/mainwindow.cpp" line="269"/>
         <source>Edit Task</source>
         <translation>Изменить задание</translation>
     </message>
@@ -869,19 +893,19 @@ Check the crontab man page for further details.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="111"/>
+        <location filename="../src/mainwindow.cpp" line="143"/>
         <source>Command: %1
 </source>
         <translation>Команда: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="112"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="114"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Runs </source>
         <comment>Runs at &apos;period described&apos;</comment>
         <translation>Выполняется </translation>
@@ -975,17 +999,17 @@ Check the crontab man page for further details.</source>
         <translation>Примеры допустимого ввода:&lt;br/&gt;&lt;b&gt;*&lt;/b&gt; – все элементы включены&lt;br/&gt;&lt;b&gt;3&lt;/b&gt; – один элемент включен&lt;br/&gt;&lt;b&gt;1,2,5&lt;/b&gt; – последовательность трех элементов&lt;br/&gt;&lt;b&gt;2-7&lt;/b&gt; – диапазон от 2 до 7&lt;br/&gt;&lt;b&gt;3-15/2&lt;/b&gt; – диапазон от 3 до 15 с шагом 2&lt;br/&gt;&lt;b&gt;3-15,18,21&lt;/b&gt; – сочетание приведенного выше</translation>
     </message>
     <message>
-        <location filename="../src/taskdialog.cpp" line="72"/>
+        <location filename="../src/taskdialog.cpp" line="77"/>
         <source>New Task</source>
         <translation>Новое задание</translation>
     </message>
     <message>
-        <location filename="../src/taskdialog.cpp" line="151"/>
+        <location filename="../src/taskdialog.cpp" line="156"/>
         <source>Command field should not be empty</source>
         <translation>Поле Команда не должно быть пустым</translation>
     </message>
     <message>
-        <location filename="../src/taskdialog.cpp" line="158"/>
+        <location filename="../src/taskdialog.cpp" line="163"/>
         <source>Invalid input in </source>
         <translation>Недопустимый ввод в </translation>
     </message>
@@ -1082,12 +1106,12 @@ Check the crontab man page for further details.</source>
         <translation>Комментарий:</translation>
     </message>
     <message>
-        <location filename="../src/variabledialog.cpp" line="48"/>
+        <location filename="../src/variabledialog.cpp" line="52"/>
         <source>Variable field should not be empty</source>
         <translation>Поле Переменная не должно быть пустым</translation>
     </message>
     <message>
-        <location filename="../src/variabledialog.cpp" line="52"/>
+        <location filename="../src/variabledialog.cpp" line="56"/>
         <source>Invalid variable name</source>
         <translation>Недопустимое имя переменной</translation>
     </message>
