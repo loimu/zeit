@@ -1,0 +1,6 @@
+ v0.4.0
+  - codebase rewritten in C++14 standard, code simplified
+  - dialog windows were sligthly redesigned and improved
+  - fix for the issue with excessive quoting of Command and Timer entries
+  - workaround for KDE bug when the icon text is not being set
+  - minor fixes and improvements
