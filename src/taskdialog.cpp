@@ -99,13 +99,13 @@ void TaskDialog::setUnit(CTUnit& unit, const QString& token) {
     if(token != QStringLiteral("*")) {
         for(int i = unit.minimum(); i <= unit.maximum(); i++)
             unit.setEnabled(i, false);
-        for(QString& string : token.split(QLatin1Char(','))) {
+        for(QString& string : token.split(QChar::fromLatin1(','))) {
             /* range detection and interpretation procedure */
-            QStringList subStrings = string.split(QLatin1Char('-'));
+            QStringList subStrings = string.split(QChar::fromLatin1('-'));
             int beg = subStrings.at(0).toInt();
             if(subStrings.size() > 1) {
                 QStringList subSubStrings = subStrings.at(1)
-                        .split(QLatin1Char('/'));
+                        .split(QChar::fromLatin1('/'));
                 int end = subSubStrings.at(0).toInt();
                 int step = subSubStrings.size() > 1
                         ? subSubStrings.at(1).toInt() : 1;
