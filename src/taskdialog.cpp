@@ -24,8 +24,8 @@
 TaskDialog::TaskDialog(CTTask* _ctTask,
                        const QString& _caption, QWidget *parent) :
     BaseEditDialog(parent),
-    ui(new Ui::TaskDialog),
-    task(_ctTask)
+    task(_ctTask),
+    ui(new Ui::TaskDialog)
 {
     ui->setupUi(this);
     ui->errorLabel->setVisible(false);

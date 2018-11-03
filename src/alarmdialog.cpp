@@ -28,8 +28,8 @@
 
 AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
     BaseEditDialog(parent),
-    ui(new Ui::AlarmDialog),
-    task(_ctTask)
+    task(_ctTask),
+    ui(new Ui::AlarmDialog)
 {
     ui->setupUi(this);
     ui->errorLabel->setVisible(false);
