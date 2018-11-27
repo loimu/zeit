@@ -29,7 +29,7 @@ public:
 	/**
 	 * Constructs from a tokenized string.
 	 */
-	CTMonth(const QString& tokStr = QLatin1String(""));
+	explicit CTMonth(const QString& tokStr = QLatin1String(""));
 
 	/**
 	 * Get natural language description.

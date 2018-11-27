@@ -28,7 +28,7 @@ public:
 	/**
 	 * Constructs from a tokenized string.
 	 */
-	CTDayOfWeek(const QString& tokStr = QLatin1String(""));
+	explicit CTDayOfWeek(const QString& tokStr = QLatin1String(""));
 
 	/**
 	 * Override initialize to support crontab using both 0 and 7 for

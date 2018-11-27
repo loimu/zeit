@@ -23,7 +23,7 @@ public:
 	/**
 	 * Constructs from a tokenized string.
 	 */
-	CTMinute(const QString& tokStr);
+	explicit CTMinute(const QString& tokStr);
 
 	CTMinute();
 	

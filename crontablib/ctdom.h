@@ -28,7 +28,7 @@ public:
 	/**
 	 * Constructs from a tokenized string.
 	 */
-	CTDayOfMonth(const QString& tokStr = QLatin1String(""));
+	explicit CTDayOfMonth(const QString& tokStr = QLatin1String(""));
 
 	/**
 	 * Get natural language description.

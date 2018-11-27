@@ -31,7 +31,7 @@ protected:
     void showError(const QString& errorMsg);
 
 public:
-    BaseEditDialog(QWidget *parent = nullptr);
+    explicit BaseEditDialog(QWidget *parent = nullptr);
 };
 
 #endif // BASEEDITDIALOG_H
