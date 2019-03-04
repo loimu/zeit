@@ -24,14 +24,8 @@
 
 class AboutDialog : public BaseDialog
 {
-    Q_OBJECT
-
 public:
     explicit AboutDialog(QWidget *parent = nullptr);
-    ~AboutDialog() { emit destroyed(true); }
-
-signals:
-    void destroyed(bool);
 };
 
 #endif // ABOUTDIALOG_H

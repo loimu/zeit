@@ -372,5 +372,5 @@ void MainWindow::showAboutDialog() {
     AboutDialog* about = new AboutDialog(this);
     about->show();
     connect(about, &AboutDialog::destroyed,
-            ui->actionAbout, &QAction::setEnabled);
+            this, [this] { ui->actionAbout->setEnabled(true); });
 }
