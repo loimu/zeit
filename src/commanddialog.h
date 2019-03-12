@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2018 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2019 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
