@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>462</width>
-    <height>156</height>
+    <width>460</width>
+    <height>184</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,7 +62,7 @@
          <item>
           <widget class="QSpinBox" name="spinBoxHours">
            <property name="suffix">
-            <string> hrs</string>
+            <string> hr</string>
            </property>
            <property name="prefix">
             <string/>
@@ -75,7 +75,7 @@
          <item>
           <widget class="QSpinBox" name="spinBoxMinutes">
            <property name="suffix">
-            <string> mins</string>
+            <string> min</string>
            </property>
            <property name="prefix">
             <string/>
