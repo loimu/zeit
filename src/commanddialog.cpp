@@ -71,7 +71,7 @@ void CommandDialog::save() {
                        .arg(ui->lineEditComment->text()));
     QString time = QString(QStringLiteral("%1:%2"))
             .arg(ui->spinBoxHours->value())
-            .arg(ui->spinBoxMinutes->value(), 2, 10, QChar('0'));
+            .arg(ui->spinBoxMinutes->value(), 2, 10, QChar::fromLatin1('0'));
     commands->addCommand(command.toLocal8Bit(), time);
     emit accepted();
     this->close();
