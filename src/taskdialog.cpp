@@ -53,6 +53,7 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     ui->editMonth->setToolTip(helpToolTip);
     ui->commandEdit->setText(task->command); // fill form fields
     ui->commentEdit->setText(task->comment);
+    ui->enabledCheckBox->setChecked(task->enabled);
     init();
     /* switch modes */
     connect(ui->radioAdvanced, &QRadioButton::clicked,
@@ -172,6 +173,7 @@ void TaskDialog::save() {
     setUnit(task->dayOfMonth, ui->editDay->text());
     setUnit(task->dayOfWeek, ui->editWeekday->text());
     setUnit(task->month, ui->editMonth->text());
+    task->enabled = ui->enabledCheckBox->isChecked();
     emit accepted(task);
     this->close();
 }
