@@ -36,6 +36,7 @@ VariableDialog::VariableDialog(CTVariable* _ctVar,
     ui->varEdit->setText(variable->variable);
     ui->valEdit->setText(variable->value);
     ui->commentEdit->setText(variable->comment);
+    ui->enabledCheckBox->setChecked(variable->enabled);
     /* dialog actions */
     connect(ui->buttonBox, &QDialogButtonBox::accepted,
             this, &VariableDialog::save);
@@ -59,6 +60,7 @@ void VariableDialog::save() {
     variable->variable = ui->varEdit->text();
     variable->value = ui->valEdit->text();
     variable->comment = ui->commentEdit->text();
+    variable->enabled = ui->enabledCheckBox->isChecked();
     emit accepted(variable);
     this->close();
 }
