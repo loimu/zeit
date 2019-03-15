@@ -79,9 +79,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->actionTasks->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
     ui->actionCommands->setActionGroup(group);
-    connect(ui->listWidget,
-            &QListWidget::itemClicked, this, [=] (QListWidgetItem* item) {
-        refreshActions(item->isSelected()); });
+    ui->listWidget->addAction(ui->actionModifyEntry);
+    ui->listWidget->addAction(ui->actionDeleteEntry);
+    ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidget, &QListWidget::itemSelectionChanged, this, [this] {
+        refreshActions(ui->listWidget->currentItem()->isSelected());
+    });
     connect(ui->listWidget, &QListWidget::itemDoubleClicked,
             this, &MainWindow::toggleItem);
     // Main menu
