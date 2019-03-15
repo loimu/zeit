@@ -48,7 +48,6 @@ class MainWindow : public QMainWindow
     void selectUser(bool system);
     void refresh();
     void addTask(CTTask* task);
-    void toggleItem(QListWidgetItem*);
     /* Main menu */
     void addEntry();
     void modifyEntry();

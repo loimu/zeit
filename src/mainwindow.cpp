@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
         refreshActions(ui->listWidget->currentItem()->isSelected());
     });
     connect(ui->listWidget, &QListWidget::itemDoubleClicked,
-            this, &MainWindow::toggleItem);
+            this, &MainWindow::modifyEntry);
     // Main menu
     connect(ui->actionAddEntry, &QAction::triggered,
             this, &MainWindow::addEntry);
@@ -212,30 +212,6 @@ void MainWindow::addTask(CTTask* task) {
     cron->addTask(task);
     cron->save();
     refresh();
-}
-
-void MainWindow::toggleItem(QListWidgetItem* item) {
-    int index = ui->listWidget->currentRow();
-    if(index < 0)
-        return;
-    bool enabled = false;
-    if(ui->actionTasks->isChecked()) {
-        CTTask* task = cron->tasks().at(index);
-        enabled = task->enabled = !task->enabled;
-    }
-    if(ui->actionVariables->isChecked()) {
-        CTVariable* var = cron->variables().at(index);
-        enabled = var->enabled = !var->enabled;
-    }
-    cron->save();
-    if(enabled)
-        item->setIcon(QIcon::fromTheme(
-                          QStringLiteral("dialog-ok-apply"),
-                          QIcon(QStringLiteral(":/icons/dialog-ok-apply"))));
-    else
-        item->setIcon(QIcon::fromTheme(
-                          QStringLiteral("edit-delete"),
-                          QIcon(QStringLiteral(":/icons/edit-delete"))));
 }
 
 void MainWindow::addEntry() {
