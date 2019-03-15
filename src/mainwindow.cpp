@@ -75,10 +75,28 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->mainToolBar->addAction(ui->actionDeleteEntry);
     ui->mainToolBar->addAction(ui->actionAlarm);
     ui->mainToolBar->addAction(ui->actionTimer);
-    QActionGroup* group = new QActionGroup(this);
+    auto group = new QActionGroup(this);
     ui->actionTasks->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
     ui->actionCommands->setActionGroup(group);
+    toggleItemAction = new QAction(this);
+    toggleItemAction->setText(tr("To&ggle"));
+    toggleItemAction->setShortcut(QStringLiteral("Ctrl+G"));
+    connect(toggleItemAction, &QAction::triggered, this, [this] {
+        int index = ui->listWidget->currentRow();
+        if(ui->actionTasks->isChecked()) {
+            CTTask* task = cron->tasks().at(index);
+            task->enabled = !task->enabled;
+            cron->save();
+        }
+        if(ui->actionVariables->isChecked()) {
+            CTVariable* var = cron->variables().at(index);
+            var->enabled = !var->enabled;
+            cron->save();
+        }
+        refresh();
+    });
+    ui->listWidget->addAction(toggleItemAction);
     ui->listWidget->addAction(ui->actionModifyEntry);
     ui->listWidget->addAction(ui->actionDeleteEntry);
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -86,7 +104,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
         refreshActions(ui->listWidget->currentItem()->isSelected());
     });
     connect(ui->listWidget, &QListWidget::itemDoubleClicked,
-            this, &MainWindow::modifyEntry);
+            toggleItemAction, &QAction::trigger);
     // Main menu
     connect(ui->actionAddEntry, &QAction::triggered,
             this, &MainWindow::addEntry);
@@ -128,6 +146,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::refreshActions(bool enabled) {
+    toggleItemAction->setDisabled(ui->actionCommands->isChecked() || !enabled);
     bool currentUser = cron->isCurrentUserCron();
     ui->actionAddEntry->setEnabled(currentUser);
     ui->actionModifyEntry->setEnabled((currentUser && enabled)

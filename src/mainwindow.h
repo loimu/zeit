@@ -41,6 +41,7 @@ class MainWindow : public QMainWindow
     CTCron* cron;
     Ui::MainWindow *ui;
     Commands* commands;
+    QAction* toggleItemAction;
     void refreshActions(bool);
     void showTasks();
     void showVariables();
