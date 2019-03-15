@@ -43,6 +43,7 @@ class MainWindow : public QMainWindow
     Commands* commands;
     QAction* toggleItemAction;
     void refreshActions(bool);
+    void setIcon(QListWidgetItem* item, bool enabled);
     void showTasks();
     void showVariables();
     void showCommands();

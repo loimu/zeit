@@ -35,6 +35,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#define QSL QStringLiteral
+
+
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui(new Ui::MainWindow),
     commands(new Commands())
@@ -43,28 +46,24 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->statusBar->hide();
     ui->mainToolBar->setMovable(false);
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    ui->actionAddEntry->setIcon(
-                QIcon::fromTheme(QStringLiteral("document-new"),
-                                 QIcon(QStringLiteral(
-                                           ":/icons/document-new"))));
-    ui->actionModifyEntry->setIcon(
-                QIcon::fromTheme(QStringLiteral("document-edit"),
-                                 QIcon(QStringLiteral(
-                                           ":/icons/document-edit"))));
-    ui->actionDeleteEntry->setIcon(
-                QIcon::fromTheme(QStringLiteral("document-close"),
-                                 QIcon(QStringLiteral(
-                                           ":/icons/document-close"))));
-    ui->actionQuit->setIcon(
-                QIcon::fromTheme(QStringLiteral("application-exit"),
-                                 QIcon(QStringLiteral(
-                                           ":/icons/application-exit"))));
-    ui->actionAlarm->setIcon(
-                QIcon::fromTheme(QStringLiteral("chronometer"),
-                                 QIcon(QStringLiteral(":/icons/chronometer"))));
-    ui->actionTimer->setIcon(
-                QIcon::fromTheme(QStringLiteral("player-time"),
-                                 QIcon(QStringLiteral(":/icons/player-time"))));
+    ui->actionAddEntry->setIcon(QIcon::fromTheme(
+                                    QStringLiteral("document-new"),
+                                    QIcon(QSL(":/icons/document-new"))));
+    ui->actionModifyEntry->setIcon(QIcon::fromTheme(
+                                       QStringLiteral("document-edit"),
+                                       QIcon(QSL(":/icons/document-edit"))));
+    ui->actionDeleteEntry->setIcon(QIcon::fromTheme(
+                                       QStringLiteral("document-close"),
+                                       QIcon(QSL(":/icons/document-close"))));
+    ui->actionQuit->setIcon(QIcon::fromTheme(
+                                QStringLiteral("application-exit"),
+                                QIcon(QSL(":/icons/application-exit"))));
+    ui->actionAlarm->setIcon(QIcon::fromTheme(
+                                 QStringLiteral("chronometer"),
+                                 QIcon(QSL(":/icons/chronometer"))));
+    ui->actionTimer->setIcon(QIcon::fromTheme(
+                                 QStringLiteral("player-time"),
+                                 QIcon(QSL(":/icons/player-time"))));
     /* init crontab host */
     CTInitializationError error;
     ctHost = new CTHost(QStringLiteral("crontab"), error);
@@ -88,13 +87,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             CTTask* task = cron->tasks().at(index);
             task->enabled = !task->enabled;
             cron->save();
+            setIcon(ui->listWidget->item(index), task->enabled);
         }
         if(ui->actionVariables->isChecked()) {
             CTVariable* var = cron->variables().at(index);
             var->enabled = !var->enabled;
             cron->save();
+            setIcon(ui->listWidget->item(index), var->enabled);
         }
-        refresh();
     });
     ui->listWidget->addAction(toggleItemAction);
     ui->listWidget->addAction(ui->actionModifyEntry);
@@ -114,13 +114,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             this, &MainWindow::deleteEntry);
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     // View menu
-    connect(ui->actionRefresh, &QAction::triggered, this, [=] {
+    connect(ui->actionRefresh, &QAction::triggered, this, [this] {
         if(ui->actionCommands->isChecked())
             commands->refresh();
-        refresh(); });
-    connect(ui->actionSystem, &QAction::triggered, this, [=] (bool check) {
+        refresh();
+    });
+    connect(ui->actionSystem, &QAction::triggered, this, [this] (bool check) {
         selectUser(check);
-        refresh(); });
+        refresh();
+    });
     connect(ui->actionTasks, &QAction::triggered, this, &MainWindow::viewTasks);
     connect(ui->actionVariables, &QAction::triggered,
             this, &MainWindow::viewVariables);
@@ -156,27 +158,22 @@ void MainWindow::refreshActions(bool enabled) {
     ui->actionTimer->setEnabled(currentUser);
 }
 
+void MainWindow::setIcon(QListWidgetItem* item, bool enabled) {
+    QString icon = enabled ? QSL("dialog-ok-apply") : QSL("edit-delete");
+    item->setIcon(QIcon::fromTheme(icon, QIcon(QSL(":/icons/") + icon)));
+}
+
 void MainWindow::showTasks() {
     ui->listWidget->setEnabled(cron->isCurrentUserCron());
     ui->listWidget->clear();
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
-        QString text;
-        text.append(QObject::tr("Command: %1\n").arg(task->command));
-        text.append(QObject::tr("Description")
-                    + QString(": %1\n").arg(task->comment));
-        text.append(QObject::tr("Runs ", "Runs at 'period described'")
-                    + task->describe());
+        QString text = tr("Command: %1\n").arg(task->command);
+        text.append(tr("Description: %1\n").arg(task->comment));
+        text.append(tr("Runs %1",
+                       "Runs at 'period described'").arg(task->describe()));
         item->setText(text);
-        if(task->enabled)
-            item->setIcon(QIcon::fromTheme(
-                              QStringLiteral("dialog-ok-apply"),
-                              QIcon(
-                                  QStringLiteral(":/icons/dialog-ok-apply"))));
-        else
-            item->setIcon(QIcon::fromTheme(
-                              QStringLiteral("edit-delete"),
-                              QIcon(QStringLiteral(":/icons/edit-delete"))));
+        setIcon(item, task->enabled);
         ui->listWidget->addItem(item);
     }
 }
@@ -186,19 +183,12 @@ void MainWindow::showVariables() {
     ui->listWidget->clear();
     for(CTVariable* var : cron->variables()) {
         QListWidgetItem* item = new QListWidgetItem();
-        QString comment = !var->comment.isEmpty() ? QLatin1String("## ")
-                        + var->comment + QLatin1String("\n") : QString();
-        item->setText(comment + var->variable
-                      + QLatin1String("=") + var->value);
-        if(var->enabled)
-            item->setIcon(QIcon::fromTheme(
-                              QStringLiteral("dialog-ok-apply"),
-                              QIcon(
-                                  QStringLiteral(":/icons/dialog-ok-apply"))));
-        else
-            item->setIcon(QIcon::fromTheme(
-                              QStringLiteral("edit-delete"),
-                              QIcon(QStringLiteral(":/icons/edit-delete"))));
+        item->setText(QString(QStringLiteral("%1%2=%3"))
+                      .arg(var->comment.isEmpty()
+                           ? QString()
+                           : QString(QSL("## %s\n")).arg(var->comment),
+                           var->variable, var->value));
+        setIcon(item, var->enabled);
         ui->listWidget->addItem(item);
     }
 }
@@ -246,10 +236,11 @@ void MainWindow::addEntry() {
                                          QString(), cron->userLogin());
         VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
         vd->show();
-        connect(vd, &VariableDialog::accepted, this, [=] {
+        connect(vd, &VariableDialog::accepted, this, [this, var] {
             cron->addVariable(var);
             cron->save();
-            refresh(); });
+            refresh();
+        });
     }
     if(ui->actionCommands->isChecked()) {
         CommandDialog* cd = new CommandDialog(commands, this);
@@ -260,25 +251,25 @@ void MainWindow::addEntry() {
 
 void MainWindow::modifyEntry() {
     int index = ui->listWidget->currentRow();
-    if(index < 0)
-        return;
     if(ui->actionTasks->isChecked()) {
         CTTask* task = cron->tasks().at(index);
         TaskDialog* td = new TaskDialog(task, tr("Edit Task"), this);
         td->show();
-        connect(td, &TaskDialog::accepted, this, [=] {
+        connect(td, &TaskDialog::accepted, this, [this, task] {
             cron->modifyTask(task);
             cron->save();
-            refresh(); });
+            refresh();
+        });
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = cron->variables().at(index);
         VariableDialog* vd = new VariableDialog(var, tr("Edit Variable"), this);
         vd->show();
-        connect(vd, &VariableDialog::accepted, this, [=] {
+        connect(vd, &VariableDialog::accepted, this, [this, var] {
             cron->modifyVariable(var);
             cron->save();
-            refresh(); });
+            refresh();
+        });
     }
 }
 
@@ -290,8 +281,6 @@ void MainWindow::deleteEntry() {
     if(reply == QMessageBox::No)
         return;
     int index = ui->listWidget->currentRow();
-    if(index < 0)
-        return;
     if(ui->actionTasks->isChecked()) {
         CTTask* task = cron->tasks().at(index);
         cron->removeTask(task);
