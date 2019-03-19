@@ -175,8 +175,9 @@ void MainWindow::showTasks() {
     ui->listWidget->clear();
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
-        QString text = tr("Command: %1\n").arg(task->command);
-        text.append(tr("Description: %1\n").arg(task->comment));
+        QString text;
+        text.append(tr("Command: %1\n"
+                       "Description: %2\n").arg(task->command, task->comment));
         text.append(tr("Runs %1",
                        "Runs at 'period described'").arg(task->describe()));
         item->setText(text);
