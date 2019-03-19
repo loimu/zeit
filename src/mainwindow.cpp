@@ -223,20 +223,18 @@ void MainWindow::selectUser(bool system) {
     cron = system ? ctHost->findSystemCron() : ctHost->findCurrentUserCron();
 }
 
-void MainWindow::addTask(CTTask* task) {
-    cron->addTask(task);
-    cron->save();
-    if(ui->actionTasks->isChecked())
-        showTasks();
-}
-
 void MainWindow::addEntry() {
     if(ui->actionTasks->isChecked()) {
         CTTask* task = new CTTask(QString(), QString(),
                                   cron->userLogin(), false);
         TaskDialog *td = new TaskDialog(task, tr("New Task"), this);
         td->show();
-        connect(td, &TaskDialog::accepted, this, &MainWindow::addTask);
+        connect(td, &TaskDialog::accepted, this, [this, task] {
+            cron->addTask(task);
+            cron->save();
+            if(ui->actionTasks->isChecked())
+                showTasks();
+        });
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = new CTVariable(QString(),
@@ -246,7 +244,8 @@ void MainWindow::addEntry() {
         connect(vd, &VariableDialog::accepted, this, [this, var] {
             cron->addVariable(var);
             cron->save();
-            showVariables();
+            if(ui->actionVariables->isChecked())
+                showVariables();
         });
     }
     if(ui->actionCommands->isChecked()) {
@@ -292,18 +291,15 @@ void MainWindow::deleteEntry() {
         CTTask* task = cron->tasks().at(index);
         cron->removeTask(task);
         cron->save();
-        showTasks();
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = cron->variables().at(index);
         cron->removeVariable(var);
         cron->save();
-        showVariables();
     }
-    if(ui->actionCommands->isChecked()) {
+    if(ui->actionCommands->isChecked())
         commands->deleteCommand(index);
-        showCommands();
-    }
+    ui->actionRefresh->trigger();
 }
 
 void MainWindow::viewTasks() {
@@ -352,7 +348,12 @@ void MainWindow::showAlarmDialog() {
     CTTask* task = new CTTask(QString(), QString(), cron->userLogin(), false);
     AlarmDialog* ad = new AlarmDialog(task, this);
     ad->show();
-    connect(ad, &AlarmDialog::accepted, this, &MainWindow::addTask);
+    connect(ad, &AlarmDialog::accepted, this, [this, task] {
+        cron->addTask(task);
+        cron->save();
+        if(ui->actionTasks->isChecked())
+            showTasks();
+    });
 }
 
 void MainWindow::showTimerDialog() {
