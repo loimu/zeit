@@ -158,8 +158,9 @@ void TaskDialog::save() {
         return;
     }
     QRegExp rx(QStringLiteral("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"));
-    for(QLineEdit* le : QVector<QLineEdit*> { ui->editMinute, ui->editHour,
-        ui->editDay, ui->editWeekday, ui->editMonth }) {
+    const QVector<QLineEdit*>& leVector { ui->editMinute, ui->editHour,
+                ui->editDay, ui->editWeekday, ui->editMonth };
+    for(QLineEdit* le : leVector) {
         if(!rx.exactMatch(le->text())) {
             showError(tr("Invalid input in ") + le->objectName());
             return;
