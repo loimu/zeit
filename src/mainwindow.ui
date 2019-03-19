@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>799</width>
-    <height>258</height>
+    <width>793</width>
+    <height>303</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,30 @@
     <item>
      <widget class="QListWidget" name="listWidget"/>
     </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLineEdit" name="filterEdit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="placeholderText">
+         <string>Filter…</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="hideFilterButton">
+        <property name="text">
+         <string>Hide</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -29,7 +53,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>799</width>
+     <width>793</width>
      <height>30</height>
     </rect>
    </property>
@@ -66,6 +90,8 @@
     <addaction name="actionTasks"/>
     <addaction name="actionVariables"/>
     <addaction name="actionCommands"/>
+    <addaction name="separator"/>
+    <addaction name="actionShowFilter"/>
    </widget>
    <addaction name="menuAdd"/>
    <addaction name="menuView"/>
@@ -80,7 +106,6 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout">
    <property name="text">
     <string>&amp;About</string>
@@ -198,6 +223,20 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionShowFilter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Filter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
  </widget>

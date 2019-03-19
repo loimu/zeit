@@ -43,9 +43,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     commands(new Commands())
 {
     ui->setupUi(this);
-    ui->statusBar->hide();
     ui->mainToolBar->setMovable(false);
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    ui->filterEdit->setVisible(ui->actionShowFilter->isChecked());
+    ui->hideFilterButton->setVisible(ui->actionShowFilter->isChecked());
     ui->actionAddEntry->setIcon(QIcon::fromTheme(
                                     QStringLiteral("document-new"),
                                     QIcon(QSL(":/icons/document-new"))));
@@ -105,6 +106,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     });
     connect(ui->listWidget, &QListWidget::itemDoubleClicked,
             toggleItemAction, &QAction::trigger);
+    connect(ui->hideFilterButton, &QPushButton::released,
+            ui->actionShowFilter, &QAction::toggle);
     // Main menu
     connect(ui->actionAddEntry, &QAction::triggered,
             this, &MainWindow::addEntry);
@@ -128,6 +131,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             this, &MainWindow::viewVariables);
     connect(ui->actionCommands, &QAction::triggered,
             this, &MainWindow::viewCommands);
+    connect(ui->actionShowFilter, &QAction::toggled, this, [this] (bool check) {
+       ui->filterEdit->setVisible(check);
+       ui->hideFilterButton->setVisible(check);
+    });
     // Tools menu
     connect(ui->actionAlarm, &QAction::triggered,
             this, &MainWindow::showAlarmDialog);
@@ -181,7 +188,7 @@ void MainWindow::showTasks() {
 void MainWindow::showVariables() {
     ui->listWidget->setEnabled(cron->isCurrentUserCron());
     ui->listWidget->clear();
-    for(CTVariable* var : cron->variables()) {
+    for(CTVariable* var: cron->variables()) {
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(QString(QStringLiteral("%1%2=%3"))
                       .arg(var->comment.isEmpty()
