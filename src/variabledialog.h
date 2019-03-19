@@ -40,9 +40,7 @@ public:
     explicit VariableDialog(CTVariable*,
                             const QString&, QWidget* parent = nullptr);
     ~VariableDialog();
-
-signals:
-    void accepted(CTVariable* variable);
+    Q_SIGNAL void accepted();
 };
 
 #endif // VARIABLEDIALOG_H

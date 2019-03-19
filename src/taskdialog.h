@@ -46,9 +46,7 @@ class TaskDialog : public BaseEditDialog
 public:
     explicit TaskDialog(CTTask*, const QString&, QWidget* parent = nullptr);
     ~TaskDialog();
-
-signals:
-    void accepted(CTTask* task);
+    Q_SIGNAL void accepted();
 };
 
 #endif // TASKDIALOG_H

@@ -61,6 +61,6 @@ void VariableDialog::save() {
     variable->value = ui->valEdit->text();
     variable->comment = ui->commentEdit->text();
     variable->enabled = ui->enabledCheckBox->isChecked();
-    emit accepted(variable);
+    emit accepted();
     this->close();
 }

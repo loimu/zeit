@@ -174,6 +174,6 @@ void TaskDialog::save() {
     setUnit(task->dayOfWeek, ui->editWeekday->text());
     setUnit(task->month, ui->editMonth->text());
     task->enabled = ui->enabledCheckBox->isChecked();
-    emit accepted(task);
+    emit accepted();
     this->close();
 }

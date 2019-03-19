@@ -40,9 +40,7 @@ class AlarmDialog : public BaseEditDialog
 public:
     explicit AlarmDialog(CTTask*, QWidget* parent = nullptr);
     ~AlarmDialog();
-
-signals:
-    void accepted(CTTask* task);
+    Q_SIGNAL void accepted();
 };
 
 #endif // ALARMDIALOG_H

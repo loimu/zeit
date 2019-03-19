@@ -125,6 +125,6 @@ void AlarmDialog::save() {
         task->dayOfMonth.setEnabled(dm, true);
     for(int mo = CTMonth::MINIMUM; mo <= CTMonth::MAXIMUM; mo++)
         task->month.setEnabled(mo, true);
-    emit accepted(task);
+    emit accepted();
     this->close();
 }
