@@ -48,7 +48,6 @@ class MainWindow : public QMainWindow
     void showVariables();
     void showCommands();
     void selectUser(bool system);
-    void refresh();
     void addTask(CTTask* task);
     /* Main menu */
     void addEntry();

@@ -118,13 +118,18 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     // View menu
     connect(ui->actionRefresh, &QAction::triggered, this, [this] {
-        if(ui->actionCommands->isChecked())
+        if(ui->actionTasks->isChecked())
+            showTasks();
+        if(ui->actionVariables->isChecked())
+            showVariables();
+        if(ui->actionCommands->isChecked()) {
             commands->refresh();
-        refresh();
+            showCommands();
+        }
     });
     connect(ui->actionSystem, &QAction::triggered, this, [this] (bool check) {
         selectUser(check);
-        refresh();
+        ui->actionRefresh->trigger();
     });
     connect(ui->actionTasks, &QAction::triggered, this, &MainWindow::viewTasks);
     connect(ui->actionVariables, &QAction::triggered,
@@ -184,6 +189,7 @@ void MainWindow::showTasks() {
         setIcon(item, task->enabled);
         ui->listWidget->addItem(item);
     }
+    refreshActions(false);
 }
 
 void MainWindow::showVariables() {
@@ -194,11 +200,12 @@ void MainWindow::showVariables() {
         item->setText(QString(QStringLiteral("%1%2=%3"))
                       .arg(var->comment.isEmpty()
                            ? QString()
-                           : QString(QSL("## %s\n")).arg(var->comment),
+                           : QString(QSL("## %1\n")).arg(var->comment),
                            var->variable, var->value));
         setIcon(item, var->enabled);
         ui->listWidget->addItem(item);
     }
+    refreshActions(false);
 }
 
 void MainWindow::showCommands() {
@@ -209,26 +216,18 @@ void MainWindow::showCommands() {
                     c.description + QLatin1String("\nCommand: ") + c.command);
         ui->listWidget->addItem(item);
     }
+    refreshActions(false);
 }
 
 void MainWindow::selectUser(bool system) {
     cron = system ? ctHost->findSystemCron() : ctHost->findCurrentUserCron();
 }
 
-void MainWindow::refresh() {
-    if(ui->actionTasks->isChecked())
-        showTasks();
-    if(ui->actionVariables->isChecked())
-        showVariables();
-    if(ui->actionCommands->isChecked())
-        showCommands();
-    refreshActions(false);
-}
-
 void MainWindow::addTask(CTTask* task) {
     cron->addTask(task);
     cron->save();
-    refresh();
+    if(ui->actionTasks->isChecked())
+        showTasks();
 }
 
 void MainWindow::addEntry() {
@@ -247,13 +246,13 @@ void MainWindow::addEntry() {
         connect(vd, &VariableDialog::accepted, this, [this, var] {
             cron->addVariable(var);
             cron->save();
-            refresh();
+            showVariables();
         });
     }
     if(ui->actionCommands->isChecked()) {
         CommandDialog* cd = new CommandDialog(commands, this);
         cd->show();
-        connect(cd, &CommandDialog::accepted, this, &MainWindow::refresh);
+        connect(cd, &CommandDialog::accepted, this, &MainWindow::showCommands);
     }
 }
 
@@ -266,7 +265,7 @@ void MainWindow::modifyEntry() {
         connect(td, &TaskDialog::accepted, this, [this, task] {
             cron->modifyTask(task);
             cron->save();
-            refresh();
+            showTasks();
         });
     }
     if(ui->actionVariables->isChecked()) {
@@ -276,7 +275,7 @@ void MainWindow::modifyEntry() {
         connect(vd, &VariableDialog::accepted, this, [this, var] {
             cron->modifyVariable(var);
             cron->save();
-            refresh();
+            showVariables();
         });
     }
 }
@@ -293,15 +292,18 @@ void MainWindow::deleteEntry() {
         CTTask* task = cron->tasks().at(index);
         cron->removeTask(task);
         cron->save();
+        showTasks();
     }
     if(ui->actionVariables->isChecked()) {
         CTVariable* var = cron->variables().at(index);
         cron->removeVariable(var);
         cron->save();
+        showVariables();
     }
-    if(ui->actionCommands->isChecked())
+    if(ui->actionCommands->isChecked()) {
         commands->deleteCommand(index);
-    refresh();
+        showCommands();
+    }
 }
 
 void MainWindow::viewTasks() {
@@ -314,7 +316,6 @@ void MainWindow::viewTasks() {
     ui->actionDeleteEntry->setIconText(tr("Delete Task"));
     ui->actionSystem->setEnabled(true);
     showTasks();
-    refreshActions(false);
     ui->listWidget->setToolTip(tr("crontab tasks, running periodically"));
 }
 
@@ -328,7 +329,6 @@ void MainWindow::viewVariables() {
     ui->actionDeleteEntry->setIconText(tr("Delete Variable"));
     ui->actionSystem->setEnabled(true);
     showVariables();
-    refreshActions(false);
     ui->listWidget->setToolTip(tr("environment variables for crontab"));
 }
 
@@ -345,7 +345,6 @@ void MainWindow::viewCommands() {
     ui->actionSystem->setEnabled(false);
     commands->refresh();
     showCommands();
-    refreshActions(false);
     ui->listWidget->setToolTip(tr("commands, scheduled to be executed once"));
 }
 
@@ -359,7 +358,10 @@ void MainWindow::showAlarmDialog() {
 void MainWindow::showTimerDialog() {
     TimerDialog* td = new TimerDialog(commands, this);
     td->show();
-    connect(td, &TimerDialog::accepted, this, &MainWindow::refresh);
+    connect(td, &TimerDialog::accepted, this, [this] {
+        if(ui->actionCommands->isChecked())
+            showCommands();
+    });
 }
 
 void MainWindow::showAboutDialog() {
