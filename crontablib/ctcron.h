@@ -125,9 +125,9 @@ public:
 	 */
 	CTCron& operator =(const CTCron& source);
 	
-	virtual QList<CTTask*> tasks() const;
+    virtual const QList<CTTask*> tasks() const;
 	
-	virtual QList<CTVariable*> variables() const;
+    virtual const QList<CTVariable*> variables() const;
 	
 	virtual void addTask(CTTask* task);
 	virtual void addVariable(CTVariable* variable);

@@ -381,11 +381,11 @@ QString CTCron::path() const {
 
 }
 
-QList<CTTask*> CTCron::tasks() const {
+const QList<CTTask*> CTCron::tasks() const {
 	return d->task;
 }
 
-QList<CTVariable*> CTCron::variables() const {
+const QList<CTVariable*> CTCron::variables() const {
 	return d->variable;
 }
 

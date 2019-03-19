@@ -34,7 +34,7 @@ CTGlobalCron::~CTGlobalCron() {
 
 }
 
-QList<CTTask*> CTGlobalCron::tasks() const {
+const QList<CTTask*> CTGlobalCron::tasks() const {
 	logDebug() << "Global Cron Tasks" << endl;
 	QList<CTTask*> tasks;
 	
@@ -49,7 +49,7 @@ QList<CTTask*> CTGlobalCron::tasks() const {
 	return tasks;
 }
 
-QList<CTVariable*> CTGlobalCron::variables() const {
+const QList<CTVariable*> CTGlobalCron::variables() const {
 	logDebug() << "Global Cron Variables" << endl;
 	QList<CTVariable*> variables;
 	
