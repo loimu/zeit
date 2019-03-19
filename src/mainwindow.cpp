@@ -264,7 +264,8 @@ void MainWindow::modifyEntry() {
         connect(td, &TaskDialog::accepted, this, [this, task] {
             cron->modifyTask(task);
             cron->save();
-            showTasks();
+            if(ui->actionTasks->isChecked())
+                showTasks();
         });
     }
     if(ui->actionVariables->isChecked()) {
@@ -274,7 +275,8 @@ void MainWindow::modifyEntry() {
         connect(vd, &VariableDialog::accepted, this, [this, var] {
             cron->modifyVariable(var);
             cron->save();
-            showVariables();
+            if(ui->actionVariables->isChecked())
+                showVariables();
         });
     }
 }
