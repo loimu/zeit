@@ -145,6 +145,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             this, &MainWindow::showAlarmDialog);
     connect(ui->actionTimer, &QAction::triggered,
             this, &MainWindow::showTimerDialog);
+    connect(ui->filterEdit, &QLineEdit::textEdited,
+            this, [this] (const QString& text) {
+        for(int i = 0; i < ui->listWidget->count(); i++) {
+            QListWidgetItem* item = ui->listWidget->item(i);
+            item->setHidden(!item->text().contains(text, Qt::CaseInsensitive));
+        }
+    });
     // Help menu
     connect(ui->actionAbout, &QAction::triggered,
             this, &MainWindow::showAboutDialog);
