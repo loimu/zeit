@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     ui->filterEdit->setVisible(ui->actionShowFilter->isChecked());
     ui->hideFilterButton->setVisible(ui->actionShowFilter->isChecked());
+    ui->hideFilterButton->setShortcut(Qt::Key_Escape);
+    ui->hideFilterButton->setShortcutEnabled(true);
     ui->actionAddEntry->setIcon(QIcon::fromTheme(
                                     QStringLiteral("document-new"),
                                     QIcon(QSL(":/icons/document-new"))));
