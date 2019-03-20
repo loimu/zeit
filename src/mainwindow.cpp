@@ -141,8 +141,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     connect(ui->actionShowFilter, &QAction::toggled, this, [this] (bool check) {
        ui->filterEdit->setVisible(check);
        ui->hideFilterButton->setVisible(check);
-       if(check)
-        ui->filterEdit->setFocus();
+       if(check) {
+           ui->filterEdit->setFocus();
+       } else {
+           ui->filterEdit->clear();
+           emit ui->filterEdit->textEdited(QString());
+       }
     });
     // Tools menu
     connect(ui->actionAlarm, &QAction::triggered,
