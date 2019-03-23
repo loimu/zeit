@@ -22,6 +22,4 @@
 
 #cmakedefine BUILD_HELPER
 
-#define ZEIT_V "@ZEIT_V@"
-
 #endif // CONFIG_H_IN

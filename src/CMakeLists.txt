@@ -46,3 +46,7 @@ target_compile_features(zeit PRIVATE cxx_lambdas cxx_nullptr cxx_unicode_literal
 
 install(TARGETS zeit RUNTIME DESTINATION bin)
 install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/zeit/translations)
+
+if(BUILD_HELPER)
+  add_subdirectory(helper)
+endif()

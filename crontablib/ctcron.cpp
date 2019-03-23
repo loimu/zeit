@@ -9,6 +9,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "config.h"
 #include "ctcron.h"
 
 #include <QRegExp>
@@ -17,6 +18,11 @@
 #include <QTextStream>
 #include <QProcess>
 #include <QDateTime>
+
+#ifdef BUILD_HELPER
+  #include <KAuthAction>
+  #include <KAuthExecuteJob>
+#endif // BUILD_HELPER
 
 #include "cttask.h"
 #include "ctvariable.h"
@@ -27,35 +33,55 @@
 
 #include "logging.h"
 
-CommandLineStatus CommandLine::execute() {
-	QProcess process;
+CommandLineStatus CommandLine::execute(bool root) {
 
-	if (standardOutputFile.isEmpty() == false)
-		process.setStandardOutputFile(standardOutputFile);
+#ifdef BUILD_HELPER
+    if(root) {
+        QVariantMap args;
+        args["source"] = parameters.at(0);
+        args["destination"] = standardOutputFile;
+        qDebug() << parameters.at(0);
+        qDebug() << standardOutputFile;
+        KAuth::Action saveAction("local.zeithelper.save");
+        saveAction.setHelperId("local.zeithelper");
+        saveAction.setArguments(args);
+        KAuth::ExecuteJob* job = saveAction.execute();
+        if(!job->exec())
+            qDebug() << "KAuth returned an error: " << job->error()
+                     << job->errorString() << job->errorText();
+    }
+#endif // BUILD_HELPER
 
-	int exitCode;
-	process.start(commandLine, parameters);
-	if (!process.waitForStarted()) {
-		exitCode = 127;
-	} else {
-		process.waitForFinished(-1);
-		exitCode = process.exitCode();
-	}
+    QProcess process;
+    if (standardOutputFile.isEmpty() == false)
+        process.setStandardOutputFile(standardOutputFile);
+    process.start(commandLine, parameters);
+    int exitCode;
+    if (!process.waitForStarted()) {
+        exitCode = 127;
+    } else {
+        process.waitForFinished(-1);
+        exitCode = process.exitCode();
+    }
 
 	CommandLineStatus commandLineStatus;
-
-	commandLineStatus.commandLine = commandLine + QLatin1String( " " ) + parameters.join(QLatin1String( " " ));
+    commandLineStatus.commandLine = commandLine + QLatin1String(" ")
+            + parameters.join(QLatin1String(" "));
 	if (standardOutputFile.isEmpty() == false)
-		commandLineStatus.commandLine += QLatin1String( " > " ) + standardOutputFile;
-
-	commandLineStatus.standardOutput = QLatin1String( process.readAllStandardOutput() );
-	commandLineStatus.standardError = QLatin1String( process.readAllStandardError() );
+        commandLineStatus.commandLine += QLatin1String(" > ")
+                + standardOutputFile;
+    commandLineStatus.standardOutput = QLatin1String(
+                process.readAllStandardOutput());
+    commandLineStatus.standardError = QLatin1String(
+                process.readAllStandardError());
 	commandLineStatus.exitCode = exitCode;
-
 	return commandLineStatus;
 }
 
-CTCron::CTCron(const QString& crontabBinary, const struct passwd* userInfos, bool currentUserCron, CTInitializationError& ctInitializationError) :
+CTCron::CTCron(const QString& crontabBinary,
+               const struct passwd* userInfos,
+               bool currentUserCron,
+               CTInitializationError& ctInitializationError) :
 	d(new CTCronPrivate()) {
 
     Q_ASSERT(userInfos != nullptr);
@@ -103,7 +129,7 @@ CTCron::CTCron(const QString& crontabBinary, const struct passwd* userInfos, boo
 	}
 
 	// Don't set error if it can't be read, it means the user doesn't have a crontab.
-	CommandLineStatus commandLineStatus = readCommandLine.execute();
+    CommandLineStatus commandLineStatus = readCommandLine.execute(false);
 	if (commandLineStatus.exitCode == 0) {
 		this->parseFile(d->tmpFileName);
 	}
@@ -304,13 +330,13 @@ CTSaveStatus CTCron::prepareSaveStatusError(const CommandLineStatus& commandLine
 CTSaveStatus CTCron::save() {
 	// write to temp file
 	bool saveStatus = saveToFile(d->tmpFileName);
-	if (saveStatus == false) {
+    if (saveStatus == false) {
         return CTSaveStatus(
                     tr("Unable to open crontab file for writing"),
                     tr("The file %1 could not be opened.").arg(d->tmpFileName));
 	}
 
-	CommandLineStatus commandLineStatus = d->writeCommandLine.execute();
+    CommandLineStatus commandLineStatus = d->writeCommandLine.execute(d->systemCron);
 	// install temp file into crontab
 	if (commandLineStatus.exitCode != 0) {
 		QFile::remove(d->tmpFileName);

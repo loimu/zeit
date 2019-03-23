@@ -176,7 +176,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::refreshActions(bool enabled) {
     toggleItemAction->setDisabled(ui->actionCommands->isChecked() || !enabled);
-    bool currentUser = cron->isCurrentUserCron();
+    bool currentUser = cron->isCurrentUserCron() || cron->isSystemCron();
     ui->actionAddEntry->setEnabled(currentUser);
     ui->actionModifyEntry->setEnabled((currentUser && enabled)
                                       && !ui->actionCommands->isChecked());
@@ -191,7 +191,7 @@ void MainWindow::setIcon(QListWidgetItem* item, bool enabled) {
 }
 
 void MainWindow::showTasks() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron());
+    ui->listWidget->setEnabled(cron->isCurrentUserCron() || cron->isSystemCron());
     ui->listWidget->clear();
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
@@ -208,7 +208,7 @@ void MainWindow::showTasks() {
 }
 
 void MainWindow::showVariables() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron());
+    ui->listWidget->setEnabled(cron->isCurrentUserCron() || cron->isSystemCron());
     ui->listWidget->clear();
     for(CTVariable* var: cron->variables()) {
         QListWidgetItem* item = new QListWidgetItem();
