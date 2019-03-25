@@ -38,17 +38,15 @@ CommandLineStatus CommandLine::execute(bool root) {
 #ifdef BUILD_HELPER
     if(root) {
         QVariantMap args;
-        args["source"] = parameters.at(0);
-        args["destination"] = standardOutputFile;
-        qDebug() << parameters.at(0);
-        qDebug() << standardOutputFile;
-        KAuth::Action saveAction("local.zeithelper.save");
-        saveAction.setHelperId("local.zeithelper");
+        args.insert(QLatin1String("source"), parameters.at(0));
+        args.insert(QLatin1String("target"),standardOutputFile);
+        KAuth::Action saveAction(QLatin1String("local.zeit.crontab.save"));
+        saveAction.setHelperId(QLatin1String("local.zeit.crontab"));
         saveAction.setArguments(args);
         KAuth::ExecuteJob* job = saveAction.execute();
         if(!job->exec())
-            qDebug() << "KAuth returned an error: " << job->error()
-                     << job->errorString() << job->errorText();
+            qDebug() << "KAuth returned an error: "
+                     << job->error() << job->errorText();
     }
 #endif // BUILD_HELPER
 
@@ -64,18 +62,18 @@ CommandLineStatus CommandLine::execute(bool root) {
         exitCode = process.exitCode();
     }
 
-	CommandLineStatus commandLineStatus;
+    CommandLineStatus commandLineStatus;
     commandLineStatus.commandLine = commandLine + QLatin1String(" ")
             + parameters.join(QLatin1String(" "));
-	if (standardOutputFile.isEmpty() == false)
+    if (standardOutputFile.isEmpty() == false)
         commandLineStatus.commandLine += QLatin1String(" > ")
                 + standardOutputFile;
     commandLineStatus.standardOutput = QLatin1String(
                 process.readAllStandardOutput());
     commandLineStatus.standardError = QLatin1String(
                 process.readAllStandardError());
-	commandLineStatus.exitCode = exitCode;
-	return commandLineStatus;
+    commandLineStatus.exitCode = exitCode;
+    return commandLineStatus;
 }
 
 CTCron::CTCron(const QString& crontabBinary,

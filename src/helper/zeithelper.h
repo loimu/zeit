@@ -20,16 +20,17 @@
 #ifndef ZEITHELPER_H
 #define ZEITHELPER_H
 
-#include <QObject>
 #include <KAuth>
+
+using namespace KAuth;
 
 
 class ZeitHelper : public QObject
 {
     Q_OBJECT
 
-public:
-    Q_SLOT KAuth::ActionReply save(const QVariantMap& args);
+public Q_SLOTS:
+    ActionReply save(const QVariantMap& args);
 };
 
 #endif // ZEITHELPER_H

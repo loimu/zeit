@@ -39,7 +39,7 @@ set(crontablib_HDRS
 
 add_library(crontab SHARED ${crontablib_SRCS})
 
-target_link_libraries(crontab Qt5::Core Qt5::Gui KF5::AuthCore)
+target_link_libraries(crontab Qt5::Core Qt5::Gui KF5::Auth)
 target_include_directories(crontab PRIVATE ${Qt5Core_INCLUDE_DIRS}
                                            ${Qt5Gui_INCLUDE_DIRS}
                                            "/usr/include/KF5/KAuth"

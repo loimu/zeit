@@ -22,15 +22,15 @@
 #include "zeithelper.h"
 
 
-KAuth::ActionReply ZeitHelper::save(const QVariantMap& args) {
-    qWarning("running actions");
-    QString source = args["source"].toString();
-    QString destination = args["destination"].toString();
+ActionReply ZeitHelper::save(const QVariantMap& args) {
+    qDebug("running actions");
+    QString source = args[QLatin1String("source")].toString();
+    QString destination = args[QLatin1String("target")].toString();
     if(!QFile::remove(destination))
-        qWarning("can't remove file, it doesn't exist");
+        qDebug("can't remove file, it doesn't exist");
     if(!QFile::copy(source, destination))
-        qWarning("can't write into the system file, something went wrong");
-    return KAuth::ActionReply::SuccessReply();
+        qDebug("can't write into the system file, something went wrong");
+    return ActionReply::SuccessReply();
 }
 
-KAUTH_HELPER_MAIN("local.zeithelper", ZeitHelper)
+KAUTH_HELPER_MAIN("local.zeit.crontab", ZeitHelper)

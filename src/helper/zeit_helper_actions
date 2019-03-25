@@ -1,4 +1,0 @@
-[local.zeithelper.save]
-Name=Write Crontab
-Description=Write into the system crontab file
-Policy=auth_admin
