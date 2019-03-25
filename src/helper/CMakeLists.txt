@@ -1,9 +1,7 @@
 
 add_executable(zeit_helper zeithelper.cpp)
 target_link_libraries(zeit_helper KF5::AuthCore)
-target_include_directories(zeit_helper PRIVATE ${Qt5Core_INCLUDE_DIRS}
-                                           "/usr/include/KF5/KAuth"
-                                           "/usr/include/KF5/KCoreAddons")
+target_include_directories(zeit_helper PRIVATE Qt5::Core KF5::Auth)
 
 set(SYSCONF_INSTALL_DIR "/etc")
 set(DBUS_SYSTEM_SERVICES_INSTALL_DIR "share/dbus-1/system-services")

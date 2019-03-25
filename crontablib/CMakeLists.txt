@@ -1,6 +1,3 @@
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
-               ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-
 set(crontablib_SRCS
    cthost.cpp
    ctcron.cpp
@@ -39,12 +36,13 @@ set(crontablib_HDRS
 
 add_library(crontab SHARED ${crontablib_SRCS})
 
-target_link_libraries(crontab Qt5::Core Qt5::Gui KF5::Auth)
-target_include_directories(crontab PRIVATE ${Qt5Core_INCLUDE_DIRS}
-                                           ${Qt5Gui_INCLUDE_DIRS}
-                                           "/usr/include/KF5/KAuth"
-                                           "/usr/include/KF5/KCoreAddons"
-                                           ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(crontab Qt5::Core Qt5::Gui)
+target_include_directories(crontab PRIVATE Qt5::Core Qt5::Gui
+                                           ${CMAKE_CURRENT_BINARY_DIR}/../src)
+if(BUILD_HELPER)
+  target_link_libraries(crontab KF5::AuthCore)
+  target_include_directories(crontab PRIVATE KF5::Auth KF5::CoreAddons)
+endif()
 target_compile_features(crontab PRIVATE cxx_lambdas cxx_nullptr cxx_unicode_literals)
 set_target_properties(crontab PROPERTIES VERSION ${CRONTAB_V} SOVERSION ${VERSION_MAJOR})
 
