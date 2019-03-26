@@ -50,7 +50,7 @@ CTSystemCron::CTSystemCron(const QString& crontabBinary) :
 
 	// Don't set error if it can't be read, it means the user
 	// doesn't have a crontab.
-	if (readCommandLine.execute().exitCode == 0) {
+    if (readCommandLine.execute().exitCode == 0) {
 		this->parseFile(d->tmpFileName);
 	}
 

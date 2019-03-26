@@ -43,7 +43,7 @@ public:
 	
 	QString standardOutputFile;
 	
-	CommandLineStatus execute();
+    CommandLineStatus execute();
 };
 
 class CTCronPrivate {

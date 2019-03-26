@@ -6,6 +6,7 @@
 * Add, edit and delete environment variables for `crontab`
 * Add and delete `at` commands
 * Alarms and Timers
+* Optional root actions, PolKit support (KF5Auth and KF5CoreAddons needed)
 
 ### Build and run ###
 ```bash

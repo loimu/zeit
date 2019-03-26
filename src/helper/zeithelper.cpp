@@ -17,11 +17,20 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#ifndef CONFIG_H_IN
-#define CONFIG_H_IN
+#include <QFile>
 
-#cmakedefine BUILD_HELPER
+#include "zeithelper.h"
 
-#define ZEIT_V "@ZEIT_V@"
 
-#endif // CONFIG_H_IN
+ActionReply ZeitHelper::save(const QVariantMap& args) {
+    qDebug("running actions");
+    QString source = args[QLatin1String("source")].toString();
+    QString destination = args[QLatin1String("target")].toString();
+    if(!QFile::remove(destination))
+        qDebug("can't remove file, it doesn't exist");
+    if(!QFile::copy(source, destination))
+        qDebug("can't write into the system file, something went wrong");
+    return ActionReply::SuccessReply();
+}
+
+KAUTH_HELPER_MAIN("local.zeit.crontab", ZeitHelper)

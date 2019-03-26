@@ -1,0 +1,10 @@
+[Domain]
+Name=Crontab Actions
+Policy=auth_admin
+Persistence=session
+
+[local.zeit.crontab.save]
+Name=Write Crontab
+Description=Write into the system crontab file
+Policy=auth_admin
+Persistence=session

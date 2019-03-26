@@ -17,11 +17,20 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#ifndef CONFIG_H_IN
-#define CONFIG_H_IN
+#ifndef ZEITHELPER_H
+#define ZEITHELPER_H
 
-#cmakedefine BUILD_HELPER
+#include <KAuth>
 
-#define ZEIT_V "@ZEIT_V@"
+using namespace KAuth;
 
-#endif // CONFIG_H_IN
+
+class ZeitHelper : public QObject
+{
+    Q_OBJECT
+
+public Q_SLOTS:
+    ActionReply save(const QVariantMap& args);
+};
+
+#endif // ZEITHELPER_H
