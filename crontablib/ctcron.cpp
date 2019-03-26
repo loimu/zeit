@@ -22,6 +22,10 @@
 #ifdef BUILD_HELPER
   #include <KAuthAction>
   #include <KAuthExecuteJob>
+
+  #define ROOT_ACTIONS d->systemCron
+#else
+  #define ROOT_ACTIONS false
 #endif // BUILD_HELPER
 
 #include "cttask.h"
@@ -33,39 +37,22 @@
 
 #include "logging.h"
 
-CommandLineStatus CommandLine::execute(bool root) {
-
-#ifdef BUILD_HELPER
-    if(root) {
-        QVariantMap args;
-        args.insert(QLatin1String("source"), parameters.at(0));
-        args.insert(QLatin1String("target"),standardOutputFile);
-        KAuth::Action saveAction(QLatin1String("local.zeit.crontab.save"));
-        saveAction.setHelperId(QLatin1String("local.zeit.crontab"));
-        saveAction.setArguments(args);
-        KAuth::ExecuteJob* job = saveAction.execute();
-        if(!job->exec())
-            qDebug() << "KAuth returned an error: "
-                     << job->error() << job->errorText();
-    }
-#endif // BUILD_HELPER
-
+CommandLineStatus CommandLine::execute() {
     QProcess process;
-    if (standardOutputFile.isEmpty() == false)
+    if(!standardOutputFile.isEmpty())
         process.setStandardOutputFile(standardOutputFile);
     process.start(commandLine, parameters);
     int exitCode;
-    if (!process.waitForStarted()) {
+    if(!process.waitForStarted()) {
         exitCode = 127;
     } else {
         process.waitForFinished(-1);
         exitCode = process.exitCode();
     }
-
     CommandLineStatus commandLineStatus;
     commandLineStatus.commandLine = commandLine + QLatin1String(" ")
             + parameters.join(QLatin1String(" "));
-    if (standardOutputFile.isEmpty() == false)
+    if(!standardOutputFile.isEmpty())
         commandLineStatus.commandLine += QLatin1String(" > ")
                 + standardOutputFile;
     commandLineStatus.standardOutput = QLatin1String(
@@ -127,7 +114,7 @@ CTCron::CTCron(const QString& crontabBinary,
 	}
 
 	// Don't set error if it can't be read, it means the user doesn't have a crontab.
-    CommandLineStatus commandLineStatus = readCommandLine.execute(false);
+    CommandLineStatus commandLineStatus = readCommandLine.execute();
 	if (commandLineStatus.exitCode == 0) {
 		this->parseFile(d->tmpFileName);
 	}
@@ -334,30 +321,38 @@ CTSaveStatus CTCron::save() {
                     tr("The file %1 could not be opened.").arg(d->tmpFileName));
 	}
 
-    CommandLineStatus commandLineStatus = d->writeCommandLine.execute(d->systemCron);
-	// install temp file into crontab
-	if (commandLineStatus.exitCode != 0) {
-		QFile::remove(d->tmpFileName);
-		return prepareSaveStatusError(commandLineStatus);
-	}
-	else {
-		//Remove the temp file
-		QFile::remove(d->tmpFileName);
-	}
+#ifdef BUILD_HELPER
+    if(d->systemCron) {
+        QVariantMap args;
+        args.insert(QLatin1String("source"), d->tmpFileName);
+        args.insert(QLatin1String("target"),
+                    d->writeCommandLine.standardOutputFile);
+        KAuth::Action saveAction(QLatin1String("local.zeit.crontab.save"));
+        saveAction.setHelperId(QLatin1String("local.zeit.crontab"));
+        saveAction.setArguments(args);
+        KAuth::ExecuteJob* job = saveAction.execute();
+        if(!job->exec())
+            qDebug() << "KAuth returned an error: "
+                     << job->error() << job->errorText();
+        QFile::remove(d->tmpFileName);
+        if(job->error() > 0)
+            return CTSaveStatus("KAuth::ExecuteJob Error", job->errorText());
+    }
+#endif // BUILD_HELPER
 
-
+    if(!ROOT_ACTIONS) {
+        CommandLineStatus commandLineStatus = d->writeCommandLine.execute();
+        QFile::remove(d->tmpFileName);
+        if(commandLineStatus.exitCode != 0)
+            return prepareSaveStatusError(commandLineStatus);
+    }
 	//Mark as applied
-    for(CTTask* ctTask: d->task) {
+    for(CTTask* ctTask: d->task)
 		ctTask->apply();
-	}
-
-    for(CTVariable* ctVariable: d->variable) {
+    for(CTVariable* ctVariable: d->variable)
 		ctVariable->apply();
-	}
-
 	d->initialTaskCount = d->task.size();
 	d->initialVariableCount = d->variable.size();
-
 	return CTSaveStatus();
 }
 
