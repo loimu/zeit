@@ -21,7 +21,13 @@ make -j2
 
 ### Installation on Ubuntu ###
 ```
+# stable releases
 sudo add-apt-repository ppa:blaze/main
+sudo apt update
+sudo apt install zeit
+
+# development snapshots
+sudo add-apt-repository ppa:blaze/dev
 sudo apt update
 sudo apt install zeit
 ```
