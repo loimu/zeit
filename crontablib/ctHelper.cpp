@@ -14,18 +14,11 @@
 #include <QStringList>
 
 QString CTHelper::exportComment(const QString& comment) {
-	QString exportComment;
-
-	if (comment.isEmpty()) {
-        QString noComment = tr("No comment");
-		exportComment += QLatin1String( "#" ) + noComment + QLatin1String( "\n" );
-		return exportComment;
-	}
-
-	QStringList lines = comment.split(QLatin1String( "\n" ));
-    for(const QString &line: lines) {
-		exportComment += QLatin1String( "#" ) + line + QLatin1String( "\n" );
-	}
-
-	return exportComment;
+    if(comment.isEmpty())
+        return QString();
+    QString result;
+    QStringList lines = comment.split(QChar::fromLatin1('\n'));
+    for(const QString &line: lines)
+        result += QChar::fromLatin1('#') + line + QChar::fromLatin1('\n');
+    return result;
 }
