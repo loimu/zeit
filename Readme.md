@@ -20,7 +20,7 @@ make -j2
 ![Screenshot of the Zeit app](https://lh3.googleusercontent.com/-Ju_EuEcBNcY/V63bFFcrWJI/AAAAAAAAAiQ/Uz0SAuiMpTgs0ncY5B988chnFboTqRgpQCL0B/s0/zeit.png)
 
 ### Installation on Ubuntu ###
-```
+```bash
 # stable releases
 sudo add-apt-repository ppa:blaze/main
 sudo apt update
