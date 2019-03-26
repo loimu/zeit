@@ -17,7 +17,15 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include "config.h"
+
 #include <QMessageBox>
+
+#ifdef BUILD_HELPER
+  #define ROOT_ACTIONS cron->isSystemCron()
+#else
+  #define ROOT_ACTIONS false
+#endif // BUILD_HELPER
 
 #include "cthost.h"
 #include "ctcron.h"
@@ -45,8 +53,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->setupUi(this);
     ui->mainToolBar->setMovable(false);
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    ui->filterEdit->setVisible(ui->actionShowFilter->isChecked());
-    ui->hideFilterButton->setVisible(ui->actionShowFilter->isChecked());
+    ui->filterEdit->hide();
+    ui->hideFilterButton->hide();
+    ui->labelWarning->hide();
     ui->hideFilterButton->setShortcut(Qt::Key_Escape);
     ui->hideFilterButton->setShortcutEnabled(true);
     ui->actionAddEntry->setIcon(QIcon::fromTheme(
@@ -191,7 +200,8 @@ void MainWindow::setIcon(QListWidgetItem* item, bool enabled) {
 }
 
 void MainWindow::showTasks() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron() || cron->isSystemCron());
+    ui->listWidget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
+    ui->labelWarning->setVisible(ROOT_ACTIONS);
     ui->listWidget->clear();
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
@@ -208,7 +218,8 @@ void MainWindow::showTasks() {
 }
 
 void MainWindow::showVariables() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron() || cron->isSystemCron());
+    ui->listWidget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
+    ui->labelWarning->setVisible(ROOT_ACTIONS);
     ui->listWidget->clear();
     for(CTVariable* var: cron->variables()) {
         QListWidgetItem* item = new QListWidgetItem();

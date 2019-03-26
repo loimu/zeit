@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>793</width>
-    <height>303</height>
+    <width>791</width>
+    <height>301</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,28 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="labelWarning">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background:red;color:white;</string>
+      </property>
+      <property name="text">
+       <string>&lt;b&gt;Warning: you are working with system crontab file. Be careful.&lt;/b&gt;</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QListWidget" name="listWidget"/>
     </item>
@@ -53,7 +75,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>793</width>
+     <width>791</width>
      <height>30</height>
     </rect>
    </property>
@@ -233,7 +255,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show Filter</string>
+    <string>Show &amp;Filter</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+F</string>
