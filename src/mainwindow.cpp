@@ -113,7 +113,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->listWidget->addAction(ui->actionDeleteEntry);
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(ui->listWidget, &QListWidget::itemSelectionChanged, this, [this] {
-        refreshActions(ui->listWidget->currentItem()->isSelected());
+        refreshActions(ui->listWidget->currentRow() > -1
+                       && ui->listWidget->currentItem()->isSelected());
     });
     connect(ui->listWidget, &QListWidget::itemDoubleClicked,
             toggleItemAction, &QAction::trigger);
