@@ -235,6 +235,7 @@ void MainWindow::showVariables() {
 }
 
 void MainWindow::showCommands() {
+    ui->labelWarning->hide();
     ui->listWidget->setEnabled(true);
     ui->listWidget->clear();
     for(Command& c : *commands->getCommands()) {
