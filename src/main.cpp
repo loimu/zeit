@@ -36,8 +36,15 @@ int main(int argc, char *argv[])
     QTranslator translator;
     translator.load(QApplication::applicationDirPath() +
                     QLatin1String("/../share/zeit/translations/") +
+                    QLatin1String("zeit_") +
                     QLocale::system().name() + QLatin1String(".qm"));
     a.installTranslator(&translator);
+    QTranslator libTranslator;
+    libTranslator.load(QApplication::applicationDirPath() +
+                       QLatin1String("/../share/zeit/translations/") +
+                       QLatin1String("crontablib_") +
+                       QLocale::system().name() + QLatin1String(".qm"));
+    a.installTranslator(&libTranslator);
     MainWindow w;
     w.show();
     return a.exec();

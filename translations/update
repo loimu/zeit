@@ -1,3 +1,4 @@
 #! /usr/bin/env bash
 
-lupdate -no-obsolete ../src/* ../crontablib/* -ts *.ts
+lupdate -no-obsolete ../src/* -ts zeit_*.ts
+lupdate -no-obsolete ../crontablib/* -ts crontablib_*.ts

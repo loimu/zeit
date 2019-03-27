@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>301</height>
+    <width>789</width>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,7 +75,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>791</width>
+     <width>789</width>
      <height>30</height>
     </rect>
    </property>
@@ -258,7 +258,7 @@
     <string>Show &amp;Filter</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F</string>
+    <string notr="true">Ctrl+F</string>
    </property>
   </action>
  </widget>

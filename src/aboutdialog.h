@@ -24,6 +24,7 @@
 
 class AboutDialog : public BaseDialog
 {
+    Q_OBJECT // for translations
 public:
     explicit AboutDialog(QWidget *parent = nullptr);
 };
