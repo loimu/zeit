@@ -234,12 +234,12 @@ QString CTCron::exportCron() const {
 	QString exportCron;
 
 
-    for(CTVariable* ctVariable: d->variable) {
+    for(CTVariable* ctVariable: d->variables) {
 		exportCron += ctVariable->exportVariable();
 		exportCron += QLatin1String( "\n" );
 	}
 
-    for(CTTask* ctTask: d->task) {
+    for(CTTask* ctTask: d->tasks) {
 		exportCron += ctTask->exportTask();
 		exportCron += QLatin1String( "\n" );
 	}
@@ -254,11 +254,11 @@ QString CTCron::exportCron() const {
 }
 
 CTCron::~CTCron() {
-    for(CTTask* ctTask: d->task) {
+    for(CTTask* ctTask: d->tasks) {
 		delete ctTask;
 	}
 
-    for(CTVariable* ctVariable: d->variable) {
+    for(CTVariable* ctVariable: d->variables) {
 		delete ctVariable;
 	}
 
@@ -347,9 +347,9 @@ CTSaveStatus CTCron::save() {
             return prepareSaveStatusError(commandLineStatus);
     }
 	//Mark as applied
-    for(CTTask* ctTask: d->task)
+    for(CTTask* ctTask: d->tasks)
 		ctTask->apply();
-    for(CTVariable* ctVariable: d->variable)
+    for(CTVariable* ctVariable: d->variables)
 		ctVariable->apply();
 	d->initialTaskCount = d->task.size();
 	d->initialVariableCount = d->variable.size();
@@ -357,11 +357,11 @@ CTSaveStatus CTCron::save() {
 }
 
 void CTCron::cancel() {
-    for(CTTask* ctTask: d->task) {
+    for(CTTask* ctTask: d->tasks) {
 		ctTask->cancel();
 	}
 
-    for(CTVariable* ctVariable: d->variable) {
+    for(CTVariable* ctVariable: d->variables) {
 		ctVariable->cancel();
 	}
 
@@ -374,12 +374,12 @@ bool CTCron::isDirty() const {
 	if (d->initialVariableCount != d->variable.count())
 		return true;
 
-    for(CTTask* ctTask: d->task) {
+    for(CTTask* ctTask: d->tasks) {
 		if (ctTask->dirty())
 		return true;
 	}
 
-    for(CTVariable* ctVariable: d->variable) {
+    for(CTVariable* ctVariable: d->variables) {
 		if (ctVariable->dirty())
 		return true;
 	}
@@ -390,7 +390,7 @@ bool CTCron::isDirty() const {
 QString CTCron::path() const {
 	QString path;
 
-    for(CTVariable* ctVariable: d->variable) {
+    for(CTVariable* ctVariable: d->variables) {
 		if (ctVariable->variable == QLatin1String( "PATH" )) {
 			path = ctVariable->value;
 		}

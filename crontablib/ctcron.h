@@ -77,14 +77,16 @@ public:
 	/**
 	 * User's scheduled tasks.
 	 */
-	QList<CTTask *> task;
+    QList<CTTask*> task;
+    const QList<CTTask*>& tasks = task;
 
 	/**
 	 * User's environment variables.  Note:  These are only environment variables
 	 * found in the user's crontab file and does not include any set in a 
 	 * login or shell script such as ".bash_profile".
 	 */
-	QList<CTVariable *> variable;
+    QList<CTVariable*> variable;
+    const QList<CTVariable*>& variables = variable;
 
 	int initialTaskCount;
 	int initialVariableCount;

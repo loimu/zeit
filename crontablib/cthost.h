@@ -91,6 +91,7 @@ public:
 	 * cron vector.
 	 */
 	QList<CTCron*> crons;
+    const QList<CTCron*>& cronInstances = crons;
 
 private:
 
