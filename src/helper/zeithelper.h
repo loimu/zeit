@@ -24,7 +24,8 @@
 
 using namespace KAuth;
 
-
+// usage of fully qualified type here renders the helper app fully ;) unusable
+// clazy:excludeall=fully-qualified-moc-types
 class ZeitHelper : public QObject
 {
     Q_OBJECT
