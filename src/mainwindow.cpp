@@ -20,6 +20,7 @@
 #include "config.h"
 
 #include <QMessageBox>
+#include <QKeyEvent>
 
 #ifdef BUILD_HELPER
   #define ROOT_ACTIONS cron->isSystemCron()
@@ -56,8 +57,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->filterEdit->hide();
     ui->hideFilterButton->hide();
     ui->labelWarning->hide();
-    ui->hideFilterButton->setShortcut(Qt::Key_Escape);
-    ui->hideFilterButton->setShortcutEnabled(true);
     ui->actionAddEntry->setIcon(QIcon::fromTheme(
                                     QStringLiteral("document-new"),
                                     QIcon(QSL(":/icons/document-new"))));
@@ -120,6 +119,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             toggleItemAction, &QAction::trigger);
     connect(ui->hideFilterButton, &QPushButton::released,
             ui->actionShowFilter, &QAction::toggle);
+    connect(ui->filterEdit, &QLineEdit::textEdited,
+            this, [this] (const QString& text) {
+        for(int i = 0; i < ui->listWidget->count(); i++) {
+            QListWidgetItem* item = ui->listWidget->item(i);
+            item->setHidden(!item->text().contains(text, Qt::CaseInsensitive));
+        }
+    });
     // Main menu
     connect(ui->actionAddEntry, &QAction::triggered,
             this, &MainWindow::addEntry);
@@ -163,13 +169,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             this, &MainWindow::showAlarmDialog);
     connect(ui->actionTimer, &QAction::triggered,
             this, &MainWindow::showTimerDialog);
-    connect(ui->filterEdit, &QLineEdit::textEdited,
-            this, [this] (const QString& text) {
-        for(int i = 0; i < ui->listWidget->count(); i++) {
-            QListWidgetItem* item = ui->listWidget->item(i);
-            item->setHidden(!item->text().contains(text, Qt::CaseInsensitive));
-        }
-    });
     // Help menu
     connect(ui->actionAbout, &QAction::triggered,
             this, &MainWindow::showAboutDialog);
@@ -182,6 +181,11 @@ MainWindow::~MainWindow() {
     delete commands;
     delete ctHost;
     delete ui;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent* e) {
+    if(e->key() == Qt::Key_Escape && ui->filterEdit->isVisible())
+        ui->actionShowFilter->trigger();
 }
 
 void MainWindow::refreshActions(bool enabled) {

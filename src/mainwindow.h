@@ -42,6 +42,7 @@ class MainWindow : public QMainWindow
     Ui::MainWindow *ui;
     Commands* commands;
     QAction* toggleItemAction;
+    void keyPressEvent(QKeyEvent*);
     void refreshActions(bool);
     void setIcon(QListWidgetItem* item, bool enabled);
     void showTasks();
