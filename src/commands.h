@@ -20,28 +20,25 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include <QList>
+#include <QVector>
 #include <QMap>
 
-struct Command {
-    QString description;
-    QString id;
-    QString command;
-};
 
+struct Command {
+    uint id;
+    QString command;
+    QString description;
+};
 
 class Commands
 {
-    QList<Command>* commands;
-    QMap<QString, QString>* map;
+    QVector<Command> commands; // vector of commands taken from atq
+    QMap<uint, QString> map;   // preserves command contents during session
 
 public:
-    Commands();
-    ~Commands();
-    void refresh();
     void addCommand(const QByteArray &command, const QString &time);
     void deleteCommand(int index);
-    QList<Command>* getCommands();
+    const QVector<Command>& getCommands();
 };
 
 #endif // COMMANDS_H

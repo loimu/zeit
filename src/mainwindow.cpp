@@ -140,10 +140,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             showTasks();
         if(ui->actionVariables->isChecked())
             showVariables();
-        if(ui->actionCommands->isChecked()) {
-            commands->refresh();
+        if(ui->actionCommands->isChecked())
             showCommands();
-        }
     });
     connect(ui->actionSystem, &QAction::triggered, this, [this] (bool check) {
         selectUser(check);
@@ -243,7 +241,7 @@ void MainWindow::showCommands() {
     ui->labelWarning->hide();
     ui->listWidget->setEnabled(true);
     ui->listWidget->clear();
-    for(Command& c : *commands->getCommands()) {
+    for(const Command& c: commands->getCommands()) {
         QListWidgetItem* item = new QListWidgetItem(
                     c.description + tr("\nCommand: ") + c.command);
         ui->listWidget->addItem(item);
@@ -373,7 +371,6 @@ void MainWindow::viewCommands() {
     selectUser(false);
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);
-    commands->refresh();
     showCommands();
     ui->listWidget->setToolTip(tr("commands, scheduled to be executed once"));
 }

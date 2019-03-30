@@ -23,19 +23,32 @@
 #include "commands.h"
 
 
-Commands::Commands() : commands(new QList<Command>),
-    map(new QMap<QString, QString>)
-{
-
+void Commands::addCommand(const QByteArray& command, const QString& time) {
+    QProcess p;
+    p.start(QStringLiteral("at"), QStringList{time});
+    p.write(command);
+    p.closeWriteChannel();
+    p.waitForFinished();
+    QString output = QString::fromUtf8(p.readAllStandardError());
+    QRegExp match(QStringLiteral("job\\s(\\d+)\\s(.*)"));
+    match.setMinimal(true);
+    if(match.indexIn(output) > -1) {
+        uint id = match.cap(1).toUInt();
+        map.insert(id, command);
+    }
 }
 
-Commands::~Commands() {
-    delete map;
-    delete commands;
+void Commands::deleteCommand(int index) {
+    QProcess p;
+    p.start(QStringLiteral("atrm"),
+            QStringList{ QString::number(commands.at(index).id) });
+    p.waitForFinished();
+    if(p.readAllStandardError().isEmpty())
+        commands.removeAt(index);
 }
 
-void Commands::refresh() {
-    commands->clear();
+const QVector<Command>& Commands::getCommands() {
+    commands.clear();
     QProcess p;
     p.start(QStringLiteral("atq"));
     p.waitForFinished();
@@ -48,37 +61,10 @@ void Commands::refresh() {
         match.setMinimal(true);
         match.indexIn(entry);
         Command command;
-        command.id = match.cap(1);
+        command.id = match.cap(1).toUInt();
         command.description = match.cap(2);
-        command.command = map->value(command.id, QStringLiteral("n/a"));
-        commands->append(command);
+        command.command = map.value(command.id, QStringLiteral("n/a"));
+        commands.append(command);
     }
-}
-
-void Commands::addCommand(const QByteArray& command, const QString& time) {
-    QProcess p;
-    p.start(QStringLiteral("at"), QStringList{time});
-    p.write(command);
-    p.closeWriteChannel();
-    p.waitForFinished();
-    QString output = QString::fromUtf8(p.readAllStandardError());
-    QRegExp match(QStringLiteral("job\\s(\\d+)\\s(.*)"));
-    match.setMinimal(true);
-    match.indexIn(output);
-    QString id = match.cap(1);
-    if(!id.isEmpty())
-        map->insert(id, command);
-    refresh();
-}
-
-void Commands::deleteCommand(int index) {
-    QProcess p;
-    p.start(QStringLiteral("atrm"), QStringList{commands->at(index).id});
-    p.waitForFinished();
-    if(p.readAllStandardError().isEmpty())
-        commands->removeAt(index);
-}
-
-QList<Command>* Commands::getCommands() {
     return commands;
 }
