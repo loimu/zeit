@@ -290,96 +290,96 @@
         <translation>Показать &amp;фильтр</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="262"/>
+        <location filename="../src/mainwindow.cpp" line="260"/>
         <source>New Task</source>
         <translation>Новое задание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="272"/>
         <source>New Variable</source>
         <translation>Новая переменная</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="305"/>
+        <location filename="../src/mainwindow.cpp" line="303"/>
         <source>Edit Variable</source>
         <translation>Изменить переменную</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="317"/>
         <source>Deleting Entry</source>
         <translation>Удалить элемент</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="317"/>
         <source>Delete entry?</source>
         <translation>Удалить элемент?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="340"/>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="338"/>
+        <location filename="../src/mainwindow.cpp" line="342"/>
         <source>Add Task</source>
         <translation>Новое Задание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="342"/>
-        <location filename="../src/mainwindow.cpp" line="346"/>
+        <location filename="../src/mainwindow.cpp" line="340"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>Delete Task</source>
         <translation>Удалить задание</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="349"/>
+        <location filename="../src/mainwindow.cpp" line="347"/>
         <source>crontab tasks, running periodically</source>
         <translation>Задания crontab, выполняются периодически</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="353"/>
-        <location filename="../src/mainwindow.cpp" line="357"/>
+        <location filename="../src/mainwindow.cpp" line="351"/>
+        <location filename="../src/mainwindow.cpp" line="355"/>
         <source>Add Variable</source>
         <translation>Новая переменная</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="354"/>
-        <location filename="../src/mainwindow.cpp" line="358"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
+        <location filename="../src/mainwindow.cpp" line="356"/>
         <source>Modify Variable</source>
         <translation>Изменить переменную</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="355"/>
-        <location filename="../src/mainwindow.cpp" line="359"/>
+        <location filename="../src/mainwindow.cpp" line="353"/>
+        <location filename="../src/mainwindow.cpp" line="357"/>
         <source>Delete Variable</source>
         <translation>Удалить переменную</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="362"/>
+        <location filename="../src/mainwindow.cpp" line="360"/>
         <source>environment variables for crontab</source>
         <translation>Переменные окружения для crontab</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="366"/>
-        <location filename="../src/mainwindow.cpp" line="370"/>
+        <location filename="../src/mainwindow.cpp" line="364"/>
+        <location filename="../src/mainwindow.cpp" line="368"/>
         <source>Add Command</source>
         <translation>Новая команда</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="367"/>
-        <location filename="../src/mainwindow.cpp" line="371"/>
+        <location filename="../src/mainwindow.cpp" line="365"/>
+        <location filename="../src/mainwindow.cpp" line="369"/>
         <source>Modify Command</source>
         <translation>Изменить команду</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="368"/>
-        <location filename="../src/mainwindow.cpp" line="372"/>
+        <location filename="../src/mainwindow.cpp" line="366"/>
+        <location filename="../src/mainwindow.cpp" line="370"/>
         <source>Delete Command</source>
         <translation>Удалить команду</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="378"/>
+        <location filename="../src/mainwindow.cpp" line="375"/>
         <source>commands, scheduled to be executed once</source>
         <translation>Команды, выполняются один раз</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="341"/>
-        <location filename="../src/mainwindow.cpp" line="345"/>
+        <location filename="../src/mainwindow.cpp" line="339"/>
+        <location filename="../src/mainwindow.cpp" line="343"/>
         <source>Modify Task</source>
         <translation>Изменить задание</translation>
     </message>
@@ -389,7 +389,7 @@
         <translation>&amp;Переключить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="214"/>
+        <location filename="../src/mainwindow.cpp" line="212"/>
         <source>Command: %1
 Description: %2
 </source>
@@ -398,20 +398,20 @@ Description: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="216"/>
+        <location filename="../src/mainwindow.cpp" line="214"/>
         <source>Runs %1</source>
         <comment>Runs at &apos;period described&apos;</comment>
         <translation>Запускается %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="248"/>
+        <location filename="../src/mainwindow.cpp" line="246"/>
         <source>
 Command: </source>
         <translation>
 Команда: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="294"/>
+        <location filename="../src/mainwindow.cpp" line="292"/>
         <source>Edit Task</source>
         <translation>Изменить задание</translation>
     </message>
