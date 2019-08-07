@@ -344,10 +344,6 @@ void MainWindow::viewTasks() {
     ui->actionAddEntry->setText(tr("Add Task"));
     ui->actionModifyEntry->setText(tr("Modify Task"));
     ui->actionDeleteEntry->setText(tr("Delete Task"));
-    // KDEBUG:391002 remove these three calls below once it's fixed
-    ui->actionAddEntry->setIconText(tr("Add Task"));
-    ui->actionModifyEntry->setIconText(tr("Modify Task"));
-    ui->actionDeleteEntry->setIconText(tr("Delete Task"));
     ui->actionSystem->setEnabled(true);
     showTasks();
     ui->listWidget->setToolTip(tr("crontab tasks, running periodically"));
@@ -357,10 +353,6 @@ void MainWindow::viewVariables() {
     ui->actionAddEntry->setText(tr("Add Variable"));
     ui->actionModifyEntry->setText(tr("Modify Variable"));
     ui->actionDeleteEntry->setText(tr("Delete Variable"));
-    // KDEBUG:391002 remove these three calls below once it's fixed
-    ui->actionAddEntry->setIconText(tr("Add Variable"));
-    ui->actionModifyEntry->setIconText(tr("Modify Variable"));
-    ui->actionDeleteEntry->setIconText(tr("Delete Variable"));
     ui->actionSystem->setEnabled(true);
     showVariables();
     ui->listWidget->setToolTip(tr("environment variables for crontab"));
@@ -370,10 +362,6 @@ void MainWindow::viewCommands() {
     ui->actionAddEntry->setText(tr("Add Command"));
     ui->actionModifyEntry->setText(tr("Modify Command"));
     ui->actionDeleteEntry->setText(tr("Delete Command"));
-    // KDEBUG:391002 remove these three calls below once it's fixed
-    ui->actionAddEntry->setIconText(tr("Add Command"));
-    ui->actionModifyEntry->setIconText(tr("Modify Command"));
-    ui->actionDeleteEntry->setIconText(tr("Delete Command"));
     selectUser(false);
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);
