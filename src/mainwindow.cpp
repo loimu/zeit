@@ -21,6 +21,7 @@
 
 #include <QMessageBox>
 #include <QKeyEvent>
+#include <QProcess>
 
 #ifdef BUILD_HELPER
   #define ROOT_ACTIONS cron->isSystemCron()
@@ -79,6 +80,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     CTInitializationError error;
     ctHost = new CTHost(QStringLiteral("crontab"), error);
     selectUser(false);
+    /* check if `at` binary is available */
+    QProcess proc;
+    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("at")});
+    proc.waitForFinished(-1);
+    ui->actionCommands->setDisabled(proc.readAllStandardOutput().isEmpty());
     /* window actions */
     ui->mainToolBar->addAction(ui->actionAddEntry);
     ui->mainToolBar->addAction(ui->actionModifyEntry);
