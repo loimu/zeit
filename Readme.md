@@ -17,7 +17,7 @@ make -j2
 ```
 
 ### Screenshot ###
-![Screenshot of the Zeit app](https://lh3.googleusercontent.com/-Ju_EuEcBNcY/V63bFFcrWJI/AAAAAAAAAiQ/Uz0SAuiMpTgs0ncY5B988chnFboTqRgpQCL0B/s0/zeit.png)
+![Screenshot of the Zeit app](https://raw.githubusercontent.com/loimu/zeit/master/assets/screenshot.png)
 
 ### Installation on Ubuntu ###
 ```bash
