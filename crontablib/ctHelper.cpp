@@ -17,7 +17,7 @@ QString CTHelper::exportComment(const QString& comment) {
     if(comment.isEmpty())
         return QString();
     QString result;
-    QStringList lines = comment.split(QChar::fromLatin1('\n'));
+    const QStringList lines = comment.split(QChar::fromLatin1('\n'));
     for(const QString &line: lines)
         result += QChar::fromLatin1('#') + line + QChar::fromLatin1('\n');
     return result;
