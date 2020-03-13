@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2019 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2020 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
@@ -60,13 +60,13 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
     label->setText(
                 QString(
                     QLatin1String(
-                        "<p><b>Zeit</b> v%1 &copy; 2015-2019 Blaze<br />"
+                        "<p><b>Zeit</b> v%1 &copy; 2015-2020 Blaze<br />"
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
                         "Licensed under GPL v3 or later.</p>"
                         "Project:<br />"
-                        "<a href=\"https://bitbucket.org/blaze/zeit\">"
-                        "https://bitbucket.org/blaze/zeit</a>"))
+                        "<a href=\"https://launchpad.net/zeit\">"
+                        "https://launchpad.net/zeit</a>"))
                 .arg(qApp->applicationVersion(), qVersion(), QT_VERSION_STR));
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
