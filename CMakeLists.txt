@@ -30,6 +30,7 @@ set(CMAKE_AUTOMOC ON)
 
 add_subdirectory(crontablib)
 add_subdirectory(src)
+add_subdirectory(misc)
 
 if(BUILD_TESTS)
   add_subdirectory(tests)
