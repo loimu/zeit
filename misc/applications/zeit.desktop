@@ -2,7 +2,7 @@
 Name=Zeit
 Comment=Qt GUI for crontab and at
 Exec=/usr/bin/zeit
-Icon=zeit
+Icon=chronometer
 Terminal=false
 Type=Application
 Categories=Qt;KDE;Utility;System;Scheduler;
