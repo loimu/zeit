@@ -112,11 +112,15 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment, const QStrin
 }
 
 CTTask::CTTask(const CTTask &source) :
-	month(source.month), dayOfMonth(source.dayOfMonth), dayOfWeek(source.dayOfWeek), hour(source.hour), minute(source.minute), userLogin(source.userLogin), command(source.command), comment(source.comment), enabled(source.enabled), reboot(source.reboot), initialUserLogin(QLatin1String( "" )), initialCommand(QLatin1String( "" )),
-			initialComment(QLatin1String( "" )), initialEnabled(true), initialReboot(false) {
+    month(source.month), dayOfMonth(source.dayOfMonth),
+    dayOfWeek(source.dayOfWeek), hour(source.hour), minute(source.minute),
+    userLogin(source.userLogin),command(source.command),comment(source.comment),
+    enabled(source.enabled), reboot(source.reboot)
+{
+
 }
 
-CTTask& CTTask::operator = (const CTTask& source) {
+CTTask& CTTask::operator= (const CTTask& source) {
 	if (this == &source)
 		return *this;
 
@@ -130,9 +134,9 @@ CTTask& CTTask::operator = (const CTTask& source) {
 	comment = source.comment;
 	enabled = source.enabled;
 	reboot = source.reboot;
-	initialUserLogin = QLatin1String( "" );
-	initialCommand = QLatin1String( "" );
-	initialComment = QLatin1String( "" );
+    initialUserLogin = QString();
+    initialCommand = QString();
+    initialComment = QString();
 	initialEnabled = true;
 	initialReboot = false;
 
@@ -381,7 +385,7 @@ QPair<QString, bool> CTTask::unQuoteCommand() const {
 		if (fullCommand.indexOf(quote) == 0) {
 			int nextQuote = fullCommand.indexOf(quote, 1);
 			if (nextQuote == -1)
-				return QPair<QString, bool>(QLatin1String( "" ), false);
+                return QPair<QString, bool>(QString(), false);
 
 			return QPair<QString, bool>(fullCommand.mid(1, nextQuote-1), true);
 		}
@@ -450,12 +454,13 @@ QStringList CTTask::separatePathCommand(const QString& command, bool quoted) con
 QString CTTask::completeCommandPath() const {
 	QPair<QString, bool> commandQuoted = unQuoteCommand();
 	if (commandQuoted.first.isEmpty())
-		return QLatin1String( "" );
+        return QString();
 
-	QStringList pathCommand = separatePathCommand(commandQuoted.first, commandQuoted.second);
-	if (pathCommand.isEmpty()) {
-		return QLatin1String( "" );
-	}
+    QStringList pathCommand = separatePathCommand(
+                commandQuoted.first, commandQuoted.second);
+    if (pathCommand.isEmpty()) {
+        return QString();
+    }
 
 	return pathCommand.join(QLatin1String( "/" ));
 }

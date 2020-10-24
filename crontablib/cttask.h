@@ -92,7 +92,6 @@ public:
 	QPair<QString, bool> unQuoteCommand() const;
 	QStringList separatePathCommand(const QString& command, bool quoted) const;
 	QString decryptBinaryCommand(const QString& command) const;
-
 	QString completeCommandPath() const;
 
 
@@ -123,17 +122,15 @@ private:
 	QString describeDayOfMonth() const;
 	QString describeDayOfWeek() const;
 	QString describeDateAndHours() const;
-
 	QString createTimeFormat() const;
 	QString createDateFormat() const;
 
 	bool systemCrontab;
-
-	QString initialUserLogin;
-	QString initialCommand;
-	QString initialComment;
-	bool initialEnabled;
-	bool initialReboot;
+    QString initialUserLogin = QString();
+    QString initialCommand = QString();
+    QString initialComment = QString();
+    bool initialEnabled = true;
+    bool initialReboot = false;
 };
 
 #endif // CTTASK_H
