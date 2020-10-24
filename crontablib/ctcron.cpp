@@ -109,7 +109,7 @@ CTCron::CTCron(const QString& crontabBinary,
 
 	if (initializeFromUserInfos(userInfos) == false) {
         ctInitializationError.setErrorMessage(tr("No password entry found for uid '%1'").arg(getuid()));
-		logDebug() << "Error in crontab creation of" << userInfos->pw_name << endl;
+        logDebug() << "Error in crontab creation of" << userInfos->pw_name;
 		return;
 	}
 
@@ -119,9 +119,9 @@ CTCron::CTCron(const QString& crontabBinary,
 		this->parseFile(d->tmpFileName);
 	}
 	else {
-		logDebug() << "Error when executing command" << commandLineStatus.commandLine << endl;
-		logDebug() << "Standard output :" << commandLineStatus.standardOutput << endl;
-		logDebug() << "Standard error :" << commandLineStatus.standardError << endl;
+        logDebug() << "Error when executing command" << commandLineStatus.commandLine;
+        logDebug() << "Standard output :" << commandLineStatus.standardOutput;
+        logDebug() << "Standard error :" << commandLineStatus.standardError;
 	}
 
 	d->initialTaskCount = d->task.size();
@@ -148,7 +148,7 @@ CTCron& CTCron::operator = (const CTCron& source) {
 		return *this;
 
 	if (source.isSystemCron() == true) {
-		logDebug() << "Affect the system cron" << endl;
+        logDebug() << "Affect the system cron";
 	}
 
 	d->variable.clear();
@@ -417,7 +417,7 @@ void CTCron::addTask(CTTask* task) {
 		task->setSystemCrontab(false);
 	}
 
-	logDebug() << "Adding task" << task->comment << " user : "<< task->userLogin << endl;
+    logDebug() << "Adding task" << task->comment << " user : "<< task->userLogin;
 
 	d->task.append(task);
 }
@@ -429,7 +429,7 @@ void CTCron::addVariable(CTVariable* variable) {
 		variable->userLogin = d->userLogin;
 
 
-	logDebug() << "Adding variable" << variable->variable << " user : "<< variable->userLogin << endl;
+    logDebug() << "Adding variable" << variable->variable << " user : "<< variable->userLogin;
 
 	d->variable.append(variable);
 }
