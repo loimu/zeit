@@ -76,7 +76,7 @@
      <x>0</x>
      <y>0</y>
      <width>787</width>
-     <height>30</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAdd">
@@ -114,6 +114,7 @@
     <addaction name="actionCommands"/>
     <addaction name="separator"/>
     <addaction name="actionShowFilter"/>
+    <addaction name="actionWrapText"/>
    </widget>
    <addaction name="menuAdd"/>
    <addaction name="menuView"/>
@@ -259,6 +260,20 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionWrapText">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Wrap Text</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+W</string>
    </property>
   </action>
  </widget>

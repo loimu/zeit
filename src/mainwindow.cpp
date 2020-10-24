@@ -117,6 +117,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->listWidget->addAction(ui->actionModifyEntry);
     ui->listWidget->addAction(ui->actionDeleteEntry);
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ui->listWidget->setWordWrap(ui->actionWrapText->isChecked());
     connect(ui->listWidget, &QListWidget::itemSelectionChanged, this, [this] {
         refreshActions(ui->listWidget->currentRow() > -1
                        && ui->listWidget->currentItem()->isSelected());
@@ -168,6 +169,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
            emit ui->filterEdit->textEdited(QString());
        }
     });
+    connect(ui->actionWrapText, &QAction::toggled,
+            ui->listWidget, &QListWidget::setWordWrap);
     // Tools menu
     connect(ui->actionAlarm, &QAction::triggered,
             this, &MainWindow::showAlarmDialog);
