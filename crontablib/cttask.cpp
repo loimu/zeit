@@ -18,25 +18,26 @@
 
 #include "logging.h"
 
-CTTask::CTTask(const QString& tokenString, const QString& _comment, const QString& _userLogin, bool _systemCrontab) :
+CTTask::CTTask(const QString& tokenString, const QString& _comment,
+               const QString& _userLogin, bool _systemCrontab) :
 	systemCrontab(_systemCrontab) {
 
 	QString tokStr = tokenString;
 	if (tokStr.mid(0, 2) == QLatin1String( "#\\" )) {
 		tokStr = tokStr.mid(2, tokStr.length() - 2);
 		enabled = false;
-	} else if (tokStr.mid(0, 1) == QLatin1String( "#" )) {
+    } else if (tokStr.mid(0, 1) == QChar::fromLatin1('#')) {
 		tokStr = tokStr.mid(1, tokStr.length() - 1);
 		enabled = false;
 	} else
 		enabled = true;
 
 	// Skip over 'silence' if found... old option in vixie cron
-	if (tokStr.mid(0, 1) == QLatin1String( "-" ))
+    if (tokStr.mid(0, 1) == QChar::fromLatin1('-'))
 		tokStr = tokStr.mid(1, tokStr.length() - 1);
 
 	reboot = false;
-	if (tokStr.mid(0, 1) == QLatin1String( "@" )) {
+    if (tokStr.mid(0, 1) == QChar::fromLatin1('@')) {
 		if (tokStr.mid(1, 6) == QLatin1String( "yearly" )) {
 			tokStr = QLatin1String( "0 0 1 1 *" )+tokStr.mid(7, tokStr.length()-1);
 		} else if (tokStr.mid(1, 8) == QLatin1String( "annually" )) {
@@ -145,20 +146,14 @@ CTTask& CTTask::operator= (const CTTask& source) {
 
 QString CTTask::exportTask() {
 	QString exportTask;
-
 	exportTask += CTHelper::exportComment(comment);
-
 	if (enabled == false)
 		exportTask += QLatin1String( "#\\" );
-
 	exportTask += schedulingCronFormat();
-	exportTask += QLatin1String( "\t" );
-
+    exportTask += QChar::fromLatin1('\t');
 	if (isSystemCrontab() == true)
-		exportTask += userLogin + QLatin1String( "\t" );
-
-	exportTask += command + QLatin1String( "\n" );
-
+        exportTask += userLogin + QChar::fromLatin1('\t');
+    exportTask += command + QChar::fromLatin1('\n');
 	return exportTask;
 }
 
@@ -201,11 +196,11 @@ QString CTTask::schedulingCronFormat() const {
 
 	QString scheduling;
 
-	scheduling += minute.exportUnit() + QLatin1String( " " );
-	scheduling += hour.exportUnit() + QLatin1String( " " );
-	scheduling += dayOfMonth.exportUnit() + QLatin1String( " " );
-	scheduling += month.exportUnit() + QLatin1String( " " );
-	scheduling += dayOfWeek.exportUnit();
+    scheduling += minute.exportUnit();
+    scheduling += QChar(0x20) + hour.exportUnit();
+    scheduling += QChar(0x20) + dayOfMonth.exportUnit();
+    scheduling += QChar(0x20) + month.exportUnit();
+    scheduling += QChar(0x20) + dayOfWeek.exportUnit();
 
 	return scheduling;
 
@@ -301,13 +296,13 @@ QString CTTask::describeDateAndHours() const {
 				if (minute.isEnabled(m) == true) {
 					QString hourString;
 					if (h<10)
-						hourString = QLatin1String( "0" ) + QString::number(h);
+                        hourString = QChar::fromLatin1('0') + QString::number(h);
 					else
 						hourString = QString::number(h);
 
 					QString minuteString;
 					if (m<10)
-						minuteString = QLatin1String( "0" ) + QString::number(m);
+                        minuteString = QChar::fromLatin1('0') + QString::number(m);
 					else
 						minuteString = QString::number(m);
 
@@ -398,28 +393,24 @@ QPair<QString, bool> CTTask::unQuoteCommand() const {
 
 QString CTTask::decryptBinaryCommand(const QString& command) const {
 	QString fullCommand;
-
 	bool found = false;
-	for (int i=0; i<command.length(); ++i) {
-		if (command.at(i) == QLatin1Char( ' ' ) && command.at(i-1) != QLatin1Char( '\\' )) {
+    for(int i=0; i < command.length(); ++i) {
+        if(command.at(i) == QChar(0x20)
+                && command.at(i-1) != QChar::fromLatin1('\\')) {
 			fullCommand = command.left(i);
 			found = true;
 			break;
-		}
-	}
-
+        }
+    }
 	if (found == false)
 		fullCommand = command;
-
-	fullCommand = fullCommand.remove(QLatin1Char( '\\' ));
-
+    fullCommand = fullCommand.remove(QChar::fromLatin1('\\'));
 	return fullCommand;
 }
 
 QStringList CTTask::separatePathCommand(const QString& command, bool quoted) const {
 	QStringList pathCommand;
-
-	if (command.at(0) == QLatin1Char( '/' )) {
+    if (command.at(0) == QChar::fromLatin1('/')) {
 		QString fullCommand;
 		if (quoted == true)
 			fullCommand = command;
@@ -430,24 +421,18 @@ QStringList CTTask::separatePathCommand(const QString& command, bool quoted) con
 			return QStringList();
 		}
 
-		QString path = fullCommand.section(QLatin1Char( '/' ), 0, -2);
-		QString commandBinary = fullCommand.section(QLatin1Char( '/' ), -1);
-
+        QString path = fullCommand.section(QChar::fromLatin1('/'), 0, -2);
+        QString commandBinary = fullCommand.section(QChar::fromLatin1('/'), -1);
 		pathCommand << path << commandBinary;
-
-	}
-	else {
+    } else {
 		QString fullCommand;
 		if (quoted == true)
 			fullCommand = command;
 		else
 			fullCommand = decryptBinaryCommand(command);
-
 		// relying on $PATH
 		pathCommand << QString() << fullCommand;
-
 	}
-
 	return pathCommand;
 }
 
@@ -455,12 +440,10 @@ QString CTTask::completeCommandPath() const {
 	QPair<QString, bool> commandQuoted = unQuoteCommand();
 	if (commandQuoted.first.isEmpty())
         return QString();
-
     QStringList pathCommand = separatePathCommand(
                 commandQuoted.first, commandQuoted.second);
     if (pathCommand.isEmpty()) {
         return QString();
     }
-
-	return pathCommand.join(QLatin1String( "/" ));
+    return pathCommand.join(QChar::fromLatin1('/'));
 }

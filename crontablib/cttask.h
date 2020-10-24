@@ -35,7 +35,8 @@ public:
 	/**
 	 * Constructs scheduled task from crontab format string.
 	 */
-	explicit CTTask(const QString& tokenString, const QString& _comment, const QString& _userLogin, bool syscron = false);
+    explicit CTTask(const QString& tokenString, const QString& _comment,
+                    const QString& _userLogin, bool syscron = false);
 
 	/**
 	 * Copy constructor.
@@ -45,7 +46,7 @@ public:
 	/**
 	 * Assignment operator.
 	 */
-	CTTask& operator =(const CTTask& source);
+    CTTask& operator= (const CTTask& source);
 
 	/**
 	 * Tokenizes scheduled task to crontab format.
@@ -94,17 +95,14 @@ public:
 	QString decryptBinaryCommand(const QString& command) const;
 	QString completeCommandPath() const;
 
-
 	CTMonth month;
 	CTDayOfMonth dayOfMonth;
 	CTDayOfWeek dayOfWeek;
 	CTHour hour;
 	CTMinute minute;
-
 	QString userLogin;
 	QString command;
 	QString comment;
-
 	bool enabled;
 	bool reboot;
 
@@ -112,10 +110,8 @@ private:
 	inline bool isSpace(const QString& token, int pos) {
 		if (pos >= token.length())
 			return false;
-
-		if (token.at(pos) == QLatin1Char( ' ' ) )
+        if (token.at(pos) == QChar(0x20))
 			return true;
-
 		return false;
 	}
 
