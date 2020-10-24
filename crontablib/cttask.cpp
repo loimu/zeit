@@ -376,7 +376,7 @@ QPair<QString, bool> CTTask::unQuoteCommand() const {
 
     const QVector<QChar> quotes {
         QChar::fromLatin1('"'), QChar::fromLatin1('\'') };
-    for(const QString &quote: quotes) {
+    for(const QChar &quote: quotes) {
 		if (fullCommand.indexOf(quote) == 0) {
 			int nextQuote = fullCommand.indexOf(quote, 1);
 			if (nextQuote == -1)
