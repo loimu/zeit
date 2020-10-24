@@ -46,7 +46,7 @@ public:
     /**
      * Assignment operator.
      */
-    CTTask& operator= (const CTTask& source);
+    CTTask& operator=(const CTTask& source);
 
     /**
      * Tokenizes scheduled task to crontab format.

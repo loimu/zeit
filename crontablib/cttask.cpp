@@ -56,7 +56,7 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
         }
     }
 
-    int spacePos(tokStr.indexOf(QRegExp(QLatin1String( "[ \t]" ))));
+    int spacePos(tokStr.indexOf(QRegExp(QStringLiteral("[ \t]"))));
     // If reboot bypass initialize functions so no keys selected in modify task
     if (reboot == false) {
 
@@ -66,25 +66,25 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QLatin1String( "[ \t]" )));
+        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
         hour.initialize(tokStr.mid(0, spacePos));
 
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QLatin1String( "[ \t]" )));
+        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
         dayOfMonth.initialize(tokStr.mid(0, spacePos));
 
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QLatin1String( "[ \t]" )));
+        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
         month.initialize(tokStr.mid(0, spacePos));
 
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QLatin1String( "[ \t]" )));
+        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
         dayOfWeek.initialize(tokStr.mid(0, spacePos));
     }
 
@@ -92,7 +92,7 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QLatin1String( "[ \t]" )));
+        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
         userLogin = tokStr.mid(0, spacePos);
     }
     else {
@@ -101,7 +101,7 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
 
     command = tokStr.mid(spacePos+1, tokStr.length()-1);
     // remove leading whitespace
-    while (command.indexOf(QRegExp(QLatin1String( "[ \t]" ))) == 0)
+    while (command.indexOf(QRegExp(QStringLiteral("[ \t]"))) == 0)
         command = command.mid(1, command.length()-1);
     comment = _comment;
 
@@ -121,7 +121,7 @@ CTTask::CTTask(const CTTask &source) :
 
 }
 
-CTTask& CTTask::operator= (const CTTask& source) {
+CTTask& CTTask::operator=(const CTTask& source) {
     if (this == &source)
         return *this;
 
@@ -190,20 +190,15 @@ bool CTTask::dirty() const {
 }
 
 QString CTTask::schedulingCronFormat() const {
-    if (reboot) {
-        return QLatin1String( "@reboot" );
-    }
-
+    if (reboot)
+        return QStringLiteral("@reboot");
     QString scheduling;
-
     scheduling += minute.exportUnit();
     scheduling += QChar(0x20) + hour.exportUnit();
     scheduling += QChar(0x20) + dayOfMonth.exportUnit();
     scheduling += QChar(0x20) + month.exportUnit();
     scheduling += QChar(0x20) + dayOfWeek.exportUnit();
-
     return scheduling;
-
 }
 
 /**
