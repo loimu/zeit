@@ -32,96 +32,96 @@ class CTTask {
 
 public:
 
-	/**
-	 * Constructs scheduled task from crontab format string.
-	 */
+    /**
+     * Constructs scheduled task from crontab format string.
+     */
     explicit CTTask(const QString& tokenString, const QString& _comment,
                     const QString& _userLogin, bool syscron = false);
 
-	/**
-	 * Copy constructor.
-	 */
-	CTTask(const CTTask& source);
+    /**
+     * Copy constructor.
+     */
+    CTTask(const CTTask& source);
 
-	/**
-	 * Assignment operator.
-	 */
+    /**
+     * Assignment operator.
+     */
     CTTask& operator= (const CTTask& source);
 
-	/**
-	 * Tokenizes scheduled task to crontab format.
-	 */
-	QString exportTask();
+    /**
+     * Tokenizes scheduled task to crontab format.
+     */
+    QString exportTask();
 
-	/**
-	 * Scheduling using the cron format
-	 */
-	QString schedulingCronFormat() const;
+    /**
+     * Scheduling using the cron format
+     */
+    QString schedulingCronFormat() const;
 
-	/**
-	 * Mark changes as applied.
-	 */
-	void apply();
+    /**
+     * Mark changes as applied.
+     */
+    void apply();
 
-	/**
-	 * Cancel changes.
-	 */
-	void cancel();
+    /**
+     * Cancel changes.
+     */
+    void cancel();
 
-	/**
-	 * Indicates whether or not the task has been modified.
-	 */
-	bool dirty() const;
+    /**
+     * Indicates whether or not the task has been modified.
+     */
+    bool dirty() const;
 
-	/**
-	 * Returns natural language description of the task's schedule.
-	 */
-	QString describe() const;
+    /**
+     * Returns natural language description of the task's schedule.
+     */
+    QString describe() const;
 
-	/**
-	 * Indicates whether or not the task belongs to the system crontab.
-	 */
-	bool isSystemCrontab() const;
+    /**
+     * Indicates whether or not the task belongs to the system crontab.
+     */
+    bool isSystemCrontab() const;
 
-	void setSystemCrontab(bool systemCrontab);
+    void setSystemCrontab(bool systemCrontab);
 
-	QIcon commandIcon() const;
+    QIcon commandIcon() const;
 
-	/**
-	 * Internal methods
-	 */
-	QPair<QString, bool> unQuoteCommand() const;
-	QStringList separatePathCommand(const QString& command, bool quoted) const;
-	QString decryptBinaryCommand(const QString& command) const;
-	QString completeCommandPath() const;
+    /**
+     * Internal methods
+     */
+    QPair<QString, bool> unQuoteCommand() const;
+    QStringList separatePathCommand(const QString& command, bool quoted) const;
+    QString decryptBinaryCommand(const QString& command) const;
+    QString completeCommandPath() const;
 
-	CTMonth month;
-	CTDayOfMonth dayOfMonth;
-	CTDayOfWeek dayOfWeek;
-	CTHour hour;
-	CTMinute minute;
-	QString userLogin;
-	QString command;
-	QString comment;
-	bool enabled;
-	bool reboot;
+    CTMonth month;
+    CTDayOfMonth dayOfMonth;
+    CTDayOfWeek dayOfWeek;
+    CTHour hour;
+    CTMinute minute;
+    QString userLogin;
+    QString command;
+    QString comment;
+    bool enabled;
+    bool reboot;
 
 private:
-	inline bool isSpace(const QString& token, int pos) {
-		if (pos >= token.length())
-			return false;
+    inline bool isSpace(const QString& token, int pos) {
+        if (pos >= token.length())
+            return false;
         if (token.at(pos) == QChar(0x20))
-			return true;
-		return false;
-	}
+            return true;
+        return false;
+    }
 
-	QString describeDayOfMonth() const;
-	QString describeDayOfWeek() const;
-	QString describeDateAndHours() const;
-	QString createTimeFormat() const;
-	QString createDateFormat() const;
+    QString describeDayOfMonth() const;
+    QString describeDayOfWeek() const;
+    QString describeDateAndHours() const;
+    QString createTimeFormat() const;
+    QString createDateFormat() const;
 
-	bool systemCrontab;
+    bool systemCrontab;
     QString initialUserLogin = QString();
     QString initialCommand = QString();
     QString initialComment = QString();
