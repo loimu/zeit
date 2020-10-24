@@ -29,7 +29,6 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
 {
     ui->setupUi(this);
     ui->errorLabel->setVisible(false);
-    layout()->setSizeConstraint(QLayout::SetFixedSize);
     errorLabel = ui->errorLabel;
     setWindowTitle(_caption);
     ui->radioBasic->setChecked(true);
