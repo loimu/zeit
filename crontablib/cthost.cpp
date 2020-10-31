@@ -25,7 +25,9 @@
 
 #include "logging.h"
 
-CTHost::CTHost(const QString& cronBinary, CTInitializationError& ctInitializationError) {
+
+CTHost::CTHost(const QString& cronBinary, CTInitializationError& ctInitializationError)
+{
     struct passwd* userInfos = nullptr;
 
 	this->crontabBinary = cronBinary;
@@ -126,7 +128,7 @@ bool CTHost::allowDeny(char *name) {
 
 CTSaveStatus CTHost::save() {
 	if (isRootUser() == false) {
-		logDebug() << "Save current user cron" << endl;
+		logDebug() << "Save current user cron";
 		CTCron* ctCron = findCurrentUserCron();
 
 		return ctCron->save();
@@ -196,7 +198,7 @@ CTCron* CTHost::findCurrentUserCron() const {
 			return ctCron;
 	}
 
-	logDebug() << "Unable to find the current user Cron. Please report this bug and your crontab config to the developers" << endl;
+	logDebug() << "Unable to find the current user Cron. Please report this bug and your crontab config to the developers";
     return nullptr;
 }
 
@@ -206,7 +208,7 @@ CTCron* CTHost::findSystemCron() const {
 			return ctCron;
 	}
 
-	logDebug() << "Unable to find the system Cron. Please report this bug and your crontab config to the developers" << endl;
+	logDebug() << "Unable to find the system Cron. Please report this bug and your crontab config to the developers";
     return nullptr;
 }
 
@@ -216,7 +218,7 @@ CTCron* CTHost::findUserCron(const QString& userLogin) const {
 			return ctCron;
 	}
 
-	logDebug() << "Unable to find the user Cron " << userLogin << ". Please report this bug and your crontab config to the developers" << endl;
+	logDebug() << "Unable to find the user Cron " << userLogin << ". Please report this bug and your crontab config to the developers";
     return nullptr;
 }
 
@@ -227,7 +229,7 @@ CTCron* CTHost::findCronContaining(CTTask* ctTask) const {
 		}
 	}
 
-	logDebug() << "Unable to find the cron of this task. Please report this bug and your crontab config to the developers" << endl;
+	logDebug() << "Unable to find the cron of this task. Please report this bug and your crontab config to the developers";
     return nullptr;
 
 }
@@ -239,7 +241,7 @@ CTCron* CTHost::findCronContaining(CTVariable* ctVariable) const {
 		}
 	}
 
-	logDebug() << "Unable to find the cron of this variable. Please report this bug and your crontab config to the developers" << endl;
+	logDebug() << "Unable to find the cron of this variable. Please report this bug and your crontab config to the developers";
     return nullptr;
 
 }
