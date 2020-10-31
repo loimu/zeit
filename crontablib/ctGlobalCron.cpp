@@ -19,7 +19,7 @@
 CTGlobalCron::CTGlobalCron(CTHost* _ctHost) :
 	CTCron() {
 		
-	logDebug() << "Initializing CTGlobalCron" << endl;
+    logDebug() << "Initializing CTGlobalCron";
 	
 	d->multiUserCron = true;
 	d->systemCron = false;
@@ -35,7 +35,7 @@ CTGlobalCron::~CTGlobalCron() {
 }
 
 const QList<CTTask*> CTGlobalCron::tasks() const {
-	logDebug() << "Global Cron Tasks" << endl;
+    logDebug() << "Global Cron Tasks";
 	QList<CTTask*> tasks;
 	
     for(CTCron* cron: ctHost->cronInstances) {
@@ -50,7 +50,7 @@ const QList<CTTask*> CTGlobalCron::tasks() const {
 }
 
 const QList<CTVariable*> CTGlobalCron::variables() const {
-	logDebug() << "Global Cron Variables" << endl;
+    logDebug() << "Global Cron Variables";
 	QList<CTVariable*> variables;
 	
     for(CTCron* cron: ctHost->cronInstances) {
@@ -66,14 +66,14 @@ const QList<CTVariable*> CTGlobalCron::variables() const {
 }
 
 void CTGlobalCron::addTask(CTTask* task) {
-	logDebug() << "Global Cron addTask" << endl;
+    logDebug() << "Global Cron addTask";
 	
 	CTCron* actualCron = ctHost->findUserCron(task->userLogin);
 	actualCron->addTask(task);
 }
 
 void CTGlobalCron::addVariable(CTVariable* variable) {
-	logDebug() << "Global Cron addVariable" << endl;
+    logDebug() << "Global Cron addVariable";
 
 	CTCron* actualCron = ctHost->findUserCron(variable->userLogin);
 	actualCron->addVariable(variable);
@@ -81,7 +81,7 @@ void CTGlobalCron::addVariable(CTVariable* variable) {
 
 
 void CTGlobalCron::modifyTask(CTTask* task) {
-	logDebug() << "Global Cron modifyTask" << endl;
+    logDebug() << "Global Cron modifyTask";
 	
 	CTCron* actualCron = ctHost->findCronContaining(task);
 	
@@ -100,7 +100,7 @@ void CTGlobalCron::modifyTask(CTTask* task) {
 }
 
 void CTGlobalCron::modifyVariable(CTVariable* variable) {
-	logDebug() << "Global Cron modifyVariable" << endl;
+    logDebug() << "Global Cron modifyVariable";
 	
 	CTCron* actualCron = ctHost->findCronContaining(variable);
 	
@@ -119,14 +119,14 @@ void CTGlobalCron::modifyVariable(CTVariable* variable) {
 }
 
 void CTGlobalCron::removeTask(CTTask* task) {
-	logDebug() << "Global Cron removeTask" << endl;
+    logDebug() << "Global Cron removeTask";
 	
 	CTCron* actualCron = ctHost->findCronContaining(task);
 	actualCron->removeTask(task);
 }
 
 void CTGlobalCron::removeVariable(CTVariable* variable) {
-	logDebug() << "Global Cron removeVariable" << endl;
+    logDebug() << "Global Cron removeVariable";
 	
 	CTCron* actualCron = ctHost->findCronContaining(variable);
 	actualCron->removeVariable(variable);
