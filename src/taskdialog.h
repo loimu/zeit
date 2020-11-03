@@ -29,12 +29,15 @@ class TaskDialog;
 class CTTask;
 class CTUnit;
 
-class TaskDialog : public BaseEditDialog
+class TaskDialog : public BaseDialog
 {
     Q_OBJECT
 
+    bool isInputValid = false;
     CTTask* task;
     Ui::TaskDialog* ui;
+    QString helpToolTip;
+    QLabel* messageLabel;
     void init();
     void setText(const QString&, const QString&,
                  const QString&, const QString&, const QString&);
@@ -42,6 +45,7 @@ class TaskDialog : public BaseEditDialog
     void toggleMode();
     void switchPreset(int);
     void save();
+    void validate();
 
 public:
     explicit TaskDialog(CTTask*, const QString&, QWidget* parent = nullptr);

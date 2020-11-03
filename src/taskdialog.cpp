@@ -23,13 +23,11 @@
 
 TaskDialog::TaskDialog(CTTask* _ctTask,
                        const QString& _caption, QWidget *parent) :
-    BaseEditDialog(parent),
+    BaseDialog(parent),
     task(_ctTask),
     ui(new Ui::TaskDialog)
 {
     ui->setupUi(this);
-    ui->errorLabel->setVisible(false);
-    errorLabel = ui->errorLabel;
     setWindowTitle(_caption);
     ui->radioBasic->setChecked(true);
     toggleMode();
@@ -37,7 +35,7 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     entries << tr("Every minute") << tr("Every hour") << tr("Every day")
                                   << tr("Every week") << tr("Every month");
     ui->comboBox->addItems(entries);
-    QString helpToolTip = tr(
+    helpToolTip = tr(
                 "Valid input examples:"
                 "<br/><b>*</b> – all elements are enabled"
                 "<br/><b>3</b> – one element is enabled"
@@ -53,6 +51,9 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     ui->commandEdit->setText(task->command); // fill form fields
     ui->commentEdit->setText(task->comment);
     ui->enabledCheckBox->setChecked(task->enabled);
+    messageLabel = new QLabel(this);
+    messageLabel->setWordWrap(true);
+    ui->scrollArea->setWidget(messageLabel);
     init();
     /* switch modes */
     connect(ui->radioAdvanced, &QRadioButton::clicked,
@@ -66,6 +67,11 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
             this, &TaskDialog::save);
     connect(ui->buttonBox, &QDialogButtonBox::rejected,
             this, &TaskDialog::close);
+    const QVector<QLineEdit*>& leVector { ui->commandEdit, ui->editMinute,
+                ui->editHour, ui->editDay, ui->editWeekday, ui->editMonth };
+    for(QLineEdit* le : leVector) {
+        connect(le, &QLineEdit::textEdited, this, &TaskDialog::validate);
+    }
 }
 
 TaskDialog::~TaskDialog() {
@@ -152,19 +158,6 @@ void TaskDialog::switchPreset(int index) {
 }
 
 void TaskDialog::save() {
-    if(ui->commandEdit->text().isEmpty()) {
-        showError(tr("Command field should not be empty"));
-        return;
-    }
-    QRegExp rx(QStringLiteral("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"));
-    const QVector<QLineEdit*>& leVector { ui->editMinute, ui->editHour,
-                ui->editDay, ui->editWeekday, ui->editMonth };
-    for(QLineEdit* le : leVector) {
-        if(!rx.exactMatch(le->text())) {
-            showError(tr("Invalid input in ") + le->objectName());
-            return;
-        }
-    }
     task->command = ui->commandEdit->text();
     task->comment = ui->commentEdit->text();
     /* write time tokens into cttask object */
@@ -174,6 +167,36 @@ void TaskDialog::save() {
     setUnit(task->dayOfWeek, ui->editWeekday->text());
     setUnit(task->month, ui->editMonth->text());
     task->enabled = ui->enabledCheckBox->isChecked();
+    validate();
+    if(!isInputValid)
+        return;
     emit accepted();
     this->close();
+}
+
+void TaskDialog::validate() {
+    isInputValid = true;
+    const QString errorStyleSheet =
+            QStringLiteral("border:1px solid red;border-radius:5px;");
+    ui->commandEdit->setStyleSheet(QString());
+    ui->commandEdit->setToolTip(QString());
+    if(ui->commandEdit->text().isEmpty()) {
+        ui->commandEdit->setStyleSheet(errorStyleSheet);
+        ui->commandEdit->setToolTip(tr("Command field should not be empty"));
+        isInputValid = false;
+    }
+    QRegExp rx(QStringLiteral("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"));
+    const QVector<QLineEdit*> leVector { ui->editMinute, ui->editHour,
+                ui->editDay, ui->editWeekday, ui->editMonth };
+    for(QLineEdit* le : leVector) {
+        le->setStyleSheet(QString());
+        le->setToolTip(helpToolTip);
+        if(!rx.exactMatch(le->text())) {
+            le->setStyleSheet(errorStyleSheet);
+            le->setToolTip(tr("<b>Invalid input</b><br />") + helpToolTip);
+            isInputValid = false;
+        }
+    }
+    if(isInputValid)
+        messageLabel->setText(task->describe());
 }
