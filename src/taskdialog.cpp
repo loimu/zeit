@@ -33,7 +33,7 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     toggleMode();
     QStringList entries;
     entries << tr("Every minute") << tr("Every hour") << tr("Every day")
-                                  << tr("Every week") << tr("Every month");
+            << tr("Every week") << tr("Every month") <<  tr("Every weekday");
     ui->comboBox->addItems(entries);
     helpToolTip = tr(
                 "Valid input examples:"
@@ -48,7 +48,7 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     ui->editDay->setToolTip(helpToolTip);
     ui->editWeekday->setToolTip(helpToolTip);
     ui->editMonth->setToolTip(helpToolTip);
-    ui->commandEdit->setText(task->command); // fill form fields
+    ui->commandEdit->setText(task->command);  // fill form fields
     ui->commentEdit->setText(task->comment);
     ui->enabledCheckBox->setChecked(task->enabled);
     messageLabel = new QLabel(this);
@@ -70,7 +70,7 @@ TaskDialog::TaskDialog(CTTask* _ctTask,
     const QVector<QLineEdit*>& leVector { ui->commandEdit, ui->editMinute,
                 ui->editHour, ui->editDay, ui->editWeekday, ui->editMonth };
     for(QLineEdit* le : leVector) {
-        connect(le, &QLineEdit::textEdited, this, &TaskDialog::validate);
+        connect(le, &QLineEdit::textEdited, this, &TaskDialog::updateDialog);
     }
 }
 
@@ -140,26 +140,37 @@ void TaskDialog::toggleMode() {
 void TaskDialog::switchPreset(int index) {
     switch(index) {
     case 1:
-        setText("0", "*", "*", "*", "*"); // every hour
+        setText("0", "*", "*", "*", "*");  // every hour
         break;
     case 2:
-        setText("0", "0", "*", "*", "*"); // every day
+        setText("0", "0", "*", "*", "*");  // every day
         break;
     case 3:
-        setText("0", "0", "*", "1", "*"); // every week
+        setText("0", "0", "*", "1", "*");  // every week
         break;
     case 4:
-        setText("0", "0", "1", "*", "*"); // every month
+        setText("0", "0", "1", "*", "*");  // every month
+        break;
+    case 5:
+        setText("1", "8", "*", "1-5", "*");  // every weekday at 8am
         break;
     default:
-        setText("*", "*", "*", "*", "*"); // every minute
+        setText("*", "*", "*", "*", "*");  // every minute
         break;
     }
+    updateDialog();
 }
 
 void TaskDialog::save() {
     task->command = ui->commandEdit->text();
     task->comment = ui->commentEdit->text();
+    if(!isInputValid)
+        return;
+    emit accepted();
+    this->close();
+}
+
+void TaskDialog::updateDialog() {
     /* write time tokens into cttask object */
     setUnit(task->minute, ui->editMinute->text());
     setUnit(task->hour, ui->editHour->text());
@@ -168,26 +179,26 @@ void TaskDialog::save() {
     setUnit(task->month, ui->editMonth->text());
     task->enabled = ui->enabledCheckBox->isChecked();
     validate();
-    if(!isInputValid)
-        return;
-    emit accepted();
-    this->close();
+    if(isInputValid)
+        messageLabel->setText(task->describe());
+    else
+        messageLabel->clear();
 }
 
 void TaskDialog::validate() {
     isInputValid = true;
-    const QString errorStyleSheet =
-            QStringLiteral("border:1px solid red;border-radius:5px;");
     ui->commandEdit->setStyleSheet(QString());
     ui->commandEdit->setToolTip(QString());
+    const QString errorStyleSheet =
+            QStringLiteral("border:1.5px solid red;border-radius:5px;");
     if(ui->commandEdit->text().isEmpty()) {
         ui->commandEdit->setStyleSheet(errorStyleSheet);
         ui->commandEdit->setToolTip(tr("Command field should not be empty"));
         isInputValid = false;
     }
     QRegExp rx(QStringLiteral("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"));
-    const QVector<QLineEdit*> leVector { ui->editMinute, ui->editHour,
-                ui->editDay, ui->editWeekday, ui->editMonth };
+    const QVector<QLineEdit*> leVector {
+        ui->editMinute,ui->editHour,ui->editDay,ui->editWeekday,ui->editMonth };
     for(QLineEdit* le : leVector) {
         le->setStyleSheet(QString());
         le->setToolTip(helpToolTip);
@@ -197,6 +208,4 @@ void TaskDialog::validate() {
             isInputValid = false;
         }
     }
-    if(isInputValid)
-        messageLabel->setText(task->describe());
 }

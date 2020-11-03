@@ -45,6 +45,7 @@ class TaskDialog : public BaseDialog
     void toggleMode();
     void switchPreset(int);
     void save();
+    void updateDialog();
     void validate();
 
 public:
