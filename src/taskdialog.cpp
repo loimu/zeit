@@ -164,6 +164,7 @@ void TaskDialog::switchPreset(int index) {
 void TaskDialog::save() {
     task->command = ui->commandEdit->text();
     task->comment = ui->commentEdit->text();
+    task->enabled = ui->enabledCheckBox->isChecked();
     if(!isInputValid)
         return;
     emit accepted();
@@ -171,16 +172,16 @@ void TaskDialog::save() {
 }
 
 void TaskDialog::updateDialog() {
-    /* write time tokens into cttask object */
-    setUnit(task->minute, ui->editMinute->text());
-    setUnit(task->hour, ui->editHour->text());
-    setUnit(task->dayOfMonth, ui->editDay->text());
-    setUnit(task->dayOfWeek, ui->editWeekday->text());
-    setUnit(task->month, ui->editMonth->text());
-    task->enabled = ui->enabledCheckBox->isChecked();
     validate();
-    if(isInputValid)
+    if(isInputValid) {
+        /* write time tokens into cttask object */
+        setUnit(task->minute, ui->editMinute->text());
+        setUnit(task->hour, ui->editHour->text());
+        setUnit(task->dayOfMonth, ui->editDay->text());
+        setUnit(task->dayOfWeek, ui->editWeekday->text());
+        setUnit(task->month, ui->editMonth->text());
         messageLabel->setText(task->describe());
+    }
     else
         messageLabel->clear();
 }
