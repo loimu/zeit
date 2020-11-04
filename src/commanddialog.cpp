@@ -27,13 +27,11 @@
 
 
 CommandDialog::CommandDialog(Commands* commands_, QWidget* parent) :
-    BaseEditDialog(parent),
+    BaseDialog(parent),
     ui(new Ui::CommandDialog),
     commands(commands_)
 {
     ui->setupUi(this);
-    ui->errorLabel->setVisible(false);
-    errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Command"));
     ui->lineEditComment->setText(tr("New Command"));
     ui->checkBox->setChecked(true);
@@ -54,6 +52,20 @@ CommandDialog::CommandDialog(Commands* commands_, QWidget* parent) :
             this, &CommandDialog::save);
     connect(ui->buttonBox, &QDialogButtonBox::rejected,
             this, &CommandDialog::close);
+    connect(ui->lineEditCommand, &QLineEdit::textEdited, this, [this] {
+        if(ui->lineEditCommand->text().isEmpty()) {
+            const QString errorStyleSheet =
+                    QStringLiteral("border:1.5px solid red;border-radius:5px;");
+            ui->lineEditCommand->setStyleSheet(errorStyleSheet);
+            ui->lineEditCommand->setToolTip(
+                        tr("Command field should not be empty"));
+            isInputValid = false;
+        } else {
+            ui->lineEditCommand->setStyleSheet(QString());
+            ui->lineEditCommand->setToolTip(QString());
+            isInputValid = true;
+        }
+    });
 }
 
 CommandDialog::~CommandDialog() {
@@ -61,10 +73,9 @@ CommandDialog::~CommandDialog() {
 }
 
 void CommandDialog::save() {
-    if(ui->lineEditCommand->text().isEmpty()) {
-        showError(tr("Command field should not be empty"));
+    emit ui->lineEditCommand->textEdited(QString());
+    if(!isInputValid)
         return;
-    }
     QString command = ui->lineEditCommand->text();
     if(ui->checkBox->isChecked())
         command.append(QString(QStringLiteral(" & notify-send Command \"%1\""))

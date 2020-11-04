@@ -20,28 +20,29 @@
 #ifndef COMMANDDIALOG_H
 #define COMMANDDIALOG_H
 
-#include "baseeditdialog.h"
+#include "basedialog.h"
+
 
 namespace Ui {
 class CommandDialog;
 }
-
 class Commands;
 
-class CommandDialog : public BaseEditDialog
+
+class CommandDialog : public BaseDialog
 {
     Q_OBJECT
-
-    Ui::CommandDialog *ui;
-    Commands* commands;
-    void save();
 
 public:
     explicit CommandDialog(Commands* commands, QWidget* parent = nullptr);
     ~CommandDialog();
+    Q_SIGNAL void accepted();
 
-signals:
-    void accepted();
+private:
+    bool isInputValid = false;
+    Ui::CommandDialog* ui;
+    Commands* commands;
+    void save();
 };
 
 #endif // COMMANDDIALOG_H

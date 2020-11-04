@@ -7,22 +7,51 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>194</height>
+    <height>166</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="6" column="0" colspan="3">
-    <widget class="QCheckBox" name="checkBox">
-     <property name="text">
-      <string>Show OSD notification</string>
+   <item row="2" column="1">
+    <widget class="QSpinBox" name="spinBoxHours">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="suffix">
+      <string> hr</string>
+     </property>
+     <property name="prefix">
+      <string/>
+     </property>
+     <property name="maximum">
+      <number>24</number>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" colspan="4">
-    <widget class="QLineEdit" name="lineEditComment">
+   <item row="2" column="4">
+    <widget class="QPushButton" name="pushButtonReset">
+     <property name="text">
+      <string>Reset</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Description:</string>
+     </property>
+     <property name="buddy">
+      <cstring>lineEditComment</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="4">
+    <widget class="QLineEdit" name="lineEditCommand">
      <property name="clearButtonEnabled">
       <bool>true</bool>
      </property>
@@ -64,49 +93,6 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="0" colspan="5">
-    <widget class="QLabel" name="errorLabel">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Description:</string>
-     </property>
-     <property name="buddy">
-      <cstring>lineEditComment</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Run at</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QSpinBox" name="spinBoxHours">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="suffix">
-      <string> hr</string>
-     </property>
-     <property name="prefix">
-      <string/>
-     </property>
-     <property name="maximum">
-      <number>24</number>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
@@ -117,17 +103,10 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1" colspan="4">
-    <widget class="QLineEdit" name="lineEditCommand">
+   <item row="0" column="1" colspan="4">
+    <widget class="QLineEdit" name="lineEditComment">
      <property name="clearButtonEnabled">
       <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="4">
-    <widget class="QPushButton" name="pushButtonReset">
-     <property name="text">
-      <string>Reset</string>
      </property>
     </widget>
    </item>
@@ -143,6 +122,20 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Run at</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="3">
+    <widget class="QCheckBox" name="checkBox">
+     <property name="text">
+      <string>Show OSD notification</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
