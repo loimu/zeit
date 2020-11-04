@@ -20,27 +20,31 @@
 #ifndef VARIABLEDIALOG_H
 #define VARIABLEDIALOG_H
 
-#include "baseeditdialog.h"
+
+#include "basedialog.h"
+
 
 namespace Ui {
 class VariableDialog;
 }
-
 class CTVariable;
 
-class VariableDialog : public BaseEditDialog
+class VariableDialog : public BaseDialog
 {
     Q_OBJECT
-
-    Ui::VariableDialog* ui;
-    CTVariable* variable;
-    void save();
 
 public:
     explicit VariableDialog(CTVariable*,
                             const QString&, QWidget* parent = nullptr);
     ~VariableDialog();
     Q_SIGNAL void accepted();
+
+private:
+    bool isInputValid = false;
+    Ui::VariableDialog* ui;
+    CTVariable* variable;
+    void save();
+    void validate();
 };
 
 #endif // VARIABLEDIALOG_H
