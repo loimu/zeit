@@ -44,7 +44,6 @@ private:
     Ui::VariableDialog* ui;
     CTVariable* variable;
     void save();
-    void validate();
 };
 
 #endif // VARIABLEDIALOG_H

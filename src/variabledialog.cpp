@@ -39,8 +39,25 @@ VariableDialog::VariableDialog(CTVariable* _ctVar,
             this, &VariableDialog::save);
     connect(ui->buttonBox, &QDialogButtonBox::rejected,
             this, &VariableDialog::close);
-    connect(ui->varEdit, &QLineEdit::textChanged,
-            this, &VariableDialog::validate);
+    connect(ui->varEdit, &QLineEdit::textChanged, this, [this] {
+        isInputValid = true;
+        if(ui->varEdit->text().isEmpty()) {
+            ui->varEdit->setToolTip(tr("Variable field should not be empty"));
+            isInputValid = false;
+        }
+        if(ui->varEdit->text().contains(QRegExp(QStringLiteral("\\W")))) {
+            ui->varEdit->setToolTip(tr("Invalid variable name"));
+            isInputValid = false;
+        }
+        if(isInputValid) {
+            ui->varEdit->setStyleSheet(QString());
+            ui->varEdit->setToolTip(QString());
+        } else {
+            const QString errorStyleSheet =
+                    QStringLiteral("border:1.5px solid red;border-radius:5px;");
+            ui->varEdit->setStyleSheet(errorStyleSheet);
+        }
+    });
 }
 
 VariableDialog::~VariableDialog() {
@@ -48,7 +65,7 @@ VariableDialog::~VariableDialog() {
 }
 
 void VariableDialog::save() {
-    validate();
+    emit ui->varEdit->textChanged(QString());
     if(!isInputValid)
         return;
     variable->variable = ui->varEdit->text();
@@ -57,22 +74,4 @@ void VariableDialog::save() {
     variable->enabled = ui->enabledCheckBox->isChecked();
     emit accepted();
     this->close();
-}
-
-void VariableDialog::validate() {
-    isInputValid = true;
-    ui->varEdit->setStyleSheet(QString());
-    ui->varEdit->setToolTip(QString());
-    const QString errorStyleSheet =
-            QStringLiteral("border:1.5px solid red;border-radius:5px;");
-    if(ui->varEdit->text().isEmpty()) {
-        ui->varEdit->setToolTip(tr("Variable field should not be empty"));
-        isInputValid = false;
-    }
-    if(ui->varEdit->text().contains(QRegExp(QStringLiteral("\\W")))) {
-        ui->varEdit->setToolTip(tr("Invalid variable name"));
-        isInputValid = false;
-    }
-    if(!isInputValid)
-        ui->varEdit->setStyleSheet(errorStyleSheet);
 }
