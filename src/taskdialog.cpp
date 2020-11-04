@@ -198,7 +198,7 @@ void TaskDialog::validate() {
         ui->commandEdit->setToolTip(tr("Command field should not be empty"));
         isInputValid = false;
     }
-    QRegExp rx(QStringLiteral("\\*|\\d+(,\\d+|-\\d+(/\\d+)?)*"));
+    QRegExp rx(QStringLiteral("\\*|\\d{1,2}(,\\d{1,2}|-\\d{1,2}(/\\d{1,2})?)*"));
     const QVector<QLineEdit*> leVector {
         ui->editMinute,ui->editHour,ui->editDay,ui->editWeekday,ui->editMonth };
     for(QLineEdit* le : leVector) {
