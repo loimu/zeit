@@ -162,11 +162,12 @@ void TaskDialog::switchPreset(int index) {
 }
 
 void TaskDialog::save() {
+    validate();
+    if(!isInputValid)
+        return;
     task->command = ui->commandEdit->text();
     task->comment = ui->commentEdit->text();
     task->enabled = ui->enabledCheckBox->isChecked();
-    if(!isInputValid)
-        return;
     emit accepted();
     this->close();
 }
