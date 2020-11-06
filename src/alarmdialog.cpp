@@ -33,7 +33,6 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
 {
     ui->setupUi(this);
     ui->errorLabel->setVisible(false);
-    layout()->setSizeConstraint(QLayout::SetFixedSize);
     errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Alarm"));
     /* prepopulate fields */
