@@ -33,7 +33,6 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget* parent) :
 {
     ui->setupUi(this);
     ui->errorLabel->setVisible(false);
-    layout()->setSizeConstraint(QLayout::SetFixedSize);
     errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Timer"));
     /* prepopulate fields */
