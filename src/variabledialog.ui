@@ -100,6 +100,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>varEdit</tabstop>
+  <tabstop>valEdit</tabstop>
+  <tabstop>commentEdit</tabstop>
+  <tabstop>enabledCheckBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

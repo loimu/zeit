@@ -223,6 +223,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>commentEdit</tabstop>
+  <tabstop>commandEdit</tabstop>
+  <tabstop>radioBasic</tabstop>
+  <tabstop>radioAdvanced</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>editMinute</tabstop>
+  <tabstop>editHour</tabstop>
+  <tabstop>editDay</tabstop>
+  <tabstop>editWeekday</tabstop>
+  <tabstop>editMonth</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>enabledCheckBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
