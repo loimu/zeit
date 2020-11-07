@@ -115,7 +115,7 @@ void AlarmDialog::save() {
         ui->checkBoxMon, ui->checkBoxTue, ui->checkBoxWed, ui->checkBoxThu,
                 ui->checkBoxFri, ui->checkBoxSat, ui->checkBoxSun};
     for(int dw = CTDayOfWeek::MINIMUM; dw <= CTDayOfWeek::MAXIMUM; dw++)
-        task->dayOfWeek.setEnabled(dw, checkboxes.at(dw)->isChecked());
+        task->dayOfWeek.setEnabled(dw, checkboxes.at(dw - 1)->isChecked());
     for(int dm = CTDayOfMonth::MINIMUM; dm <= CTDayOfMonth::MAXIMUM; dm++)
         task->dayOfMonth.setEnabled(dm, true);
     for(int mo = CTMonth::MINIMUM; mo <= CTMonth::MAXIMUM; mo++)
