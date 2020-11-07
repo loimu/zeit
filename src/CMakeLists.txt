@@ -5,7 +5,6 @@ set(zeit_SRCS
     aboutdialog.cpp
     alarmdialog.cpp
     basedialog.cpp
-    baseeditdialog.cpp
     commanddialog.cpp
     commands.cpp
     main.cpp
