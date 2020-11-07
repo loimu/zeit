@@ -27,21 +27,19 @@
 
 
 TimerDialog::TimerDialog(Commands* commands_, QWidget* parent) :
-    BaseEditDialog(parent),
+    BaseDialog(parent),
     ui(new Ui::TimerDialog),
     commands(commands_)
 {
     ui->setupUi(this);
-    ui->errorLabel->setVisible(false);
-    errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Timer"));
     /* prepopulate fields */
     ui->lineEditComment->setText(tr("New Timer"));
     ui->checkBox->setChecked(true);
     /* detect player */
     QProcess proc;
-    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
-                                                    QStringLiteral("mplayer")});
+    proc.start(QStringLiteral("which"),
+               QStringList{QStringLiteral("mpv"), QStringLiteral("mplayer")});
     proc.waitForFinished(-1);
     QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(
                 QRegExp(QStringLiteral("\n")));
@@ -71,10 +69,10 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget* parent) :
         if(fd->exec())
             ui->lineEditPlayer->setText(fd->getOpenFileName());
     });
-    ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
-                                      QStringLiteral("document-open")));
-    ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
-                                         QStringLiteral("document-open")));
+    ui->pushButtonPlayer->setIcon(
+                QIcon::fromTheme(QStringLiteral("document-open")));
+    ui->pushButtonSoundFile->setIcon(
+                QIcon::fromTheme(QStringLiteral("document-open")));
     /* dialog actions */
     connect(ui->pushButtonCurrent, &QPushButton::released, this, [=] {
         ui->spinBoxHours->setValue(QTime::currentTime().hour());
@@ -88,6 +86,10 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget* parent) :
             this, &TimerDialog::save);
     connect(ui->buttonBox, &QDialogButtonBox::rejected,
             this, &TimerDialog::close);
+    connect(ui->lineEditPlayer, &QLineEdit::textEdited,
+            this, [this] { validate(ui->lineEditPlayer); });
+    connect(ui->lineEditSoundFile, &QLineEdit::textEdited,
+            this, [this] { validate(ui->lineEditSoundFile); });
 }
 
 TimerDialog::~TimerDialog() {
@@ -95,14 +97,10 @@ TimerDialog::~TimerDialog() {
 }
 
 void TimerDialog::save() {
-    if(ui->lineEditPlayer->text().isEmpty()) {
-        showError(tr("Player field should not be empty"));
+    emit ui->lineEditPlayer->textEdited(QString());
+    emit ui->lineEditSoundFile->textEdited(QString());
+    if(!isInputValid)
         return;
-    }
-    if(ui->lineEditSoundFile->text().isEmpty()) {
-        showError(tr("Soundfile field should not be empty"));
-        return;
-    }
     QString command = QString(QStringLiteral("%1 \"%2\""))
             .arg(ui->lineEditPlayer->text(), ui->lineEditSoundFile->text());
     if(ui->checkBox->isChecked())
@@ -114,4 +112,17 @@ void TimerDialog::save() {
     commands->addCommand(command.toLocal8Bit(), time);
     emit accepted();
     this->close();
+}
+
+void TimerDialog::validate(QLineEdit* input) {
+    if(input->text().isEmpty()) {
+        isInputValid = false;
+        input->setToolTip(tr("This field should not be empty"));
+        input->setStyleSheet(
+                    QStringLiteral("border:1.5px solid red;border-radius:5px;"));
+    } else {
+        isInputValid = true;
+        input->setToolTip(QString());
+        input->setStyleSheet(QString());
+    }
 }

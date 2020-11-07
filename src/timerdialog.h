@@ -20,28 +20,31 @@
 #ifndef TIMERDIALOG_H
 #define TIMERDIALOG_H
 
-#include "baseeditdialog.h"
+
+#include "basedialog.h"
+
 
 namespace Ui {
 class TimerDialog;
 }
-
 class Commands;
+class QLineEdit;
 
-class TimerDialog : public BaseEditDialog
+class TimerDialog : public BaseDialog
 {
     Q_OBJECT
-
-    Ui::TimerDialog* ui;
-    Commands* commands;
-    void save();
 
 public:
     explicit TimerDialog(Commands* commands, QWidget* parent = nullptr);
     ~TimerDialog();
+    Q_SIGNAL void accepted();
 
-signals:
-    void accepted();
+private:
+    bool isInputValid = false;
+    Ui::TimerDialog* ui;
+    Commands* commands;
+    void save();
+    void validate(QLineEdit* input);
 };
 
 #endif // TIMERDIALOG_H
