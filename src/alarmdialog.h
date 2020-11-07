@@ -45,7 +45,7 @@ private:
     Ui::AlarmDialog* ui;
     void setCurrentTime();
     void save();
-    void validate(QLineEdit& input);
+    void validate(QLineEdit* input);
 };
 
 #endif // ALARMDIALOG_H

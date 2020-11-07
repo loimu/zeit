@@ -85,9 +85,9 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
     connect(ui->buttonBox, &QDialogButtonBox::rejected,
             this, &AlarmDialog::close);
     connect(ui->lineEditPlayer, &QLineEdit::textEdited,
-            this, [this] { validate(*(ui->lineEditPlayer)); });
+            this, [this] { validate(ui->lineEditPlayer); });
     connect(ui->lineEditSoundFile, &QLineEdit::textEdited,
-            this, [this] { validate(*(ui->lineEditSoundFile)); });
+            this, [this] { validate(ui->lineEditSoundFile); });
     setCurrentTime();
 }
 
@@ -124,15 +124,15 @@ void AlarmDialog::save() {
     this->close();
 }
 
-void AlarmDialog::validate(QLineEdit& input) {
-    if(input.text().isEmpty()) {
+void AlarmDialog::validate(QLineEdit* input) {
+    if(input->text().isEmpty()) {
         isInputValid = false;
-        input.setToolTip(tr("This field should not be empty"));
-        input.setStyleSheet(
+        input->setToolTip(tr("This field should not be empty"));
+        input->setStyleSheet(
                     QStringLiteral("border:1.5px solid red;border-radius:5px;"));
     } else {
         isInputValid = true;
-        input.setToolTip(QString());
-        input.setStyleSheet(QString());
+        input->setToolTip(QString());
+        input->setStyleSheet(QString());
     }
 }
