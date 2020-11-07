@@ -7,109 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>268</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Pla&amp;yer:</string>
-     </property>
-     <property name="buddy">
-      <cstring>lineEditPlayer</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Sound File:</string>
-     </property>
-     <property name="buddy">
-      <cstring>lineEditSoundFile</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Description:</string>
-     </property>
-     <property name="buddy">
-      <cstring>lineEditComment</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Run at</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="3" column="1">
-    <widget class="QSpinBox" name="spinBoxHour">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="suffix">
-      <string> hr</string>
-     </property>
-     <property name="maximum">
-      <number>23</number>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QSpinBox" name="spinBoxMinute">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="suffix">
-      <string> min</string>
-     </property>
-     <property name="maximum">
-      <number>59</number>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="3">
-    <widget class="QPushButton" name="pushButtonCurrent">
-     <property name="text">
-      <string>Now</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="4">
-    <widget class="QPushButton" name="pushButtonReset">
-     <property name="text">
-      <string>Reset</string>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="0" colspan="5">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -163,43 +67,77 @@
      </item>
     </layout>
    </item>
-   <item row="6" column="0" colspan="5">
-    <widget class="QDialogButtonBox" name="buttonBox">
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Pla&amp;yer:</string>
+     </property>
+     <property name="buddy">
+      <cstring>lineEditPlayer</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QSpinBox" name="spinBoxMinute">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="suffix">
+      <string> min</string>
+     </property>
+     <property name="maximum">
+      <number>59</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="pushButtonReset">
+     <property name="text">
+      <string>Reset</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QSpinBox" name="spinBoxHour">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="suffix">
+      <string> hr</string>
+     </property>
+     <property name="maximum">
+      <number>23</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Description:</string>
+     </property>
+     <property name="buddy">
+      <cstring>lineEditComment</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
      </property>
-    </widget>
-   </item>
-   <item row="7" column="0" colspan="5">
-    <widget class="QLabel" name="errorLabel">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="4">
-    <widget class="QPushButton" name="pushButtonSoundFile">
-     <property name="text">
-      <string notr="true"/>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="4">
-    <widget class="QPushButton" name="pushButtonPlayer">
-     <property name="text">
-      <string notr="true"/>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1" colspan="3">
-    <widget class="QLineEdit" name="lineEditSoundFile">
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
-     </property>
-    </widget>
+    </spacer>
    </item>
    <item row="1" column="1" colspan="3">
     <widget class="QLineEdit" name="lineEditPlayer">
@@ -212,6 +150,61 @@
     <widget class="QLineEdit" name="lineEditComment">
      <property name="clearButtonEnabled">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Run at</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QPushButton" name="pushButtonCurrent">
+     <property name="text">
+      <string>Now</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="3">
+    <widget class="QLineEdit" name="lineEditSoundFile">
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Sound File:</string>
+     </property>
+     <property name="buddy">
+      <cstring>lineEditSoundFile</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4">
+    <widget class="QPushButton" name="pushButtonSoundFile">
+     <property name="text">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="5">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QPushButton" name="pushButtonPlayer">
+     <property name="text">
+      <string notr="true"/>
      </property>
     </widget>
    </item>

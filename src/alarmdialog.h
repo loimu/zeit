@@ -20,27 +20,32 @@
 #ifndef ALARMDIALOG_H
 #define ALARMDIALOG_H
 
-#include "baseeditdialog.h"
+
+#include "basedialog.h"
+
 
 namespace Ui {
 class AlarmDialog;
 }
-
 class CTTask;
+class QLineEdit;
 
-class AlarmDialog : public BaseEditDialog
+class AlarmDialog : public BaseDialog
 {
     Q_OBJECT
-
-    CTTask* task;
-    Ui::AlarmDialog* ui;
-    void setCurrentTime();
-    void save();
 
 public:
     explicit AlarmDialog(CTTask*, QWidget* parent = nullptr);
     ~AlarmDialog();
     Q_SIGNAL void accepted();
+
+private:
+    bool isInputValid = false;
+    CTTask* task;
+    Ui::AlarmDialog* ui;
+    void setCurrentTime();
+    void save();
+    void validate(QLineEdit& input);
 };
 
 #endif // ALARMDIALOG_H

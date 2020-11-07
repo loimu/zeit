@@ -27,13 +27,11 @@
 
 
 AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
-    BaseEditDialog(parent),
+    BaseDialog(parent),
     task(_ctTask),
     ui(new Ui::AlarmDialog)
 {
     ui->setupUi(this);
-    ui->errorLabel->setVisible(false);
-    errorLabel = ui->errorLabel;
     setWindowTitle(tr("New Alarm"));
     /* prepopulate fields */
     ui->checkBoxMon->setChecked(true);
@@ -44,18 +42,18 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
     ui->lineEditComment->setText(tr("New Alarm"));
     /* detect player */
     QProcess proc;
-    proc.start(QStringLiteral("which"), QStringList{QStringLiteral("mpv"),
-                                                    QStringLiteral("mplayer")});
+    proc.start(QStringLiteral("which"),
+               QStringList{QStringLiteral("mpv"), QStringLiteral("mplayer")});
     proc.waitForFinished();
     QStringList players = QString::fromUtf8(proc.readAllStandardOutput())
             .split(QRegExp(QStringLiteral("\n")));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
     /* file dialog actions */
-    ui->pushButtonPlayer->setIcon(QIcon::fromTheme(
-                                      QStringLiteral("document-open")));
-    ui->pushButtonSoundFile->setIcon(QIcon::fromTheme(
-                                         QStringLiteral("document-open")));
+    ui->pushButtonPlayer->setIcon(
+                QIcon::fromTheme(QStringLiteral("document-open")));
+    ui->pushButtonSoundFile->setIcon(
+                QIcon::fromTheme(QStringLiteral("document-open")));
     connect(ui->pushButtonSoundFile, &QPushButton::released, this, [=] {
         QString file = QFileDialog::getOpenFileName(
                     this,
@@ -86,6 +84,10 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
             this, &AlarmDialog::save);
     connect(ui->buttonBox, &QDialogButtonBox::rejected,
             this, &AlarmDialog::close);
+    connect(ui->lineEditPlayer, &QLineEdit::textEdited,
+            this, [this] { validate(*(ui->lineEditPlayer)); });
+    connect(ui->lineEditSoundFile, &QLineEdit::textEdited,
+            this, [this] { validate(*(ui->lineEditSoundFile)); });
     setCurrentTime();
 }
 
@@ -99,31 +101,38 @@ void AlarmDialog::setCurrentTime() {
 }
 
 void AlarmDialog::save() {
-    if(ui->lineEditPlayer->text().isEmpty()) {
-        showError(tr("Player field should not be empty"));
+    emit ui->lineEditPlayer->textEdited(QString());
+    emit ui->lineEditSoundFile->textEdited(QString());
+    if(!isInputValid)
         return;
-    }
-    if(ui->lineEditSoundFile->text().isEmpty()) {
-        showError(tr("Soundfile field should not be empty"));
-        return;
-    }
     task->comment = ui->lineEditComment->text();
     task->command = QString(QStringLiteral("%1 \"%2\""))
             .arg(ui->lineEditPlayer->text(),
                  ui->lineEditSoundFile->text());
     task->hour.setEnabled(ui->spinBoxHour->value(), true);
     task->minute.setEnabled(ui->spinBoxMinute->value(), true);
-    task->dayOfWeek.setEnabled(1, ui->checkBoxMon->isChecked());
-    task->dayOfWeek.setEnabled(2, ui->checkBoxTue->isChecked());
-    task->dayOfWeek.setEnabled(3, ui->checkBoxWed->isChecked());
-    task->dayOfWeek.setEnabled(4, ui->checkBoxThu->isChecked());
-    task->dayOfWeek.setEnabled(5, ui->checkBoxFri->isChecked());
-    task->dayOfWeek.setEnabled(6, ui->checkBoxSat->isChecked());
-    task->dayOfWeek.setEnabled(7, ui->checkBoxSun->isChecked());
+    const QVector<QCheckBox*> checkboxes {
+        ui->checkBoxMon, ui->checkBoxTue, ui->checkBoxWed, ui->checkBoxThu,
+                ui->checkBoxFri, ui->checkBoxSat, ui->checkBoxSun};
+    for(int dw = CTDayOfWeek::MINIMUM; dw <= CTDayOfWeek::MAXIMUM; dw++)
+        task->dayOfWeek.setEnabled(dw, checkboxes.at(dw)->isChecked());
     for(int dm = CTDayOfMonth::MINIMUM; dm <= CTDayOfMonth::MAXIMUM; dm++)
         task->dayOfMonth.setEnabled(dm, true);
     for(int mo = CTMonth::MINIMUM; mo <= CTMonth::MAXIMUM; mo++)
         task->month.setEnabled(mo, true);
     emit accepted();
     this->close();
+}
+
+void AlarmDialog::validate(QLineEdit& input) {
+    if(input.text().isEmpty()) {
+        isInputValid = false;
+        input.setToolTip(tr("This field should not be empty"));
+        input.setStyleSheet(
+                    QStringLiteral("border:1.5px solid red;border-radius:5px;"));
+    } else {
+        isInputValid = true;
+        input.setToolTip(QString());
+        input.setStyleSheet(QString());
+    }
 }
