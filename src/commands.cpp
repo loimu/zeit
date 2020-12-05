@@ -50,12 +50,17 @@ void Commands::deleteCommand(int index) {
 const QVector<Command>& Commands::getCommands() {
     commands.clear();
     QProcess p;
-    p.start(QStringLiteral("atq"));
+    p.start(QStringLiteral("atq"), QStringList{});
     p.waitForFinished();
     QString output = QString::fromUtf8(p.readAllStandardOutput());
     QStringList entries;
     if(!output.isEmpty())
-        entries = output.split("\n", QString::SkipEmptyParts);
+        entries = output
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+                .split(QChar::fromLatin1('\n'), Qt::SkipEmptyParts);
+#else
+                .split(QChar::fromLatin1('\n'), QString::SkipEmptyParts);
+#endif
     for(QString& entry : entries) {
         QRegExp match(QStringLiteral("^(\\d+)\\s+(.*)$"));
         match.setMinimal(true);
