@@ -76,7 +76,7 @@
      <x>0</x>
      <y>0</y>
      <width>787</width>
-     <height>28</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAdd">
@@ -274,6 +274,17 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+W</string>
+   </property>
+  </action>
+  <action name="toggleItemAction">
+   <property name="text">
+    <string>To&amp;ggle</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle Item</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
    </property>
   </action>
  </widget>

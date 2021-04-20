@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2020 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2021 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
@@ -95,10 +95,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->actionTasks->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
     ui->actionCommands->setActionGroup(group);
-    toggleItemAction = new QAction(this);
-    toggleItemAction->setText(tr("To&ggle"));
-    toggleItemAction->setShortcut(QStringLiteral("Ctrl+G"));
-    connect(toggleItemAction, &QAction::triggered, this, [this] {
+    connect(ui->toggleItemAction, &QAction::triggered, this, [this] {
         int index = ui->listWidget->currentRow();
         if(ui->actionTasks->isChecked()) {
             CTTask* task = cron->tasks().at(index);
@@ -113,17 +110,16 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             setIcon(ui->listWidget->item(index), var->enabled);
         }
     });
-    ui->listWidget->addAction(toggleItemAction);
+    ui->listWidget->addAction(ui->toggleItemAction);
     ui->listWidget->addAction(ui->actionModifyEntry);
     ui->listWidget->addAction(ui->actionDeleteEntry);
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
-    ui->listWidget->setWordWrap(ui->actionWrapText->isChecked());
     connect(ui->listWidget, &QListWidget::itemSelectionChanged, this, [this] {
         refreshActions(ui->listWidget->currentRow() > -1
                        && ui->listWidget->currentItem()->isSelected());
     });
     connect(ui->listWidget, &QListWidget::itemDoubleClicked,
-            toggleItemAction, &QAction::trigger);
+            ui->toggleItemAction, &QAction::trigger);
     connect(ui->hideFilterButton, &QPushButton::released,
             ui->actionShowFilter, &QAction::toggle);
     connect(ui->filterEdit, &QLineEdit::textEdited,
@@ -196,7 +192,7 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
 }
 
 void MainWindow::refreshActions(bool enabled) {
-    toggleItemAction->setDisabled(ui->actionCommands->isChecked() || !enabled);
+    ui->toggleItemAction->setDisabled(ui->actionCommands->isChecked() || !enabled);
     bool currentUser = cron->isCurrentUserCron() || cron->isSystemCron();
     ui->actionAddEntry->setEnabled(currentUser);
     ui->actionModifyEntry->setEnabled((currentUser && enabled)
@@ -217,11 +213,11 @@ void MainWindow::showTasks() {
     ui->listWidget->clear();
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
-        QString text;
-        text.append(tr("Command: %1\n"
-                       "Description: %2\n").arg(task->command, task->comment));
-        text.append(tr("Runs %1",
-                       "Runs at 'period described'").arg(task->describe()));
+        QString text(tr("Description: %1\n"
+                        "Runs %2\n"
+                        "Command: %3",
+                        "Runs at 'period described'")
+                     .arg(task->comment, task->describe(), task->command));
         item->setText(text);
         setIcon(item, task->enabled);
         ui->listWidget->addItem(item);
