@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     /* init crontab host */
     CTInitializationError error;
     ctHost = new CTHost(QStringLiteral("crontab"), error);
-    selectUser(false);
+    cron = ctHost->findCurrentUserCron();
     /* check if `at` binary is available */
     QProcess proc;
     proc.start(QStringLiteral("which"), QStringList{QStringLiteral("at")});
@@ -146,8 +146,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
         if(ui->actionCommands->isChecked())
             showCommands();
     });
-    connect(ui->actionSystem, &QAction::triggered, this, [this] (bool check) {
-        selectUser(check);
+    connect(ui->actionSystem, &QAction::toggled, this, [this] (bool check) {
+        cron = check ? ctHost->findSystemCron() : ctHost->findCurrentUserCron();
         ui->actionRefresh->trigger();
     });
     connect(ui->actionTasks, &QAction::triggered, this, &MainWindow::viewTasks);
@@ -254,10 +254,6 @@ void MainWindow::showCommands() {
     refreshActions(false);
 }
 
-void MainWindow::selectUser(bool system) {
-    cron = system ? ctHost->findSystemCron() : ctHost->findCurrentUserCron();
-}
-
 void MainWindow::addEntry() {
     if(ui->actionTasks->isChecked()) {
         CTTask* task = new CTTask(QString(), QString(),
@@ -361,7 +357,6 @@ void MainWindow::viewCommands() {
     ui->actionAddEntry->setText(tr("Add Command"));
     ui->actionModifyEntry->setText(tr("Modify Command"));
     ui->actionDeleteEntry->setText(tr("Delete Command"));
-    selectUser(false);
     ui->actionSystem->setChecked(false);
     ui->actionSystem->setEnabled(false);
     showCommands();
