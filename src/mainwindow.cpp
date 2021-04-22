@@ -222,7 +222,6 @@ void MainWindow::showTasks() {
         setIcon(item, task->enabled);
         ui->listWidget->addItem(item);
     }
-    refreshActions(false);
 }
 
 void MainWindow::showVariables() {
@@ -239,7 +238,6 @@ void MainWindow::showVariables() {
         setIcon(item, var->enabled);
         ui->listWidget->addItem(item);
     }
-    refreshActions(false);
 }
 
 void MainWindow::showCommands() {
@@ -251,7 +249,6 @@ void MainWindow::showCommands() {
                     c.description + tr("\nCommand: ") + c.command);
         ui->listWidget->addItem(item);
     }
-    refreshActions(false);
 }
 
 void MainWindow::addEntry() {
