@@ -95,7 +95,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->mainToolBar->addAction(ui->actionDeleteEntry);
     ui->mainToolBar->addAction(ui->actionAlarm);
     ui->mainToolBar->addAction(ui->actionTimer);
-    auto group = new QActionGroup(this);
+    auto* group = new QActionGroup(this);
     ui->actionTasks->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
     ui->actionCommands->setActionGroup(group);
@@ -220,10 +220,10 @@ void MainWindow::toggleFilter(bool check) {
 }
 
 void MainWindow::showAlarmDialog() {
-    CTTask* task = new CTTask({}, {}, cron->userLogin(), false);
-    AlarmDialog* ad = new AlarmDialog(task, this);
-    ad->show();
-    connect(ad, &AlarmDialog::accepted, this, [this, task] {
+    auto* task = new CTTask({}, {}, cron->userLogin(), false);
+    auto* alarmDialog = new AlarmDialog(task, this);
+    alarmDialog->show();
+    connect(alarmDialog, &AlarmDialog::accepted, this, [this, task] {
         cron->addTask(task);
         cron->save();
         if(ui->actionTasks->isChecked())
@@ -232,15 +232,15 @@ void MainWindow::showAlarmDialog() {
 }
 
 void MainWindow::showTimerDialog() {
-    TimerDialog* td = new TimerDialog(commands, this);
-    td->show();
-    connect(td, &TimerDialog::accepted,
+    auto* timerDialog = new TimerDialog(commands, this);
+    timerDialog->show();
+    connect(timerDialog, &TimerDialog::accepted,
             this, [this] { if(ui->actionCommands->isChecked()) list->view(); });
 }
 
 void MainWindow::showAboutDialog() {
     ui->actionAbout->setDisabled(true);
-    AboutDialog* about = new AboutDialog(this);
+    auto* about = new AboutDialog(this);
     about->show();
     connect(about, &AboutDialog::destroyed,
             this, [this] { ui->actionAbout->setEnabled(true); });

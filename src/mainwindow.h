@@ -40,7 +40,7 @@ class MainWindow : public QMainWindow
 
     CTHost* ctHost = nullptr;
     CTCron* cron = nullptr;
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui;
     Commands* commands;
     BaseDelegate* list = nullptr;
     void keyPressEvent(QKeyEvent*);
