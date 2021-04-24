@@ -28,10 +28,10 @@
        </sizepolicy>
       </property>
       <property name="styleSheet">
-       <string notr="true">background:red;color:white;</string>
+       <string notr="true">background:#da4453;color:white;border-radius:3px;padding-top:5px;padding-bottom:5px;</string>
       </property>
       <property name="text">
-       <string>&lt;b&gt;Warning: you are working with system crontab file. Be careful.&lt;/b&gt;</string>
+       <string>&lt;b&gt;You are working with system crontab file. Be careful.&lt;/b&gt;</string>
       </property>
       <property name="textFormat">
        <enum>Qt::RichText</enum>
