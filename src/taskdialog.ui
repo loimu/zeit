@@ -7,13 +7,30 @@
     <x>0</x>
     <y>0</y>
     <width>373</width>
-    <height>497</height>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>&amp;Hour:</string>
+     </property>
+     <property name="buddy">
+      <cstring>editHour</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="commandEdit">
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="1">
     <widget class="QLineEdit" name="commentEdit">
      <property name="minimumSize">
@@ -27,7 +44,43 @@
      </property>
     </widget>
    </item>
-   <item row="15" column="1">
+   <item row="12" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="8" column="1">
+    <widget class="QLineEdit" name="editWeekday"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="editMinute"/>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Description:</string>
+     </property>
+     <property name="buddy">
+      <cstring>commentEdit</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QRadioButton" name="radioBasic">
+     <property name="text">
+      <string>Basic</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -37,19 +90,36 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
-    <widget class="QLineEdit" name="editHour"/>
-   </item>
-   <item row="9" column="1">
-    <widget class="QLineEdit" name="editWeekday"/>
-   </item>
-   <item row="7" column="0">
-    <widget class="QLabel" name="label_5">
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>&amp;Hour:</string>
+      <string>&amp;Minute:</string>
      </property>
      <property name="buddy">
-      <cstring>editHour</cstring>
+      <cstring>editMinute</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="comboBox"/>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLineEdit" name="editHour"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QRadioButton" name="radioAdvanced">
+     <property name="text">
+      <string>Ad&amp;vanced</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Day of &amp;Week:</string>
+     </property>
+     <property name="buddy">
+      <cstring>editWeekday</cstring>
      </property>
     </widget>
    </item>
@@ -63,64 +133,7 @@
      </property>
     </widget>
    </item>
-   <item row="15" column="0">
-    <widget class="QCheckBox" name="enabledCheckBox">
-     <property name="text">
-      <string>Enabled</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>&lt;span style=&quot; font-weight:600;&quot;&gt;Time and Date:&lt;/span&gt;</string>
-     </property>
-     <property name="buddy">
-      <cstring>comboBox</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>&amp;Minute:</string>
-     </property>
-     <property name="buddy">
-      <cstring>editMinute</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QRadioButton" name="radioBasic">
-     <property name="text">
-      <string>Basic</string>
-     </property>
-    </widget>
-   </item>
-   <item row="13" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="4" column="1">
-    <widget class="QComboBox" name="comboBox"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="commandEdit">
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0">
+   <item row="9" column="0">
     <widget class="QLabel" name="label_8">
      <property name="text">
       <string>&amp;Month:</string>
@@ -130,7 +143,24 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="2" column="0" colspan="2">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>&lt;span style=&quot; font-weight:600;&quot;&gt;Time and Date:&lt;/span&gt;</string>
+     </property>
+     <property name="buddy">
+      <cstring>comboBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QCheckBox" name="enabledCheckBox">
+     <property name="text">
+      <string>Enabled</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
     <widget class="QLabel" name="label_6">
      <property name="text">
       <string>Da&amp;y:</string>
@@ -140,56 +170,10 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>Day of &amp;Week:</string>
-     </property>
-     <property name="buddy">
-      <cstring>editWeekday</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QRadioButton" name="radioAdvanced">
-     <property name="text">
-      <string>Ad&amp;vanced</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="1">
-    <widget class="QLineEdit" name="editMonth"/>
-   </item>
-   <item row="2" column="0">
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="8" column="1">
+   <item row="7" column="1">
     <widget class="QLineEdit" name="editDay"/>
    </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Description:</string>
-     </property>
-     <property name="buddy">
-      <cstring>commentEdit</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QLineEdit" name="editMinute"/>
-   </item>
-   <item row="14" column="0" colspan="2">
+   <item row="13" column="0" colspan="2">
     <widget class="QScrollArea" name="scrollArea">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -220,6 +204,9 @@
       </property>
      </widget>
     </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QLineEdit" name="editMonth"/>
    </item>
   </layout>
  </widget>
