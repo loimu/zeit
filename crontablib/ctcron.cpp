@@ -165,39 +165,38 @@ CTCron& CTCron::operator = (const CTCron& source) {
 }
 
 void CTCron::parseFile(const QString& fileName) {
-
-	QFile file(fileName);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
 
     QString comment;
     QTextStream in(&file);
     bool leadingComment = true;
 
     while (!in.atEnd()) {
-		QString line = in.readLine();
+        QString line = in.readLine();
 
-		// search for comments "#" but not disabled tasks "#\"
+        // search for comments "#" but not disabled tasks "#\"
         if (line.indexOf(QChar::fromLatin1('#')) == 0
                 && line.indexOf(QChar::fromLatin1('\\')) != 1) {
             // Skip leading comments with leading spaces, those are not written by KCron
             if (leadingComment && line.startsWith(QLatin1String("# ")))
                 continue;
             leadingComment = false;
-			// If the first 10 characters don't contain a character, it's probably a disabled entry.
+            // If the first 10 characters don't contain a character, it's probably a disabled entry.
             int firstText = line.indexOf(QRegExp(QLatin1String("\\w")));
             if (firstText < 0) {
                 comment.clear();
                 continue;
             }
-			if (firstText < 10) {
-				// remove leading pound sign
+            if (firstText < 10) {
+                // remove leading pound sign
                 line = line.mid(1, line.length() - 1);
-				if (comment.isEmpty())
-					comment = line.trimmed();
-				else
+                if (comment.isEmpty())
+                    comment = line.trimmed();
+                else
                     comment += QChar::fromLatin1('\n') + line.trimmed();
-				continue;
+                continue;
             } else {  // ignore everything else, must some useless comment
                 logDebug() << "skipping line" << line.trimmed();
                 comment.clear();
@@ -205,28 +204,28 @@ void CTCron::parseFile(const QString& fileName) {
             }
         }
 
-		// either a task or a variable
+        // either a task or a variable
         int firstWhiteSpace = line.indexOf(QRegExp(QLatin1String("[ \t]")));
         int firstEquals = line.indexOf(QChar::fromLatin1('='));
 
-		// if there is an equals sign and either there is no
-		// whitespace or the first whitespace is after the equals
-		// sign, it must be a variable
-		if ((firstEquals > 0) && ((firstWhiteSpace == -1) || firstWhiteSpace > firstEquals)) {
-			// create variable
-			CTVariable* tmp = new CTVariable(line, comment, d->userLogin);
-			d->variable.append(tmp);
-			comment.clear();
-		}
-		// must be a task, either enabled or disabled
-		else {
-			if (firstWhiteSpace > 0) {
-				CTTask* tmp = new CTTask(line, comment, d->userLogin, d->multiUserCron);
-				d->task.append(tmp);
-				comment.clear();
-			}
+        // if there is an equals sign and either there is no
+        // whitespace or the first whitespace is after the equals
+        // sign, it must be a variable
+        if ((firstEquals > 0) && ((firstWhiteSpace == -1) || firstWhiteSpace > firstEquals)) {
+            // create variable
+            CTVariable* tmp = new CTVariable(line, comment, d->userLogin);
+            d->variable.append(tmp);
+            comment.clear();
         }
-	}
+        // must be a task, either enabled or disabled
+        else {
+            if (firstWhiteSpace > 0) {
+                CTTask* tmp = new CTTask(line, comment, d->userLogin, d->multiUserCron);
+                d->task.append(tmp);
+                comment.clear();
+            }
+        }
+    }
 }
 
 QString CTCron::exportCron() const {
