@@ -152,6 +152,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
 }
 
 MainWindow::~MainWindow() {
+    delete list;
     delete commands;
     delete ctHost;
     delete ui;
