@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2020 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2021 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
@@ -17,45 +17,46 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef BASEDELEGATE_H
+#define BASEDELEGATE_H
 
-#include <QMainWindow>
+#include <QCoreApplication>
+#include "config.h"
+
+#ifdef BUILD_HELPER
+  #define ROOT_ACTIONS cron->isSystemCron()
+#else
+  #define ROOT_ACTIONS false
+#endif // BUILD_HELPER
+
+#define QSL QStringLiteral
 
 namespace Ui {
 class MainWindow;
 }
 
-class CTHost;
-class CTCron;
-class CTTask;
-class CTVariable;
 class QListWidgetItem;
-class Commands;
-class BaseDelegate;
 
-class MainWindow : public QMainWindow
+class BaseDelegate
 {
-    Q_OBJECT
-
-    CTHost* ctHost = nullptr;
-    CTCron* cron = nullptr;
-    Ui::MainWindow *ui;
-    Commands* commands;
-    BaseDelegate* list = nullptr;
-    void keyPressEvent(QKeyEvent*);
-    void refreshActions(bool);
-    void updateWindow();
-    void switchView();
-    void deleteEntry();
-    void toggleFilter(bool check);
-    void showAlarmDialog();
-    void showTimerDialog();
-    void showAboutDialog();
-
 public:
-    explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    QString caption{};
+    QString toolTip{};
+
+    BaseDelegate(Ui::MainWindow* ui = nullptr);
+    virtual ~BaseDelegate() {}
+
+    virtual void view()=0;
+    virtual void copyEntry()=0;
+    virtual void createEntry()=0;
+    virtual void modifyEntry(int index)=0;
+    virtual void deleteEntry(int index)=0;
+    virtual void toggleEntry(int index)=0;
+
+protected:
+    Ui::MainWindow* ui;
+
+    void setIcon(QListWidgetItem* item, bool enabled);
 };
 
-#endif // MAINWINDOW_H
+#endif // BASEDELEGATE_H

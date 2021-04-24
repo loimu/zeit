@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2020 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2021 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
@@ -17,45 +17,28 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef VARIABLEDELEGATE_H
+#define VARIABLEDELEGATE_H
 
-#include <QMainWindow>
+#include "basedelegate.h"
 
-namespace Ui {
-class MainWindow;
-}
 
-class CTHost;
 class CTCron;
-class CTTask;
-class CTVariable;
-class QListWidgetItem;
-class Commands;
-class BaseDelegate;
 
-class MainWindow : public QMainWindow
+class VariableDelegate : public BaseDelegate
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(VariableController)
 
-    CTHost* ctHost = nullptr;
-    CTCron* cron = nullptr;
-    Ui::MainWindow *ui;
-    Commands* commands;
-    BaseDelegate* list = nullptr;
-    void keyPressEvent(QKeyEvent*);
-    void refreshActions(bool);
-    void updateWindow();
-    void switchView();
-    void deleteEntry();
-    void toggleFilter(bool check);
-    void showAlarmDialog();
-    void showTimerDialog();
-    void showAboutDialog();
+    CTCron* cron;
 
 public:
-    explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    VariableDelegate(Ui::MainWindow* ui, CTCron* cron);
+    void view() override;
+    void copyEntry() override { assert(false); };
+    void createEntry() override;
+    void modifyEntry(int index) override;
+    void deleteEntry(int index) override;
+    void toggleEntry(int index) override;
 };
 
-#endif // MAINWINDOW_H
+#endif // VARIABLEDELEGATE_H

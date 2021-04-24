@@ -12,6 +12,10 @@ set(zeit_SRCS
     taskdialog.cpp
     timerdialog.cpp
     variabledialog.cpp
+    data/basedelegate.cpp
+    data/commanddelegate.cpp
+    data/taskdelegate.cpp
+    data/variabledelegate.cpp
 )
 set(zeit_FRMS
     alarmdialog.ui

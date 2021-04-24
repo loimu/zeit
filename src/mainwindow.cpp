@@ -35,6 +35,9 @@
 #include "ctvariable.h"
 #include "ctInitializationError.h"
 
+#include "data/commanddelegate.h"
+#include "data/taskdelegate.h"
+#include "data/variabledelegate.h"
 #include "aboutdialog.h"
 #include "alarmdialog.h"
 #include "taskdialog.h"
@@ -80,6 +83,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     CTInitializationError error;
     ctHost = new CTHost(QStringLiteral("crontab"), error);
     cron = ctHost->findCurrentUserCron();
+    list = new TaskDelegate(ui, cron);
     /* check if `at` binary is available */
     QProcess proc;
     proc.start(QStringLiteral("which"), QStringList{QStringLiteral("at")});
@@ -95,21 +99,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->actionTasks->setActionGroup(group);
     ui->actionVariables->setActionGroup(group);
     ui->actionCommands->setActionGroup(group);
-    connect(ui->toggleItemAction, &QAction::triggered, this, [this] {
-        int index = ui->listWidget->currentRow();
-        if(ui->actionTasks->isChecked()) {
-            CTTask* task = cron->tasks().at(index);
-            task->enabled = !task->enabled;
-            cron->save();
-            setIcon(ui->listWidget->item(index), task->enabled);
-        }
-        if(ui->actionVariables->isChecked()) {
-            CTVariable* var = cron->variables().at(index);
-            var->enabled = !var->enabled;
-            cron->save();
-            setIcon(ui->listWidget->item(index), var->enabled);
-        }
-    });
+    connect(ui->toggleItemAction, &QAction::triggered,
+            this, [this] { list->toggleEntry(ui->listWidget->currentRow()); });
     ui->listWidget->addAction(ui->toggleItemAction);
     ui->listWidget->addAction(ui->actionModifyEntry);
     ui->listWidget->addAction(ui->actionDeleteEntry);
@@ -131,40 +122,21 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     });
     // Main menu
     connect(ui->actionAddEntry, &QAction::triggered,
-            this, &MainWindow::addEntry);
+            this, [this] { list->createEntry(); });
     connect(ui->actionModifyEntry, &QAction::triggered,
-            this, &MainWindow::modifyEntry);
+            this, [this] { list->modifyEntry(ui->listWidget->currentRow()); });
     connect(ui->actionDeleteEntry, &QAction::triggered,
             this, &MainWindow::deleteEntry);
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     // View menu
-    connect(ui->actionRefresh, &QAction::triggered, this, [this] {
-        if(ui->actionTasks->isChecked())
-            showTasks();
-        if(ui->actionVariables->isChecked())
-            showVariables();
-        if(ui->actionCommands->isChecked())
-            showCommands();
-    });
+    connect(ui->actionRefresh, &QAction::triggered, this, [this] {list->view();});
     connect(ui->actionSystem, &QAction::toggled, this, [this] (bool check) {
         cron = check ? ctHost->findSystemCron() : ctHost->findCurrentUserCron();
-        ui->actionRefresh->trigger();
+        switchView();
     });
-    connect(ui->actionTasks, &QAction::triggered, this, &MainWindow::viewTasks);
-    connect(ui->actionVariables, &QAction::triggered,
-            this, &MainWindow::viewVariables);
-    connect(ui->actionCommands, &QAction::triggered,
-            this, &MainWindow::viewCommands);
-    connect(ui->actionShowFilter, &QAction::toggled, this, [this] (bool check) {
-       ui->filterEdit->setVisible(check);
-       ui->hideFilterButton->setVisible(check);
-       if(check) {
-           ui->filterEdit->setFocus();
-       } else {
-           ui->filterEdit->clear();
-           emit ui->filterEdit->textEdited(QString());
-       }
-    });
+    connect(group, &QActionGroup::triggered, this, &MainWindow::switchView);
+    connect(ui->actionShowFilter, &QAction::toggled,
+            this, &MainWindow::toggleFilter);
     connect(ui->actionWrapText, &QAction::toggled,
             ui->listWidget, &QListWidget::setWordWrap);
     // Tools menu
@@ -175,8 +147,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     // Help menu
     connect(ui->actionAbout, &QAction::triggered,
             this, &MainWindow::showAboutDialog);
-    /* refresh state */
-    viewTasks();
+    updateWindow();
     refreshActions(false);
 }
 
@@ -202,183 +173,68 @@ void MainWindow::refreshActions(bool enabled) {
     ui->actionTimer->setEnabled(currentUser);
 }
 
-void MainWindow::setIcon(QListWidgetItem* item, bool enabled) {
-    QString icon = enabled ? QSL("dialog-ok-apply") : QSL("edit-delete");
-    item->setIcon(QIcon::fromTheme(icon, QIcon(QSL(":/icons/") + icon)));
+void MainWindow::updateWindow() {
+    ui->actionAddEntry->setText(tr("Add ") + list->caption);
+    ui->actionModifyEntry->setText(tr("Modify ") + list->caption);
+    ui->actionDeleteEntry->setText(tr("Delete ") + list->caption);
+    if(ui->actionCommands->isChecked())
+        ui->actionSystem->setChecked(false);
+    ui->actionSystem->setEnabled(!ui->actionCommands->isChecked());
+    list->view();
+    ui->listWidget->setToolTip(list->toolTip);
 }
 
-void MainWindow::showTasks() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
-    ui->labelWarning->setVisible(ROOT_ACTIONS);
-    ui->listWidget->clear();
-    for(CTTask* task: cron->tasks()) {
-        QListWidgetItem* item = new QListWidgetItem();
-        QString text(tr("Description: %1\n"
-                        "Runs %2\n"
-                        "Command: %3",
-                        "Runs at 'period described'")
-                     .arg(task->comment, task->describe(), task->command));
-        item->setText(text);
-        setIcon(item, task->enabled);
-        ui->listWidget->addItem(item);
-    }
-}
-
-void MainWindow::showVariables() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
-    ui->labelWarning->setVisible(ROOT_ACTIONS);
-    ui->listWidget->clear();
-    for(CTVariable* var: cron->variables()) {
-        QListWidgetItem* item = new QListWidgetItem();
-        item->setText(QString(QStringLiteral("%1%2=%3"))
-                      .arg(var->comment.isEmpty()
-                           ? QString()
-                           : QString(QSL("## %1\n")).arg(var->comment),
-                           var->variable, var->value));
-        setIcon(item, var->enabled);
-        ui->listWidget->addItem(item);
-    }
-}
-
-void MainWindow::showCommands() {
-    ui->labelWarning->hide();
-    ui->listWidget->setEnabled(true);
-    ui->listWidget->clear();
-    for(const Command& c: commands->getCommands()) {
-        QListWidgetItem* item = new QListWidgetItem(
-                    c.description + tr("\nCommand: ") + c.command);
-        ui->listWidget->addItem(item);
-    }
-}
-
-void MainWindow::addEntry() {
-    if(ui->actionTasks->isChecked()) {
-        CTTask* task = new CTTask(QString(), QString(),
-                                  cron->userLogin(), false);
-        TaskDialog *td = new TaskDialog(task, tr("New Task"), this);
-        td->show();
-        connect(td, &TaskDialog::accepted, this, [this, task] {
-            cron->addTask(task);
-            cron->save();
-            if(ui->actionTasks->isChecked())
-                showTasks();
-        });
-    }
-    if(ui->actionVariables->isChecked()) {
-        CTVariable* var = new CTVariable(QString(),
-                                         QString(), cron->userLogin());
-        VariableDialog* vd = new VariableDialog(var, tr("New Variable"), this);
-        vd->show();
-        connect(vd, &VariableDialog::accepted, this, [this, var] {
-            cron->addVariable(var);
-            cron->save();
-            if(ui->actionVariables->isChecked())
-                showVariables();
-        });
-    }
-    if(ui->actionCommands->isChecked()) {
-        CommandDialog* cd = new CommandDialog(commands, this);
-        cd->show();
-        connect(cd, &CommandDialog::accepted, this, &MainWindow::showCommands);
-    }
-}
-
-void MainWindow::modifyEntry() {
-    int index = ui->listWidget->currentRow();
-    if(ui->actionTasks->isChecked()) {
-        CTTask* task = cron->tasks().at(index);
-        TaskDialog* td = new TaskDialog(task, tr("Edit Task"), this);
-        td->show();
-        connect(td, &TaskDialog::accepted, this, [this, task] {
-            cron->modifyTask(task);
-            cron->save();
-            if(ui->actionTasks->isChecked())
-                showTasks();
-        });
-    }
-    if(ui->actionVariables->isChecked()) {
-        CTVariable* var = cron->variables().at(index);
-        VariableDialog* vd = new VariableDialog(var, tr("Edit Variable"), this);
-        vd->show();
-        connect(vd, &VariableDialog::accepted, this, [this, var] {
-            cron->modifyVariable(var);
-            cron->save();
-            if(ui->actionVariables->isChecked())
-                showVariables();
-        });
-    }
+void MainWindow::switchView() {
+    if(list) { delete list; list = nullptr; }
+    if(ui->actionVariables->isChecked())
+        list = new VariableDelegate(ui, cron);
+    else if(ui->actionCommands->isChecked())
+        list = new CommandDelegate(ui, commands);
+    else
+        list = new TaskDelegate(ui, cron);
+    updateWindow();
 }
 
 void MainWindow::deleteEntry() {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this,
-                                  tr("Deleting Entry"), tr("Delete entry?"),
+                                  tr("Deleting %1").arg(list->caption),
+                                  tr("Delete %1?").arg(list->caption),
                                   QMessageBox::Yes|QMessageBox::No);
     if(reply == QMessageBox::No)
         return;
-    int index = ui->listWidget->currentRow();
-    if(ui->actionTasks->isChecked()) {
-        CTTask* task = cron->tasks().at(index);
-        cron->removeTask(task);
-        cron->save();
-    }
-    if(ui->actionVariables->isChecked()) {
-        CTVariable* var = cron->variables().at(index);
-        cron->removeVariable(var);
-        cron->save();
-    }
-    if(ui->actionCommands->isChecked())
-        commands->deleteCommand(index);
+    list->deleteEntry(ui->listWidget->currentRow());
     ui->actionRefresh->trigger();
 }
 
-void MainWindow::viewTasks() {
-    ui->actionAddEntry->setText(tr("Add Task"));
-    ui->actionModifyEntry->setText(tr("Modify Task"));
-    ui->actionDeleteEntry->setText(tr("Delete Task"));
-    ui->actionSystem->setEnabled(true);
-    showTasks();
-    ui->listWidget->setToolTip(tr("crontab tasks, running periodically"));
-}
-
-void MainWindow::viewVariables() {
-    ui->actionAddEntry->setText(tr("Add Variable"));
-    ui->actionModifyEntry->setText(tr("Modify Variable"));
-    ui->actionDeleteEntry->setText(tr("Delete Variable"));
-    ui->actionSystem->setEnabled(true);
-    showVariables();
-    ui->listWidget->setToolTip(tr("environment variables for crontab"));
-}
-
-void MainWindow::viewCommands() {
-    ui->actionAddEntry->setText(tr("Add Command"));
-    ui->actionModifyEntry->setText(tr("Modify Command"));
-    ui->actionDeleteEntry->setText(tr("Delete Command"));
-    ui->actionSystem->setChecked(false);
-    ui->actionSystem->setEnabled(false);
-    showCommands();
-    ui->listWidget->setToolTip(tr("commands, scheduled to be executed once"));
+void MainWindow::toggleFilter(bool check) {
+    ui->filterEdit->setVisible(check);
+    ui->hideFilterButton->setVisible(check);
+    if(check) {
+        ui->filterEdit->setFocus();
+    } else {
+        ui->filterEdit->clear();
+        emit ui->filterEdit->textEdited({});
+    }
 }
 
 void MainWindow::showAlarmDialog() {
-    CTTask* task = new CTTask(QString(), QString(), cron->userLogin(), false);
+    CTTask* task = new CTTask({}, {}, cron->userLogin(), false);
     AlarmDialog* ad = new AlarmDialog(task, this);
     ad->show();
     connect(ad, &AlarmDialog::accepted, this, [this, task] {
         cron->addTask(task);
         cron->save();
         if(ui->actionTasks->isChecked())
-            showTasks();
+            list->view();
     });
 }
 
 void MainWindow::showTimerDialog() {
     TimerDialog* td = new TimerDialog(commands, this);
     td->show();
-    connect(td, &TimerDialog::accepted, this, [this] {
-        if(ui->actionCommands->isChecked())
-            showCommands();
-    });
+    connect(td, &TimerDialog::accepted,
+            this, [this] { if(ui->actionCommands->isChecked()) list->view(); });
 }
 
 void MainWindow::showAboutDialog() {
