@@ -84,17 +84,15 @@ CTCron::CTCron(const QString& crontabBinary,
 	CommandLine readCommandLine;
 
 	// regular user, so provide user's own crontab
-	if (currentUserCron == true) {
+    if (currentUserCron) {
 		readCommandLine.commandLine = d->crontabBinary;
 		readCommandLine.parameters << QLatin1String( "-l" );
 		readCommandLine.standardOutputFile = d->tmpFileName;
 
 		d->writeCommandLine.commandLine = d->crontabBinary;
 		d->writeCommandLine.parameters << d->tmpFileName;
-
 	}
 	else {
-
 		readCommandLine.commandLine = d->crontabBinary;
 		readCommandLine.parameters << QLatin1String( "-u" ) << QLatin1String(userInfos->pw_name) << QLatin1String( "-l" );
 		readCommandLine.standardOutputFile = d->tmpFileName;
@@ -107,7 +105,7 @@ CTCron::CTCron(const QString& crontabBinary,
 	d->initialTaskCount = 0;
 	d->initialVariableCount = 0;
 
-	if (initializeFromUserInfos(userInfos) == false) {
+    if (!initializeFromUserInfos(userInfos)) {
         ctInitializationError.setErrorMessage(tr("No password entry found for uid '%1'").arg(getuid()));
         logDebug() << "Error in crontab creation of" << userInfos->pw_name;
 		return;
@@ -147,7 +145,7 @@ CTCron& CTCron::operator = (const CTCron& source) {
 	if (this == &source)
 		return *this;
 
-	if (source.isSystemCron() == true) {
+    if (source.isSystemCron()) {
         logDebug() << "Affect the system cron";
 	}
 
@@ -172,39 +170,44 @@ void CTCron::parseFile(const QString& fileName) {
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return;
 
-	QString comment;
-	bool leadingComment = true;
+    QString comment;
+    QTextStream in(&file);
+    bool leadingComment = true;
 
-	QTextStream in(&file);
-	while (in.atEnd() == false) {
+    while (!in.atEnd()) {
 		QString line = in.readLine();
 
 		// search for comments "#" but not disabled tasks "#\"
-		if ( line.indexOf(QLatin1String( "#" )) == 0 && line.indexOf(QLatin1String( "\\" )) != 1 ) {
-			// Skip leading comments with leading spaces, those are not written by KCron
-			if ( leadingComment && line.startsWith(QLatin1String( "# " ))) {
-				continue;
-			}
-			leadingComment = false;
+        if (line.indexOf(QChar::fromLatin1('#')) == 0
+                && line.indexOf(QChar::fromLatin1('\\')) != 1) {
+            // Skip leading comments with leading spaces, those are not written by KCron
+            if (leadingComment && line.startsWith(QLatin1String("# ")))
+                continue;
+            leadingComment = false;
 			// If the first 10 characters don't contain a character, it's probably a disabled entry.
-			int firstText = line.indexOf(QRegExp(QLatin1String( "\\w" )));
-			if (firstText < 0)
-				continue;
-
+            int firstText = line.indexOf(QRegExp(QLatin1String("\\w")));
+            if (firstText < 0) {
+                comment.clear();
+                continue;
+            }
 			if (firstText < 10) {
 				// remove leading pound sign
-				line = line.mid(1, line.length()-1);
+                line = line.mid(1, line.length() - 1);
 				if (comment.isEmpty())
 					comment = line.trimmed();
 				else
-					comment += QLatin1String( "\n" ) + line.trimmed();
+                    comment += QChar::fromLatin1('\n') + line.trimmed();
 				continue;
-			}
-		}
+            } else {  // ignore everything else, must some useless comment
+                logDebug() << "skipping line" << line.trimmed();
+                comment.clear();
+                continue;
+            }
+        }
 
 		// either a task or a variable
-		int firstWhiteSpace(line.indexOf(QRegExp(QLatin1String( "[ \t]" ))));
-		int firstEquals(line.indexOf(QLatin1String( "=" )));
+        int firstWhiteSpace = line.indexOf(QRegExp(QLatin1String("[ \t]")));
+        int firstEquals = line.indexOf(QChar::fromLatin1('='));
 
 		// if there is an equals sign and either there is no
 		// whitespace or the first whitespace is after the equals
@@ -222,12 +225,8 @@ void CTCron::parseFile(const QString& fileName) {
 				d->task.append(tmp);
 				comment.clear();
 			}
-		}
-
-
-
+        }
 	}
-
 }
 
 QString CTCron::exportCron() const {
