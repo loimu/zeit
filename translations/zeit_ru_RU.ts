@@ -113,7 +113,7 @@
     <message>
         <location filename="../src/data/commanddelegate.cpp" line="32"/>
         <source>Command</source>
-        <translation>Команда</translation>
+        <translation>команду</translation>
     </message>
     <message>
         <location filename="../src/data/commanddelegate.cpp" line="33"/>
@@ -375,7 +375,7 @@ Command: </source>
     <message>
         <location filename="../src/data/taskdelegate.cpp" line="33"/>
         <source>Task</source>
-        <translation>Задача</translation>
+        <translation>задачу</translation>
     </message>
     <message>
         <location filename="../src/data/taskdelegate.cpp" line="34"/>
@@ -590,7 +590,7 @@ Command: %3</source>
     <message>
         <location filename="../src/data/variabledelegate.cpp" line="33"/>
         <source>Variable</source>
-        <translation>Переменная</translation>
+        <translation>переменную</translation>
     </message>
     <message>
         <location filename="../src/data/variabledelegate.cpp" line="34"/>
