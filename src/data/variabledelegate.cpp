@@ -54,7 +54,7 @@ void VariableDelegate::copyEntry(int index) {
     CTVariable* var = cron->variables().at(index);
     auto* newVariable = new CTVariable(*var);
     newVariable->comment = newVariable->comment + QChar(0x20) + tr("(Copy)");
-    cron->addVariable(var);
+    cron->addVariable(newVariable);
     cron->save();
     if(ui->actionVariables->isChecked())
         view();
