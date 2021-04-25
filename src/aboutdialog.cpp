@@ -29,14 +29,14 @@
 AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
 {
     this->setWindowTitle(tr("About Zeit"));
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(this);
-    QLabel* label = new QLabel(this);
+    auto* horizontalLayout = new QHBoxLayout(this);
+    auto* label = new QLabel(this);
     label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
     horizontalLayout->addWidget(label);
-    QVBoxLayout* verticalLayout = new QVBoxLayout();
+    auto* verticalLayout = new QVBoxLayout();
     verticalLayout->setSpacing(6);
     verticalLayout->setSizeConstraint(QLayout::SetMaximumSize);
-    QLabel* iconLabel = new QLabel(this);
+    auto* iconLabel = new QLabel(this);
     QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -45,11 +45,11 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
     iconLabel->setPixmap(QPixmap(QStringLiteral(":/zeit.png")));
     iconLabel->setAlignment(Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing);
     verticalLayout->addWidget(iconLabel);
-    QPushButton* aboutQt = new QPushButton(this);
+    auto* aboutQt = new QPushButton(this);
     aboutQt->setText(tr("About &Qt"));
     connect(aboutQt, &QPushButton::released, qApp, &QApplication::aboutQt);
     verticalLayout->addWidget(aboutQt);
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
+    auto* buttonBox = new QDialogButtonBox(this);
     buttonBox->setMaximumSize(QSize(128, 16777215));
     buttonBox->setOrientation(Qt::Vertical);
     buttonBox->setStandardButtons(QDialogButtonBox::Close);
@@ -63,9 +63,8 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
                         "<p><b>Zeit</b> v%1 &copy; 2015-2021 Blaze<br />"
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
-                        "Licensed under GPL v3 or later.</p>"
-                        "<p>Built on %4</p>"
-                        "Project:<br />"
+                        "Licensed under GPL v3 or later</p>"
+                        "<p>Built on %4</p>Project:<br />"
                         "<a href=\"https://launchpad.net/zeit\">"
                         "https://launchpad.net/zeit</a>"))
                 .arg(qApp->applicationVersion(), qVersion(), QT_VERSION_STR, __DATE__));
