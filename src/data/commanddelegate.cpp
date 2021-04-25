@@ -19,8 +19,8 @@
 
 #include <QApplication>
 
-#include "../commands.h"
-#include "../commanddialog.h"
+#include "commands.h"
+#include "commanddialog.h"
 #include "ui_mainwindow.h"
 #include "commanddelegate.h"
 

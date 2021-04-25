@@ -21,7 +21,7 @@
 
 #include "ctcron.h"
 #include "ctvariable.h"
-#include "../variabledialog.h"
+#include "variabledialog.h"
 #include "variabledelegate.h"
 #include "ui_mainwindow.h"
 

@@ -44,6 +44,7 @@ add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS}
 target_include_directories(zeit PRIVATE ${Qt5Core_INCLUDE_DIRS}
                            ${Qt5Widgets_INCLUDE_DIRS}
                            ${CMAKE_CURRENT_SOURCE_DIR}/../crontablib
+                           ${CMAKE_CURRENT_SOURCE_DIR}
                            ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(zeit crontab ${qt_LIBS})
 target_compile_features(zeit PRIVATE cxx_lambdas cxx_nullptr cxx_unicode_literals)

@@ -21,7 +21,7 @@
 
 #include "ctcron.h"
 #include "cttask.h"
-#include "../taskdialog.h"
+#include "taskdialog.h"
 #include "taskdelegate.h"
 #include "ui_mainwindow.h"
 
