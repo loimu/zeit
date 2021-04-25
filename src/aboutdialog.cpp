@@ -64,9 +64,10 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
                         "Licensed under GPL v3 or later.</p>"
+                        "<p>Built on %4</p>"
                         "Project:<br />"
                         "<a href=\"https://launchpad.net/zeit\">"
                         "https://launchpad.net/zeit</a>"))
-                .arg(qApp->applicationVersion(), qVersion(), QT_VERSION_STR));
+                .arg(qApp->applicationVersion(), qVersion(), QT_VERSION_STR, __DATE__));
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
