@@ -52,10 +52,19 @@ void TaskDelegate::view()
     }
 }
 
+void TaskDelegate::copyEntry(int index) {
+    CTTask* task = cron->tasks().at(index);
+    auto* newTask = new CTTask(*task);
+    newTask->comment = newTask->comment + QChar(0x20) + tr("(Copy)");
+    cron->addTask(newTask);
+    cron->save();
+    if(ui->actionTasks->isChecked())
+        view();
+}
+
 void TaskDelegate::createEntry() {
-    CTTask* task = new CTTask(QString(), QString(),
-                              cron->userLogin(), false);
-    TaskDialog *td = new TaskDialog(task, tr("New Task"), ui->listWidget);
+    auto* task = new CTTask({}, {}, cron->userLogin(), false);
+    auto* td = new TaskDialog(task, tr("New Task"), ui->listWidget);
     td->show();
     QApplication::connect(td, &TaskDialog::accepted, td, [this, task] {
         cron->addTask(task);
@@ -67,7 +76,7 @@ void TaskDelegate::createEntry() {
 
 void TaskDelegate::modifyEntry(int index) {
     CTTask* task = cron->tasks().at(index);
-    TaskDialog* td = new TaskDialog(task, tr("Edit Task"), ui->listWidget);
+    auto* td = new TaskDialog(task, tr("Edit Task"), ui->listWidget);
     td->show();
     QApplication::connect(td, &TaskDialog::accepted, td, [this, task] {
         cron->modifyTask(task);

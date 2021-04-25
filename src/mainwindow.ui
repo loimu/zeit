@@ -84,6 +84,7 @@
      <string>&amp;Zeit</string>
     </property>
     <addaction name="actionAddEntry"/>
+    <addaction name="actionCopyEntry"/>
     <addaction name="actionModifyEntry"/>
     <addaction name="actionDeleteEntry"/>
     <addaction name="separator"/>
@@ -285,6 +286,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionCopyEntry">
+   <property name="text">
+    <string>&amp;Copy Entry</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy Entry</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
    </property>
   </action>
  </widget>

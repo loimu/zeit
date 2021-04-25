@@ -34,7 +34,7 @@ class CommandDelegate : public BaseDelegate
 public:
     CommandDelegate(Ui::MainWindow* ui, Commands* commands);
     void view() override;
-    void copyEntry() override { assert(false); };
+    void copyEntry(int index) override { Q_UNUSED(index); assert(false); };
     void createEntry() override;
     void modifyEntry(int index) override { Q_UNUSED(index); assert(false); };
     void deleteEntry(int index) override;

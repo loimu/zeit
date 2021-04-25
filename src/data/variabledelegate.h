@@ -34,7 +34,7 @@ class VariableDelegate : public BaseDelegate
 public:
     VariableDelegate(Ui::MainWindow* ui, CTCron* cron);
     void view() override;
-    void copyEntry() override { assert(false); };
+    void copyEntry(int index) override;
     void createEntry() override;
     void modifyEntry(int index) override;
     void deleteEntry(int index) override;

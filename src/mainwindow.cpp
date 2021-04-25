@@ -64,6 +64,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->actionAddEntry->setIcon(QIcon::fromTheme(
                                     QStringLiteral("document-new"),
                                     QIcon(QSL(":/icons/document-new"))));
+    ui->actionCopyEntry->setIcon(QIcon::fromTheme(
+                                       QStringLiteral("edit-copy")));
     ui->actionModifyEntry->setIcon(QIcon::fromTheme(
                                        QStringLiteral("document-edit"),
                                        QIcon(QSL(":/icons/document-edit"))));
@@ -91,6 +93,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->actionCommands->setDisabled(proc.readAllStandardOutput().isEmpty());
     /* window actions */
     ui->mainToolBar->addAction(ui->actionAddEntry);
+    ui->mainToolBar->addAction(ui->actionCopyEntry);
     ui->mainToolBar->addAction(ui->actionModifyEntry);
     ui->mainToolBar->addAction(ui->actionDeleteEntry);
     ui->mainToolBar->addAction(ui->actionAlarm);
@@ -102,6 +105,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     connect(ui->toggleItemAction, &QAction::triggered,
             this, [this] { list->toggleEntry(ui->listWidget->currentRow()); });
     ui->listWidget->addAction(ui->toggleItemAction);
+    ui->listWidget->addAction(ui->actionCopyEntry);
     ui->listWidget->addAction(ui->actionModifyEntry);
     ui->listWidget->addAction(ui->actionDeleteEntry);
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -127,6 +131,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
             this, [this] { list->modifyEntry(ui->listWidget->currentRow()); });
     connect(ui->actionDeleteEntry, &QAction::triggered,
             this, &MainWindow::deleteEntry);
+    connect(ui->actionCopyEntry, &QAction::triggered,
+            this, [this] { list->copyEntry(ui->listWidget->currentRow()); });
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
     // View menu
     connect(ui->actionRefresh, &QAction::triggered, this, [this] {list->view();});
@@ -164,18 +170,20 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
 }
 
 void MainWindow::refreshActions(bool enabled) {
+    bool currentUser = cron->isCurrentUserCron() || ROOT_ACTIONS;
     ui->toggleItemAction->setDisabled(ui->actionCommands->isChecked() || !enabled);
-    bool currentUser = cron->isCurrentUserCron() || cron->isSystemCron();
     ui->actionAddEntry->setEnabled(currentUser);
+    ui->actionCopyEntry->setEnabled((currentUser && enabled)
+                                      && !ui->actionCommands->isChecked());
     ui->actionModifyEntry->setEnabled((currentUser && enabled)
                                       && !ui->actionCommands->isChecked());
     ui->actionDeleteEntry->setEnabled(currentUser && enabled);
     ui->actionAlarm->setEnabled(currentUser);
-    ui->actionTimer->setEnabled(currentUser);
 }
 
 void MainWindow::updateWindow() {
     ui->actionAddEntry->setText(tr("Add ") + list->caption);
+    ui->actionCopyEntry->setText(tr("Copy ") + list->caption);
     ui->actionModifyEntry->setText(tr("Modify ") + list->caption);
     ui->actionDeleteEntry->setText(tr("Delete ") + list->caption);
     if(ui->actionCommands->isChecked())

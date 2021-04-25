@@ -50,9 +50,19 @@ void VariableDelegate::view() {
     }
 }
 
+void VariableDelegate::copyEntry(int index) {
+    CTVariable* var = cron->variables().at(index);
+    auto* newVariable = new CTVariable(*var);
+    newVariable->comment = newVariable->comment + QChar(0x20) + tr("(Copy)");
+    cron->addVariable(var);
+    cron->save();
+    if(ui->actionVariables->isChecked())
+        view();
+}
+
 void VariableDelegate::createEntry() {
-    CTVariable* var = new CTVariable({}, {}, cron->userLogin());
-    VariableDialog* vd = new VariableDialog(var, tr("New Variable"), ui->listWidget);
+    auto* var = new CTVariable({}, {}, cron->userLogin());
+    auto* vd = new VariableDialog(var, tr("New Variable"), ui->listWidget);
     vd->show();
     QApplication::connect(vd, &VariableDialog::accepted, vd, [this, var] {
         cron->addVariable(var);
@@ -64,7 +74,7 @@ void VariableDelegate::createEntry() {
 
 void VariableDelegate::modifyEntry(int index) {
     CTVariable* var = cron->variables().at(index);
-    VariableDialog* vd = new VariableDialog(var, tr("Edit Variable"), ui->listWidget);
+    auto* vd = new VariableDialog(var, tr("Edit Variable"), ui->listWidget);
     vd->show();
     QApplication::connect(vd, &VariableDialog::accepted, vd, [this, var] {
         cron->modifyVariable(var);

@@ -47,7 +47,7 @@ public:
     virtual ~BaseDelegate() {}
 
     virtual void view()=0;
-    virtual void copyEntry()=0;
+    virtual void copyEntry(int index)=0;
     virtual void createEntry()=0;
     virtual void modifyEntry(int index)=0;
     virtual void deleteEntry(int index)=0;
