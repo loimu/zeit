@@ -43,7 +43,7 @@ void VariableDelegate::view() {
         item->setText(QString(QStringLiteral("%1%2=%3"))
                       .arg(var->comment.isEmpty()
                            ? QString()
-                           : QString(QSL("## %1\n")).arg(var->comment),
+                           : QString(QStringLiteral("## %1\n")).arg(var->comment),
                            var->variable, var->value));
         setIcon(item, var->enabled);
         ui->listWidget->addItem(item);

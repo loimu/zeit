@@ -29,7 +29,6 @@
   #define ROOT_ACTIONS false
 #endif // BUILD_HELPER
 
-#define QSL QStringLiteral
 
 namespace Ui {
 class MainWindow;

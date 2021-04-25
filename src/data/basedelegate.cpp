@@ -20,6 +20,8 @@
 #include "basedelegate.h"
 #include "ui_mainwindow.h"
 
+#define QSL QStringLiteral
+
 
 BaseDelegate::BaseDelegate(Ui::MainWindow* ui_) : ui(ui_)
 {
