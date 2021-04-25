@@ -1,13 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>zeit.png</file>
-        <file>icons/application-exit.svg</file>
-        <file>icons/chronometer.svg</file>
-        <file>icons/dialog-ok-apply.svg</file>
-        <file>icons/document-close.svg</file>
-        <file>icons/document-edit.svg</file>
-        <file>icons/document-new.svg</file>
-        <file>icons/edit-delete.svg</file>
-        <file>icons/player-time.svg</file>
     </qresource>
 </RCC>

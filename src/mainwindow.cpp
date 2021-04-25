@@ -61,26 +61,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui->filterEdit->hide();
     ui->hideFilterButton->hide();
     ui->labelWarning->hide();
-    ui->actionAddEntry->setIcon(QIcon::fromTheme(
-                                    QStringLiteral("document-new"),
-                                    QIcon(QSL(":/icons/document-new"))));
-    ui->actionCopyEntry->setIcon(QIcon::fromTheme(
-                                       QStringLiteral("edit-copy")));
-    ui->actionModifyEntry->setIcon(QIcon::fromTheme(
-                                       QStringLiteral("document-edit"),
-                                       QIcon(QSL(":/icons/document-edit"))));
-    ui->actionDeleteEntry->setIcon(QIcon::fromTheme(
-                                       QStringLiteral("document-close"),
-                                       QIcon(QSL(":/icons/document-close"))));
-    ui->actionQuit->setIcon(QIcon::fromTheme(
-                                QStringLiteral("application-exit"),
-                                QIcon(QSL(":/icons/application-exit"))));
-    ui->actionAlarm->setIcon(QIcon::fromTheme(
-                                 QStringLiteral("chronometer"),
-                                 QIcon(QSL(":/icons/chronometer"))));
-    ui->actionTimer->setIcon(QIcon::fromTheme(
-                                 QStringLiteral("player-time"),
-                                 QIcon(QSL(":/icons/player-time"))));
+    ui->actionAddEntry->setIcon(QIcon::fromTheme(QSL("document-new")));
+    ui->actionCopyEntry->setIcon(QIcon::fromTheme(QSL("edit-copy")));
+    ui->actionModifyEntry->setIcon(QIcon::fromTheme(QSL("document-edit")));
+    ui->actionDeleteEntry->setIcon(QIcon::fromTheme(QSL("document-close")));
+    ui->actionQuit->setIcon(QIcon::fromTheme(QSL("application-exit")));
+    ui->actionAlarm->setIcon(QIcon::fromTheme(QSL("chronometer")));
+    ui->actionTimer->setIcon(QIcon::fromTheme(QSL("player-time")));
     /* init crontab host */
     CTInitializationError error;
     ctHost = new CTHost(QStringLiteral("crontab"), error);
