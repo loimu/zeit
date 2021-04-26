@@ -1,3 +1,10 @@
+ v0.6.0
+  - possibilty to copy tasks and variables
+  - redesigned/improved ui and validation behavior of all dialog windows
+  - fallback icons removal
+  - fix to crontablib parser
+  - minor fixes and improvements
+
  v0.5.0
   - PolKit authorization via KAuth, root actions
   - filtering items in the main window
