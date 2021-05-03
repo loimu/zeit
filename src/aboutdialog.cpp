@@ -17,6 +17,8 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include "config.h"
+
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
@@ -64,9 +66,10 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
                         "Licensed under GPL v3 or later</p>"
-                        "<p>Built on %4</p>Project:<br />"
+                        "<p>Built on %4 %5</p>Project:<br />"
                         "<a href=\"https://launchpad.net/zeit\">"
                         "https://launchpad.net/zeit</a>"))
-                .arg(qApp->applicationVersion(), qVersion(), QT_VERSION_STR, __DATE__));
+                .arg(qApp->applicationVersion(), qVersion(),
+                     QT_VERSION_STR, __DATE__, ZEIT_REVISION));
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
