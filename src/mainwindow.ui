@@ -115,7 +115,7 @@
     <addaction name="actionCommands"/>
     <addaction name="separator"/>
     <addaction name="actionShowFilter"/>
-    <addaction name="actionWrapText"/>
+    <addaction name="actionShortenText"/>
    </widget>
    <addaction name="menuAdd"/>
    <addaction name="menuView"/>
@@ -263,7 +263,7 @@
     <string notr="true">Ctrl+F</string>
    </property>
   </action>
-  <action name="actionWrapText">
+  <action name="actionShortenText">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -271,10 +271,10 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>&amp;Wrap Text</string>
+    <string>S&amp;horten Text</string>
    </property>
    <property name="shortcut">
-    <string notr="true">Ctrl+W</string>
+    <string notr="true">Ctrl+H</string>
    </property>
   </action>
   <action name="toggleItemAction">

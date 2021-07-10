@@ -45,6 +45,8 @@ public:
     BaseDelegate(Ui::MainWindow* ui = nullptr);
     virtual ~BaseDelegate() {}
 
+    void enableElidedText(bool enabled) { isElidedTextEnabled = enabled; }
+
     virtual void view()=0;
     virtual void copyEntry(int index)=0;
     virtual void createEntry()=0;
@@ -53,9 +55,11 @@ public:
     virtual void toggleEntry(int index)=0;
 
 protected:
+    bool isElidedTextEnabled = false;
     Ui::MainWindow* ui;
 
     void setIcon(QListWidgetItem* item, bool enabled);
+    QString elideText(const QString& text) const;
 };
 
 #endif // BASEDELEGATE_H

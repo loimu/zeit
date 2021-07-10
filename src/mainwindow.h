@@ -44,6 +44,7 @@ class MainWindow : public QMainWindow
     Commands* commands;
     BaseDelegate* list = nullptr;
     void keyPressEvent(QKeyEvent*);
+    void resizeEvent(QResizeEvent*);
     void refreshActions(bool);
     void updateWindow();
     void switchView();
@@ -56,6 +57,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
+    void show();
 };
 
 #endif // MAINWINDOW_H

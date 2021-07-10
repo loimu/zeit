@@ -31,3 +31,10 @@ void BaseDelegate::setIcon(QListWidgetItem* item, bool enabled) {
     QString icon = enabled ? QSL("dialog-ok-apply") : QSL("edit-delete");
     item->setIcon(QIcon::fromTheme(icon, QIcon(QSL(":/icons/") + icon)));
 }
+
+QString BaseDelegate::elideText(const QString& text) const {
+    const QFontMetrics& fm = ui->listWidget->fontMetrics();
+    return fm.elidedText(text,
+                         isElidedTextEnabled ? Qt::ElideRight : Qt::ElideNone,
+                         ui->listWidget->width() - 36 /* hardcoded icon size */);
+}

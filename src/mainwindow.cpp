@@ -130,8 +130,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     connect(group, &QActionGroup::triggered, this, &MainWindow::switchView);
     connect(ui->actionShowFilter, &QAction::toggled,
             this, &MainWindow::toggleFilter);
-    connect(ui->actionWrapText, &QAction::toggled,
-            ui->listWidget, &QListWidget::setWordWrap);
+    connect(ui->actionShortenText, &QAction::toggled, this, [this] (bool enabled) {
+        list->enableElidedText(enabled);
+        list->view();
+    });
     // Tools menu
     connect(ui->actionAlarm, &QAction::triggered,
             this, &MainWindow::showAlarmDialog);
@@ -140,8 +142,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     // Help menu
     connect(ui->actionAbout, &QAction::triggered,
             this, &MainWindow::showAboutDialog);
-    updateWindow();
-    refreshActions(false);
 }
 
 MainWindow::~MainWindow() {
@@ -151,9 +151,20 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
+void MainWindow::show() {
+    QMainWindow::show();
+    updateWindow();
+    refreshActions(false);
+}
+
 void MainWindow::keyPressEvent(QKeyEvent* e) {
     if(e->key() == Qt::Key_Escape && ui->filterEdit->isVisible())
         ui->actionShowFilter->trigger();
+}
+
+void MainWindow::resizeEvent(QResizeEvent* e) {
+    QMainWindow::resizeEvent(e);
+    list->view();
 }
 
 void MainWindow::refreshActions(bool enabled) {
@@ -188,6 +199,7 @@ void MainWindow::switchView() {
         list = new CommandDelegate(ui, commands);
     else
         list = new TaskDelegate(ui, cron);
+    list->enableElidedText(ui->actionShortenText->isChecked());
     updateWindow();
 }
 

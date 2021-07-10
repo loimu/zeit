@@ -34,20 +34,19 @@ TaskDelegate::TaskDelegate(Ui::MainWindow* ui, CTCron* cron_)
     toolTip = tr("crontab tasks, running periodically");
 }
 
-void TaskDelegate::view()
-{
+void TaskDelegate::view() {
     ui->listWidget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
     ui->labelWarning->setVisible(ROOT_ACTIONS);
     ui->listWidget->clear();
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
-        QString text(tr("Description: %1\n"
-                        "Runs %2\n"
-                        "Command: %3",
-                        "Runs at 'period described'")
-                     .arg(task->comment, task->describe(), task->command));
-        item->setText(text);
         setIcon(item, task->enabled);
+        QString text(QStringLiteral("%1\n%2\n%3").arg(
+                         elideText(tr("Description: ") + task->comment),
+                         elideText(tr("Runs ", "Runs at 'period described'")
+                                   + task->describe()),
+                         elideText(tr("Command: ") + task->command)));
+        item->setText(text);
         ui->listWidget->addItem(item);
     }
 }
