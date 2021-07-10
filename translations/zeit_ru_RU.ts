@@ -4,12 +4,12 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="31"/>
+        <location filename="../src/aboutdialog.cpp" line="33"/>
         <source>About Zeit</source>
         <translation>О программе Zeit</translation>
     </message>
     <message>
-        <location filename="../src/aboutdialog.cpp" line="49"/>
+        <location filename="../src/aboutdialog.cpp" line="51"/>
         <source>About &amp;Qt</source>
         <translation>О &amp;Qt</translation>
     </message>
@@ -306,8 +306,8 @@ Command: </source>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="274"/>
-        <source>&amp;Wrap Text</source>
-        <translation>Подо&amp;гнать текст</translation>
+        <source>S&amp;horten Text</source>
+        <translation>Со&amp;кратить текст</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="285"/>
@@ -340,32 +340,32 @@ Command: </source>
         <translation>&amp;Переключить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="183"/>
         <source>Add </source>
         <translation>Добавить </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="184"/>
         <source>Copy </source>
         <translation>Копировать </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="174"/>
+        <location filename="../src/mainwindow.cpp" line="185"/>
         <source>Modify </source>
         <translation>Изменить </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="175"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
         <source>Delete </source>
         <translation>Удалить </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="209"/>
         <source>Deleting %1</source>
         <translation>Удалить %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="198"/>
+        <location filename="../src/mainwindow.cpp" line="210"/>
         <source>Delete %1?</source>
         <translation>Удалить %1?</translation>
     </message>
@@ -383,27 +383,33 @@ Command: </source>
         <translation>Задания crontab, выполняются периодически</translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="44"/>
-        <source>Description: %1
-Runs %2
-Command: %3</source>
-        <comment>Runs at &apos;period described&apos;</comment>
-        <translation>Описание %1
-Запуск %2
-Команда: %3</translation>
+        <location filename="../src/data/taskdelegate.cpp" line="45"/>
+        <source>Description: </source>
+        <translation>Описание: </translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="58"/>
+        <location filename="../src/data/taskdelegate.cpp" line="46"/>
+        <source>Runs </source>
+        <comment>Runs at &apos;period described&apos;</comment>
+        <translation>Запуск </translation>
+    </message>
+    <message>
+        <location filename="../src/data/taskdelegate.cpp" line="48"/>
+        <source>Command: </source>
+        <translation>Команда: </translation>
+    </message>
+    <message>
+        <location filename="../src/data/taskdelegate.cpp" line="57"/>
         <source>(Copy)</source>
         <translation>(Копия)</translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="67"/>
+        <location filename="../src/data/taskdelegate.cpp" line="66"/>
         <source>New Task</source>
         <translation>Новая задача</translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="79"/>
+        <location filename="../src/data/taskdelegate.cpp" line="78"/>
         <source>Edit Task</source>
         <translation>Изменить задачу</translation>
     </message>
