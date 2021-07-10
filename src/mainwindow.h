@@ -45,6 +45,7 @@ class MainWindow : public QMainWindow
     BaseDelegate* list = nullptr;
     void keyPressEvent(QKeyEvent*);
     void resizeEvent(QResizeEvent*);
+    void closeEvent(QCloseEvent*);
     void refreshActions(bool);
     void updateWindow();
     void switchView();

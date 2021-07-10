@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 #include <QProcess>
+#include <QSettings>
 
 #ifdef BUILD_HELPER
   #define ROOT_ACTIONS cron->isSystemCron()
@@ -153,6 +154,12 @@ MainWindow::~MainWindow() {
 
 void MainWindow::show() {
     QMainWindow::show();
+    QSettings settings(QCoreApplication::organizationName(),
+                       QCoreApplication::applicationName());
+    restoreGeometry(settings.value(QStringLiteral("geometry")).toByteArray());
+    restoreState(settings.value(QStringLiteral("windowState")).toByteArray());
+    ui->actionShortenText->setChecked(
+                settings.value(QStringLiteral("General/shortenText")).toBool());
     updateWindow();
     refreshActions(false);
 }
@@ -165,6 +172,16 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
 void MainWindow::resizeEvent(QResizeEvent* e) {
     QMainWindow::resizeEvent(e);
     list->view();
+}
+
+void MainWindow::closeEvent(QCloseEvent* e) {
+    QSettings settings(QCoreApplication::organizationName(),
+                       QCoreApplication::applicationName());
+    settings.setValue(QStringLiteral("geometry"), saveGeometry());
+    settings.setValue(QStringLiteral("windowState"), saveState());
+    settings.setValue(QStringLiteral("General/shortenText"),
+                      ui->actionShortenText->isChecked());
+    QMainWindow::closeEvent(e);
 }
 
 void MainWindow::refreshActions(bool enabled) {

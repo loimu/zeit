@@ -36,5 +36,5 @@ QString BaseDelegate::elideText(const QString& text) const {
     const QFontMetrics& fm = ui->listWidget->fontMetrics();
     return fm.elidedText(text,
                          isElidedTextEnabled ? Qt::ElideRight : Qt::ElideNone,
-                         ui->listWidget->width() - 36 /* hardcoded icon size */);
+                         ui->listWidget->width() - 48 /* hardcoded icon size */);
 }
