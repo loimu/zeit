@@ -39,7 +39,8 @@ void CommandDelegate::view() {
     ui->listWidget->clear();
     for(const Command& c: commands->getCommands()) {
         QListWidgetItem* item = new QListWidgetItem(
-                    c.description + tr("\nCommand: ") + c.command);
+                    elideText(c.description) + QChar::fromLatin1('\n') +
+                    elideText(tr("Command: ") + c.command));
         ui->listWidget->addItem(item);
     }
 }

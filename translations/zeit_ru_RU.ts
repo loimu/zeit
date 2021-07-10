@@ -121,11 +121,9 @@
         <translation>Команды, выполняются один раз</translation>
     </message>
     <message>
-        <location filename="../src/data/commanddelegate.cpp" line="42"/>
-        <source>
-Command: </source>
-        <translation>
-Команда: </translation>
+        <location filename="../src/data/commanddelegate.cpp" line="43"/>
+        <source>Command: </source>
+        <translation>Команда: </translation>
     </message>
 </context>
 <context>
@@ -340,32 +338,32 @@ Command: </source>
         <translation>&amp;Переключить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="183"/>
+        <location filename="../src/mainwindow.cpp" line="200"/>
         <source>Add </source>
         <translation>Добавить </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="184"/>
+        <location filename="../src/mainwindow.cpp" line="201"/>
         <source>Copy </source>
         <translation>Копировать </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="185"/>
+        <location filename="../src/mainwindow.cpp" line="202"/>
         <source>Modify </source>
         <translation>Изменить </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="186"/>
+        <location filename="../src/mainwindow.cpp" line="203"/>
         <source>Delete </source>
         <translation>Удалить </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="209"/>
+        <location filename="../src/mainwindow.cpp" line="226"/>
         <source>Deleting %1</source>
         <translation>Удалить %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="210"/>
+        <location filename="../src/mainwindow.cpp" line="227"/>
         <source>Delete %1?</source>
         <translation>Удалить %1?</translation>
     </message>
