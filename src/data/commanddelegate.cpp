@@ -40,6 +40,7 @@ void CommandDelegate::view() {
         QListWidgetItem* item = new QListWidgetItem(
                     elideText(c.description) + QChar::fromLatin1('\n') +
                     elideText(tr("Command: ") + c.command));
+        item->setIcon(QIcon::fromTheme(QStringLiteral("player-time")));
         widget->addItem(item);
     }
 }

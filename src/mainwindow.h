@@ -43,9 +43,9 @@ class MainWindow : public QMainWindow
     Ui::MainWindow* ui;
     Commands* commands;
     BaseDelegate* list = nullptr;
-    void keyPressEvent(QKeyEvent*);
-    void resizeEvent(QResizeEvent*);
-    void closeEvent(QCloseEvent*);
+    void keyPressEvent(QKeyEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    void closeEvent(QCloseEvent*) override;
     void refreshActions(bool);
     void updateWindow();
     void switchView();

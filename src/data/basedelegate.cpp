@@ -21,16 +21,15 @@
 
 #include "basedelegate.h"
 
-#define QSL QStringLiteral
-
 
 BaseDelegate::BaseDelegate(QListWidget* widget_) : widget(widget_)
 {
 }
 
 void BaseDelegate::setIcon(QListWidgetItem* item, bool enabled) {
-    QString icon = enabled ? QSL("dialog-ok-apply") : QSL("edit-delete");
-    item->setIcon(QIcon::fromTheme(icon, QIcon(QSL(":/icons/") + icon)));
+    const QString icon = enabled ? QStringLiteral("dialog-ok-apply")
+                                 : QStringLiteral("edit-delete");
+    item->setIcon(QIcon::fromTheme(icon));
 }
 
 QString BaseDelegate::elideText(const QString& text) const {
