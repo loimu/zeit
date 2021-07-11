@@ -121,7 +121,7 @@
         <translation>Команды, выполняются один раз</translation>
     </message>
     <message>
-        <location filename="../src/data/commanddelegate.cpp" line="43"/>
+        <location filename="../src/data/commanddelegate.cpp" line="42"/>
         <source>Command: </source>
         <translation>Команда: </translation>
     </message>
@@ -358,12 +358,12 @@
         <translation>Удалить </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="226"/>
+        <location filename="../src/mainwindow.cpp" line="227"/>
         <source>Deleting %1</source>
         <translation>Удалить %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="227"/>
+        <location filename="../src/mainwindow.cpp" line="228"/>
         <source>Delete %1?</source>
         <translation>Удалить %1?</translation>
     </message>
@@ -381,33 +381,33 @@
         <translation>Задания crontab, выполняются периодически</translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="45"/>
+        <location filename="../src/data/taskdelegate.cpp" line="44"/>
         <source>Description: </source>
         <translation>Описание: </translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="46"/>
+        <location filename="../src/data/taskdelegate.cpp" line="45"/>
         <source>Runs </source>
         <comment>Runs at &apos;period described&apos;</comment>
         <translation>Запуск </translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="48"/>
+        <location filename="../src/data/taskdelegate.cpp" line="47"/>
         <source>Command: </source>
         <translation>Команда: </translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="57"/>
+        <location filename="../src/data/taskdelegate.cpp" line="56"/>
         <source>(Copy)</source>
         <translation>(Копия)</translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="66"/>
+        <location filename="../src/data/taskdelegate.cpp" line="64"/>
         <source>New Task</source>
         <translation>Новая задача</translation>
     </message>
     <message>
-        <location filename="../src/data/taskdelegate.cpp" line="78"/>
+        <location filename="../src/data/taskdelegate.cpp" line="75"/>
         <source>Edit Task</source>
         <translation>Изменить задачу</translation>
     </message>
@@ -602,17 +602,17 @@
         <translation>Переменные окружения для crontab</translation>
     </message>
     <message>
-        <location filename="../src/data/variabledelegate.cpp" line="56"/>
+        <location filename="../src/data/variabledelegate.cpp" line="55"/>
         <source>(Copy)</source>
         <translation>(Копия)</translation>
     </message>
     <message>
-        <location filename="../src/data/variabledelegate.cpp" line="65"/>
+        <location filename="../src/data/variabledelegate.cpp" line="63"/>
         <source>New Variable</source>
         <translation>Новая переменная</translation>
     </message>
     <message>
-        <location filename="../src/data/variabledelegate.cpp" line="77"/>
+        <location filename="../src/data/variabledelegate.cpp" line="74"/>
         <source>Edit Variable</source>
         <translation>Изменить переменную</translation>
     </message>

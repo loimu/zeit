@@ -31,7 +31,7 @@ class TaskDelegate : public BaseDelegate
     CTCron* cron;
 
 public:
-    TaskDelegate(Ui::MainWindow* ui, CTCron* cron);
+    TaskDelegate(QListWidget* widget, CTCron* cron);
     void view() override;
     void copyEntry(int index) override;
     void createEntry() override;

@@ -29,11 +29,7 @@
   #define ROOT_ACTIONS false
 #endif // BUILD_HELPER
 
-
-namespace Ui {
-class MainWindow;
-}
-
+class QListWidget;
 class QListWidgetItem;
 
 class BaseDelegate
@@ -42,7 +38,7 @@ public:
     QString caption{};
     QString toolTip{};
 
-    BaseDelegate(Ui::MainWindow* ui = nullptr);
+    BaseDelegate(QListWidget* widget = nullptr);
     virtual ~BaseDelegate() {}
 
     void enableElidedText(bool enabled) { isElidedTextEnabled = enabled; }
@@ -56,7 +52,7 @@ public:
 
 protected:
     bool isElidedTextEnabled = false;
-    Ui::MainWindow* ui;
+    QListWidget* widget;
 
     void setIcon(QListWidgetItem* item, bool enabled);
     QString elideText(const QString& text) const;

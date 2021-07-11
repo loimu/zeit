@@ -32,7 +32,7 @@ class CommandDelegate : public BaseDelegate
     Commands* commands;
 
 public:
-    CommandDelegate(Ui::MainWindow* ui, Commands* commands);
+    CommandDelegate(QListWidget* widget, Commands* commands);
     void view() override;
     void copyEntry(int index) override { Q_UNUSED(index); assert(false); };
     void createEntry() override;

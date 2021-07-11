@@ -18,16 +18,16 @@
 * ======================================================================== */
 
 #include <QApplication>
+#include <QListWidget>
 
 #include "ctcron.h"
 #include "cttask.h"
 #include "taskdialog.h"
 #include "taskdelegate.h"
-#include "ui_mainwindow.h"
 
 
-TaskDelegate::TaskDelegate(Ui::MainWindow* ui, CTCron* cron_)
-    : BaseDelegate(ui),
+TaskDelegate::TaskDelegate(QListWidget* widget, CTCron* cron_)
+    : BaseDelegate(widget),
       cron(cron_)
 {
     caption = tr("Task");
@@ -35,9 +35,8 @@ TaskDelegate::TaskDelegate(Ui::MainWindow* ui, CTCron* cron_)
 }
 
 void TaskDelegate::view() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
-    ui->labelWarning->setVisible(ROOT_ACTIONS);
-    ui->listWidget->clear();
+    widget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
+    widget->clear();
     for(CTTask* task: cron->tasks()) {
         QListWidgetItem* item = new QListWidgetItem();
         setIcon(item, task->enabled);
@@ -47,7 +46,7 @@ void TaskDelegate::view() {
                                    + task->describe()),
                          elideText(tr("Command: ") + task->command)));
         item->setText(text);
-        ui->listWidget->addItem(item);
+        widget->addItem(item);
     }
 }
 
@@ -57,31 +56,28 @@ void TaskDelegate::copyEntry(int index) {
     newTask->comment = newTask->comment + QChar(0x20) + tr("(Copy)");
     cron->addTask(newTask);
     cron->save();
-    if(ui->actionTasks->isChecked())
-        view();
+    view();
 }
 
 void TaskDelegate::createEntry() {
     auto* task = new CTTask({}, {}, cron->userLogin(), false);
-    auto* td = new TaskDialog(task, tr("New Task"), ui->listWidget);
+    auto* td = new TaskDialog(task, tr("New Task"), widget);
     td->show();
     QApplication::connect(td, &TaskDialog::accepted, td, [this, task] {
         cron->addTask(task);
         cron->save();
-        if(ui->actionTasks->isChecked())
-            view();
+        view();
     });
 }
 
 void TaskDelegate::modifyEntry(int index) {
     CTTask* task = cron->tasks().at(index);
-    auto* td = new TaskDialog(task, tr("Edit Task"), ui->listWidget);
+    auto* td = new TaskDialog(task, tr("Edit Task"), widget);
     td->show();
     QApplication::connect(td, &TaskDialog::accepted, td, [this, task] {
         cron->modifyTask(task);
         cron->save();
-        if(ui->actionTasks->isChecked())
-            view();
+        view();
     });
 }
 
@@ -95,5 +91,5 @@ void TaskDelegate::toggleEntry(int index) {
     CTTask* task = cron->tasks().at(index);
     task->enabled = !task->enabled;
     cron->save();
-    setIcon(ui->listWidget->item(index), task->enabled);
+    setIcon(widget->item(index), task->enabled);
 }

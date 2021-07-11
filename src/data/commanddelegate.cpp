@@ -18,15 +18,15 @@
 * ======================================================================== */
 
 #include <QApplication>
+#include <QListWidget>
 
 #include "commands.h"
 #include "commanddialog.h"
-#include "ui_mainwindow.h"
 #include "commanddelegate.h"
 
 
-CommandDelegate::CommandDelegate(Ui::MainWindow* ui, Commands* commands_)
-    : BaseDelegate(ui),
+CommandDelegate::CommandDelegate(QListWidget* widget, Commands* commands_)
+    : BaseDelegate(widget),
       commands(commands_)
 {
     caption = tr("Command");
@@ -34,19 +34,18 @@ CommandDelegate::CommandDelegate(Ui::MainWindow* ui, Commands* commands_)
 }
 
 void CommandDelegate::view() {
-    ui->labelWarning->hide();
-    ui->listWidget->setEnabled(true);
-    ui->listWidget->clear();
+    widget->setEnabled(true);
+    widget->clear();
     for(const Command& c: commands->getCommands()) {
         QListWidgetItem* item = new QListWidgetItem(
                     elideText(c.description) + QChar::fromLatin1('\n') +
                     elideText(tr("Command: ") + c.command));
-        ui->listWidget->addItem(item);
+        widget->addItem(item);
     }
 }
 
 void CommandDelegate::createEntry() {
-    CommandDialog* cd = new CommandDialog(commands, ui->listWidget);
+    CommandDialog* cd = new CommandDialog(commands, widget);
     cd->show();
     QApplication::connect(cd, &CommandDialog::accepted, cd, [this] { view(); });
 }

@@ -32,7 +32,7 @@ class VariableDelegate : public BaseDelegate
     CTCron* cron;
 
 public:
-    VariableDelegate(Ui::MainWindow* ui, CTCron* cron);
+    VariableDelegate(QListWidget* widget, CTCron* cron);
     void view() override;
     void copyEntry(int index) override;
     void createEntry() override;

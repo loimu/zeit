@@ -18,16 +18,16 @@
 * ======================================================================== */
 
 #include <QApplication>
+#include <QListWidget>
 
 #include "ctcron.h"
 #include "ctvariable.h"
 #include "variabledialog.h"
 #include "variabledelegate.h"
-#include "ui_mainwindow.h"
 
 
-VariableDelegate::VariableDelegate(Ui::MainWindow* ui, CTCron* cron_)
-    : BaseDelegate(ui),
+VariableDelegate::VariableDelegate(QListWidget* widget, CTCron* cron_)
+    : BaseDelegate(widget),
       cron(cron_)
 {
     caption = tr("Variable");
@@ -35,9 +35,8 @@ VariableDelegate::VariableDelegate(Ui::MainWindow* ui, CTCron* cron_)
 }
 
 void VariableDelegate::view() {
-    ui->listWidget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
-    ui->labelWarning->setVisible(ROOT_ACTIONS);
-    ui->listWidget->clear();
+    widget->setEnabled(cron->isCurrentUserCron() || ROOT_ACTIONS);
+    widget->clear();
     for(CTVariable* var: cron->variables()) {
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(QString(QStringLiteral("%1%2=%3"))
@@ -46,7 +45,7 @@ void VariableDelegate::view() {
                            : QString(QStringLiteral("## %1\n")).arg(var->comment),
                            var->variable, var->value));
         setIcon(item, var->enabled);
-        ui->listWidget->addItem(item);
+        widget->addItem(item);
     }
 }
 
@@ -56,31 +55,28 @@ void VariableDelegate::copyEntry(int index) {
     newVariable->comment = newVariable->comment + QChar(0x20) + tr("(Copy)");
     cron->addVariable(newVariable);
     cron->save();
-    if(ui->actionVariables->isChecked())
-        view();
+    view();
 }
 
 void VariableDelegate::createEntry() {
     auto* var = new CTVariable({}, {}, cron->userLogin());
-    auto* vd = new VariableDialog(var, tr("New Variable"), ui->listWidget);
+    auto* vd = new VariableDialog(var, tr("New Variable"), widget);
     vd->show();
     QApplication::connect(vd, &VariableDialog::accepted, vd, [this, var] {
         cron->addVariable(var);
         cron->save();
-        if(ui->actionVariables->isChecked())
-            view();
+        view();
     });
 }
 
 void VariableDelegate::modifyEntry(int index) {
     CTVariable* var = cron->variables().at(index);
-    auto* vd = new VariableDialog(var, tr("Edit Variable"), ui->listWidget);
+    auto* vd = new VariableDialog(var, tr("Edit Variable"), widget);
     vd->show();
     QApplication::connect(vd, &VariableDialog::accepted, vd, [this, var] {
         cron->modifyVariable(var);
         cron->save();
-        if(ui->actionVariables->isChecked())
-            view();
+        view();
     });
 }
 
@@ -94,5 +90,5 @@ void VariableDelegate::toggleEntry(int index) {
     CTVariable* var = cron->variables().at(index);
     var->enabled = !var->enabled;
     cron->save();
-    setIcon(ui->listWidget->item(index), var->enabled);
+    setIcon(widget->item(index), var->enabled);
 }

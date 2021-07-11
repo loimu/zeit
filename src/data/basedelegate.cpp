@@ -17,13 +17,14 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <QListWidget>
+
 #include "basedelegate.h"
-#include "ui_mainwindow.h"
 
 #define QSL QStringLiteral
 
 
-BaseDelegate::BaseDelegate(Ui::MainWindow* ui_) : ui(ui_)
+BaseDelegate::BaseDelegate(QListWidget* widget_) : widget(widget_)
 {
 }
 
@@ -33,8 +34,8 @@ void BaseDelegate::setIcon(QListWidgetItem* item, bool enabled) {
 }
 
 QString BaseDelegate::elideText(const QString& text) const {
-    const QFontMetrics& fm = ui->listWidget->fontMetrics();
+    const QFontMetrics& fm = widget->fontMetrics();
     return fm.elidedText(text,
                          isElidedTextEnabled ? Qt::ElideRight : Qt::ElideNone,
-                         ui->listWidget->width() - 48 /* hardcoded icon size */);
+                         widget->width() - 48 /* hardcoded icon size */);
 }

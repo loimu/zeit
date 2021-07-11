@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     CTInitializationError error;
     ctHost = new CTHost(QStringLiteral("crontab"), error);
     cron = ctHost->findCurrentUserCron();
-    list = new TaskDelegate(ui, cron);
+    list = new TaskDelegate(ui->listWidget, cron);
     /* check if `at` binary is available */
     QProcess proc;
     proc.start(QStringLiteral("which"), QStringList{QStringLiteral("at")});
@@ -211,11 +211,12 @@ void MainWindow::updateWindow() {
 void MainWindow::switchView() {
     if(list) { delete list; list = nullptr; }
     if(ui->actionVariables->isChecked())
-        list = new VariableDelegate(ui, cron);
+        list = new VariableDelegate(ui->listWidget, cron);
     else if(ui->actionCommands->isChecked())
-        list = new CommandDelegate(ui, commands);
+        list = new CommandDelegate(ui->listWidget, commands);
     else
-        list = new TaskDelegate(ui, cron);
+        list = new TaskDelegate(ui->listWidget, cron);
+    ui->labelWarning->setVisible(!ui->actionCommands->isChecked() && ROOT_ACTIONS);
     list->enableElidedText(ui->actionShortenText->isChecked());
     updateWindow();
 }
