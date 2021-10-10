@@ -29,6 +29,13 @@ int main(int argc, char *argv[])
 {
     if(getuid() == 0)
         qFatal("User should not be root");
+    bool showTrayIcon = false;
+    if(argc > 1) {
+        QByteArray arg = argv[1];
+        if(arg == QByteArray("-t") || arg == QByteArray("--tray-icon")) {
+            showTrayIcon = true;
+        }
+    }
     QApplication a(argc, argv);
     QApplication::setApplicationName(QStringLiteral("Zeit"));
     QApplication::setOrganizationName(QStringLiteral("zeit"));
@@ -47,5 +54,7 @@ int main(int argc, char *argv[])
     a.installTranslator(&libTranslator);
     MainWindow w;
     w.show();
+    if(showTrayIcon)
+        w.showTrayIcon();
     return a.exec();
 }

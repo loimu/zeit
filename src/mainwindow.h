@@ -22,6 +22,7 @@
 
 #include <QMainWindow>
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -33,6 +34,7 @@ class CTVariable;
 class QListWidgetItem;
 class Commands;
 class BaseDelegate;
+class QSystemTrayIcon;
 
 class MainWindow : public QMainWindow
 {
@@ -43,6 +45,7 @@ class MainWindow : public QMainWindow
     Ui::MainWindow* ui;
     Commands* commands;
     BaseDelegate* list = nullptr;
+    QSystemTrayIcon* trayIcon = nullptr;
     void keyPressEvent(QKeyEvent*) override;
     void resizeEvent(QResizeEvent*) override;
     void closeEvent(QCloseEvent*) override;
@@ -59,6 +62,7 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
     void show();
+    void showTrayIcon();
 };
 
 #endif // MAINWINDOW_H

@@ -23,6 +23,7 @@
 #include <QKeyEvent>
 #include <QProcess>
 #include <QSettings>
+#include <QSystemTrayIcon>
 
 #ifdef BUILD_HELPER
   #define ROOT_ACTIONS cron->isSystemCron()
@@ -164,6 +165,24 @@ void MainWindow::show() {
     refreshActions(false);
 }
 
+void MainWindow::showTrayIcon() {
+    trayIcon = new QSystemTrayIcon(this);
+    connect(trayIcon, &QSystemTrayIcon::activated, this, [this] {
+        if(isHidden())
+            show();
+        else
+            hide();
+    });
+    auto trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(ui->actionAlarm);
+    trayIconMenu->addAction(ui->actionTimer);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(ui->actionQuit);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->setIcon(QIcon::fromTheme(QSL("chronometer")));
+    trayIcon->show();
+}
+
 void MainWindow::keyPressEvent(QKeyEvent* e) {
     if(e->key() == Qt::Key_Escape && ui->filterEdit->isVisible())
         ui->actionShowFilter->trigger();
@@ -181,6 +200,7 @@ void MainWindow::closeEvent(QCloseEvent* e) {
     settings.setValue(QStringLiteral("windowState"), saveState());
     settings.setValue(QStringLiteral("General/shortenText"),
                       ui->actionShortenText->isChecked());
+    trayIcon->hide();
     QMainWindow::closeEvent(e);
 }
 
