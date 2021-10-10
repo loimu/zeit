@@ -200,7 +200,8 @@ void MainWindow::closeEvent(QCloseEvent* e) {
     settings.setValue(QStringLiteral("windowState"), saveState());
     settings.setValue(QStringLiteral("General/shortenText"),
                       ui->actionShortenText->isChecked());
-    trayIcon->hide();
+    if(trayIcon)
+        trayIcon->hide();
     QMainWindow::closeEvent(e);
 }
 
