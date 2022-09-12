@@ -15,6 +15,10 @@ cmake ..
 make -j2
 ./src/zeit
 ```
+#### Maybe you have to install this dependencies
+```bash
+sudo apt install extra-cmake-modules libkf5auth-dev qttools5-dev
+```
 
 ### Screenshot ###
 ![Screenshot of the Zeit app](https://raw.githubusercontent.com/loimu/zeit/master/assets/screenshot.png)
