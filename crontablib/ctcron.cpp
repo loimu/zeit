@@ -20,8 +20,8 @@
 #include <QDateTime>
 
 #ifdef BUILD_HELPER
-  #include <KAuthAction>
-  #include <KAuthExecuteJob>
+  #include <KAuth/Action>
+  #include <KAuth/ExecuteJob>
 
   #define ROOT_ACTIONS d->systemCron
 #else
