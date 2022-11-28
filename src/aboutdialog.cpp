@@ -1,5 +1,5 @@
 /* ========================================================================
-*    Copyright (C) 2015-2021 Blaze <blaze@vivaldi.net>
+*    Copyright (C) 2015-2022 Blaze <blaze@vivaldi.net>
 *
 *    This file is part of Zeit.
 *
@@ -62,7 +62,7 @@ AboutDialog::AboutDialog(QWidget *parent) : BaseDialog(parent)
     label->setText(
                 QString(
                     QLatin1String(
-                        "<p><b>Zeit</b> v%1 &copy; 2015-2021 Blaze<br />"
+                        "<p><b>Zeit</b> v%1 &copy; 2015-2022 Blaze<br />"
                         "&lt;blaze@vivaldi.net&gt;</p>"
                         "<p>Qt %2 (built with Qt %3)<br />"
                         "Licensed under GPL v3 or later</p>"
