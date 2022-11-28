@@ -8,6 +8,16 @@
 * Alarms and Timers
 * Optional root actions, PolKit support (KF5Auth and KF5CoreAddons needed)
 
+### Build dependencies ###
+Extra CMake Modules, QtBase, QtTools, KF5Auth (optional), KF5CoreAddons (optional)
+
+```bash
+sudo apt install qtbase5-dev qttools5-dev libkf5auth-dev libkf5coreaddons-dev extra-cmake-modules
+```
+
+### Runtime dependencies ###
+libnotify-bin, mpv
+
 ### Build and run ###
 ```bash
 mkdir build && cd build
