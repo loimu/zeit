@@ -30,7 +30,9 @@ set(zeit_RSRCS ../zeit.qrc)
 #translations
 SET(TRANSLATION
     ../translations/zeit_ru_RU.ts
+    ../translations/zeit_sv_SE.ts
     ../translations/crontablib_ru_RU.ts
+    ../translations/crontablib_sv_SE.ts
 )
 find_package(Qt5LinguistTools REQUIRED)
 qt5_add_translation(QM_FILES ${TRANSLATION})
