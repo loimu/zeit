@@ -17,6 +17,7 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <iostream>
 #include "cttask.h"
 #include "taskdialog.h"
 #include "ui_taskdialog.h"
@@ -78,17 +79,28 @@ TaskDialog::~TaskDialog() {
     delete ui;
 }
 
+static const QString presets[6] = {
+    "* * * * *", // every minute
+    "0 * * * *", // every hour
+    "0 0 * * *", // every day
+    "0 0 * 1 *", // every week
+    "0 0 1 * *", // every month
+    "0 8 * 1-5 *", // every weekday at 8am
+};
+
 void TaskDialog::init() {
+    QString cronFormat = "";
+
     if(task->command.isEmpty()) {
         ui->commentEdit->setText(tr("New Task"));
-        setText("*", "*", "*", "*", "*");
+        cronFormat = presets[0];
+    } else {
+        cronFormat = task->schedulingCronFormat();
     }
-    else {
-        QStringList tokenList = task->schedulingCronFormat()
-                .split(QRegExp(QStringLiteral("\\s")));
-        setText(tokenList.at(0), tokenList.at(1),
-                tokenList.at(2), tokenList.at(4), tokenList.at(3));
-    }
+
+    QStringList tokenList = cronFormat.split(QRegExp(QStringLiteral("\\s")));
+
+    setText(tokenList.at(0), tokenList.at(1), tokenList.at(2), tokenList.at(4), tokenList.at(3));
 }
 
 void TaskDialog::setText(const QString& minute, const QString& hour,
@@ -99,6 +111,26 @@ void TaskDialog::setText(const QString& minute, const QString& hour,
     ui->editDay->setText(day);
     ui->editWeekday->setText(weekday);
     ui->editMonth->setText(month);
+
+    // Determine if this is a preset or advanced config
+    int length = sizeof(presets) / sizeof(presets[0]);
+    QString token  = minute + " " + hour + " " + day + " " + month + " " + weekday;
+
+    bool isPreset = false;
+    for (int i = 0; i < length; i++) {
+        if (token == presets[i]){
+            isPreset = true;
+            break;
+        }
+    }
+
+    if (isPreset){
+        ui->radioBasic->setChecked(true);
+    } else {
+        ui->radioAdvanced->setChecked(true);
+    }
+    toggleMode();
+
 }
 
 void TaskDialog::setUnit(CTUnit& unit, const QString& token) {
@@ -138,26 +170,11 @@ void TaskDialog::toggleMode() {
 }
 
 void TaskDialog::switchPreset(int index) {
-    switch(index) {
-    case 1:
-        setText("0", "*", "*", "*", "*");  // every hour
-        break;
-    case 2:
-        setText("0", "0", "*", "*", "*");  // every day
-        break;
-    case 3:
-        setText("0", "0", "*", "1", "*");  // every week
-        break;
-    case 4:
-        setText("0", "0", "1", "*", "*");  // every month
-        break;
-    case 5:
-        setText("1", "8", "*", "1-5", "*");  // every weekday at 8am
-        break;
-    default:
-        setText("*", "*", "*", "*", "*");  // every minute
-        break;
-    }
+
+    QStringList tokenList = presets[index].split(QRegExp(QStringLiteral("\\s")));
+
+    setText(tokenList.at(0), tokenList.at(1), tokenList.at(2), tokenList.at(4), tokenList.at(3));
+
     updateDialog();
 }
 
