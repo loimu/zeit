@@ -17,6 +17,8 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <QRegularExpression>
+
 #include "cttask.h"
 #include "taskdialog.h"
 #include "ui_taskdialog.h"
@@ -84,8 +86,9 @@ void TaskDialog::init() {
         setText("*", "*", "*", "*", "*");
     }
     else {
+        static const QRegularExpression whitespaceRx(QStringLiteral("\\s+"));
         QStringList tokenList = task->schedulingCronFormat()
-                .split(QRegExp(QStringLiteral("\\s")));
+                                    .split(whitespaceRx);
         setText(tokenList.at(0), tokenList.at(1),
                 tokenList.at(2), tokenList.at(4), tokenList.at(3));
     }
@@ -198,13 +201,16 @@ void TaskDialog::validate() {
         ui->commandEdit->setToolTip(tr("Command field should not be empty"));
         isInputValid = false;
     }
-    QRegExp rx(QStringLiteral("\\*|\\d{1,2}(,\\d{1,2}|-\\d{1,2}(/\\d{1,2})?)*"));
     const QVector<QLineEdit*> leVector {
         ui->editMinute,ui->editHour,ui->editDay,ui->editWeekday,ui->editMonth };
     for(QLineEdit* le : leVector) {
         le->setStyleSheet(QString());
         le->setToolTip(helpToolTip);
-        if(!rx.exactMatch(le->text())) {
+        static const QRegularExpression rx(
+            QRegularExpression::anchoredPattern(
+                QStringLiteral("\\*|\\d{1,2}(,\\d{1,2}|-\\d{1,2}(/\\d{1,2})?)*")));
+        const QRegularExpressionMatch match = rx.match(le->text());
+        if(!match.hasMatch()) {
             le->setStyleSheet(errorStyleSheet);
             le->setToolTip(tr("<b>Invalid input</b><br />") + helpToolTip);
             isInputValid = false;

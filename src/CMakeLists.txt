@@ -36,17 +36,33 @@ SET(TRANSLATION
     ../translations/crontablib_ru_RU.ts
     ../translations/crontablib_sv_SE.ts
 )
-find_package(Qt5LinguistTools REQUIRED)
-qt5_add_translation(QM_FILES ${TRANSLATION})
 
-set(qt_LIBS Qt5::Core Qt5::Gui Qt5::Widgets)
+if(WITH_QT6)
+    find_package(Qt6LinguistTools REQUIRED)
+    qt_add_translation(QM_FILES ${TRANSLATION})
 
-qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
-qt5_add_resources(zeit_RESOURCES_RCC ${zeit_RSRCS})
+    set(qt_LIBS Qt6::Core Qt6::Gui Qt6::Widgets)
+
+    qt_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
+    qt_add_resources(zeit_RESOURCES_RCC ${zeit_RSRCS})
+    set(QT_INCLUDE_DIRECTORIES ${Qt6Core_INCLUDE_DIRS}
+                               ${Qt6Widgets_INCLUDE_DIRS})
+else()
+    find_package(Qt5LinguistTools REQUIRED)
+    qt5_add_translation(QM_FILES ${TRANSLATION})
+
+    set(qt_LIBS Qt5::Core Qt5::Gui Qt5::Widgets)
+
+    qt5_wrap_ui(zeit_FORMS_HEADERS ${zeit_FRMS})
+    qt5_add_resources(zeit_RESOURCES_RCC ${zeit_RSRCS})
+    set(QT_INCLUDE_DIRECTORIES ${Qt5Core_INCLUDE_DIRS}
+                               ${Qt5Widgets_INCLUDE_DIRS})
+endif()
+
+
 add_executable(zeit ${zeit_SRCS} ${zeit_HEADERS_MOC} ${zeit_FORMS_HEADERS}
                     ${QM_FILES} ${zeit_RESOURCES_RCC})
-target_include_directories(zeit PRIVATE ${Qt5Core_INCLUDE_DIRS}
-                           ${Qt5Widgets_INCLUDE_DIRS}
+target_include_directories(zeit PRIVATE ${QT_INCLUDE_DIRECTORIES}
                            ${CMAKE_CURRENT_SOURCE_DIR}/../crontablib
                            ${CMAKE_CURRENT_SOURCE_DIR}
                            ${CMAKE_CURRENT_BINARY_DIR})

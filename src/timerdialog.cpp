@@ -41,8 +41,8 @@ TimerDialog::TimerDialog(Commands* commands_, QWidget* parent) :
     proc.start(QStringLiteral("which"),
                QStringList{QStringLiteral("mpv"), QStringLiteral("mplayer")});
     proc.waitForFinished(-1);
-    QStringList players = QString::fromUtf8(proc.readAllStandardOutput()).split(
-                QRegExp(QStringLiteral("\n")));
+    QStringList players = QString::fromUtf8(proc.readAllStandardOutput())
+                              .split(QChar::fromLatin1('\n'));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
     /* get system time with a positive offset of 5 minutes */

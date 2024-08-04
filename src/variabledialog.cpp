@@ -17,6 +17,8 @@
 *    along with Zeit.  If not, see <http://www.gnu.org/licenses/>.
 * ======================================================================== */
 
+#include <QRegularExpression>
+
 #include "ctvariable.h"
 #include "variabledialog.h"
 #include "ui_variabledialog.h"
@@ -45,7 +47,8 @@ VariableDialog::VariableDialog(CTVariable* _ctVar,
             ui->varEdit->setToolTip(tr("Variable field should not be empty"));
             isInputValid = false;
         }
-        if(ui->varEdit->text().contains(QRegExp(QStringLiteral("\\W")))) {
+        static const QRegularExpression nonWordRx(QStringLiteral("\\W+"));
+        if(ui->varEdit->text().contains(nonWordRx)) {
             ui->varEdit->setToolTip(tr("Invalid variable name"));
             isInputValid = false;
         }

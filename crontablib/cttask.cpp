@@ -11,6 +11,7 @@
 
 #include "cttask.h"
 
+#include <QRegularExpression>
 #include <QMimeDatabase>
 #include <QUrl>
 
@@ -56,7 +57,8 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
         }
     }
 
-    int spacePos(tokStr.indexOf(QRegExp(QStringLiteral("[ \t]"))));
+    static const QRegularExpression spacePosRx(QStringLiteral("[ \t]"));
+    int spacePos(tokStr.indexOf(spacePosRx));
     // If reboot bypass initialize functions so no keys selected in modify task
     if (reboot == false) {
 
@@ -66,25 +68,25 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
+        spacePos = tokStr.indexOf(spacePosRx);
         hour.initialize(tokStr.mid(0, spacePos));
 
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
+        spacePos = tokStr.indexOf(spacePosRx);
         dayOfMonth.initialize(tokStr.mid(0, spacePos));
 
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
+        spacePos = tokStr.indexOf(spacePosRx);
         month.initialize(tokStr.mid(0, spacePos));
 
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
+        spacePos = tokStr.indexOf(spacePosRx);
         dayOfWeek.initialize(tokStr.mid(0, spacePos));
     }
 
@@ -92,7 +94,7 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
         while (isSpace(tokStr, spacePos+1))
             spacePos++;
         tokStr = tokStr.mid(spacePos+1, tokStr.length()-1);
-        spacePos = tokStr.indexOf(QRegExp(QStringLiteral("[ \t]")));
+        spacePos = tokStr.indexOf(spacePosRx);
         userLogin = tokStr.mid(0, spacePos);
     }
     else {
@@ -101,7 +103,7 @@ CTTask::CTTask(const QString& tokenString, const QString& _comment,
 
     command = tokStr.mid(spacePos+1, tokStr.length()-1);
     // remove leading whitespace
-    while (command.indexOf(QRegExp(QStringLiteral("[ \t]"))) == 0)
+    while (command.indexOf(spacePosRx) == 0)
         command = command.mid(1, command.length()-1);
     comment = _comment;
 

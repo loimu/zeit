@@ -18,7 +18,7 @@
 * ======================================================================== */
 
 #include <QProcess>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "commands.h"
 
@@ -30,10 +30,10 @@ void Commands::addCommand(const QByteArray& command, const QString& time) {
     p.closeWriteChannel();
     p.waitForFinished();
     QString output = QString::fromUtf8(p.readAllStandardError());
-    QRegExp match(QStringLiteral("job\\s(\\d+)\\s(.*)"));
-    match.setMinimal(true);
-    if(match.indexIn(output) > -1) {
-        uint id = match.cap(1).toUInt();
+    static const QRegularExpression jobRx(QStringLiteral("job\\s(\\d+?)\\s(.*?)"));
+    const QRegularExpressionMatch match = jobRx.match(output);
+    if(match.hasMatch()) {
+        const uint id = match.captured(1).toUInt();
         map.insert(id, command);
     }
 }
@@ -55,19 +55,14 @@ const QVector<Command>& Commands::getCommands() {
     QString output = QString::fromUtf8(p.readAllStandardOutput());
     QStringList entries;
     if(!output.isEmpty())
-        entries = output
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-                .split(QChar::fromLatin1('\n'), Qt::SkipEmptyParts);
-#else
-                .split(QChar::fromLatin1('\n'), QString::SkipEmptyParts);
-#endif
+        entries = output.split(QChar::fromLatin1('\n'), Qt::SkipEmptyParts);
     for(QString& entry : entries) {
-        QRegExp match(QStringLiteral("^(\\d+)\\s+(.*)$"));
-        match.setMinimal(true);
-        match.indexIn(entry);
+        QRegularExpression entryRx(QStringLiteral("^(\\d+?)\\s+?(.*?)$"),
+                                   QRegularExpression::MultilineOption);
+        QRegularExpressionMatch match = entryRx.match(entry);
         Command command;
-        command.id = match.cap(1).toUInt();
-        command.description = match.cap(2);
+        command.id = match.captured(1).toUInt();
+        command.description = match.captured(2);
         command.command = map.value(command.id, QStringLiteral("n/a"));
         commands.append(command);
     }

@@ -12,7 +12,7 @@
 #include "config.h"
 #include "ctcron.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QFile>
 #include <QTemporaryFile>
 #include <QTextStream>
@@ -184,7 +184,8 @@ void CTCron::parseFile(const QString& fileName) {
                 continue;
             leadingComment = false;
             // If the first 10 characters don't contain a character, it's probably a disabled entry.
-            int firstText = line.indexOf(QRegExp(QLatin1String("\\w")));
+            static const QRegularExpression firstTextRx(QStringLiteral("\\w"));
+            int firstText = line.indexOf(firstTextRx);
             if (firstText < 0) {
                 comment.clear();
                 continue;
@@ -205,7 +206,8 @@ void CTCron::parseFile(const QString& fileName) {
         }
 
         // either a task or a variable
-        int firstWhiteSpace = line.indexOf(QRegExp(QLatin1String("[ \t]")));
+        static const QRegularExpression firstWhitespaceRx(QStringLiteral("[ \t]"));
+        int firstWhiteSpace = line.indexOf(firstWhitespaceRx);
         int firstEquals = line.indexOf(QChar::fromLatin1('='));
 
         // if there is an equals sign and either there is no

@@ -24,6 +24,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QSystemTrayIcon>
+#include <QActionGroup>
 
 #ifdef BUILD_HELPER
   #define ROOT_ACTIONS cron->isSystemCron()

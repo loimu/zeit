@@ -1,5 +1,5 @@
+cmake_minimum_required (VERSION 3.5)
 project(zeit)
-cmake_minimum_required (VERSION 3.1.0)
 
 option(BUILD_TESTS        "Build tests"            OFF)
 
@@ -11,21 +11,26 @@ set(CRONTAB_V "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 file(READ rev ZEIT_REVISION LIMIT 9)
 
-set(QT_MIN_VERSION "5.7.1")
-find_package (Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
-    Core
-    Gui
-    Widgets
-    Test
-)
-
-# root actions support
-find_package(KF5Auth)
-if(KF5Auth_FOUND)
-  find_package(KF5CoreAddons REQUIRED)
-  if(KF5CoreAddons_FOUND)
-    set(BUILD_HELPER TRUE)
-  endif()
+if(WITH_QT6)
+    find_package (Qt6 6.2.0 CONFIG REQUIRED COMPONENTS Core Gui Widgets Test)
+    # root actions support KF6
+    find_package(KF6Auth)
+    if(KF6Auth_FOUND)
+      find_package(KF6CoreAddons REQUIRED)
+      if(KF6CoreAddons_FOUND)
+        set(BUILD_HELPER TRUE)
+      endif()
+    endif()
+else()
+    find_package (Qt5 5.14.0 CONFIG REQUIRED COMPONENTS Core Gui Widgets Test)
+    # root actions support KF5
+    find_package(KF5Auth)
+    if(KF5Auth_FOUND)
+      find_package(KF5CoreAddons REQUIRED)
+      if(KF5CoreAddons_FOUND)
+        set(BUILD_HELPER TRUE)
+      endif()
+    endif()
 endif()
 
 set(CMAKE_AUTOMOC ON)

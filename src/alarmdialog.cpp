@@ -46,7 +46,7 @@ AlarmDialog::AlarmDialog(CTTask* _ctTask, QWidget* parent) :
                QStringList{QStringLiteral("mpv"), QStringLiteral("mplayer")});
     proc.waitForFinished();
     QStringList players = QString::fromUtf8(proc.readAllStandardOutput())
-            .split(QRegExp(QStringLiteral("\n")));
+                              .split(QChar::fromLatin1('\n'));
     if(players.length() > 0)
         ui->lineEditPlayer->setText(players.at(0));
     /* file dialog actions */
