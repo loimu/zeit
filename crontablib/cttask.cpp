@@ -17,7 +17,6 @@
 
 #include "ctHelper.h"
 
-#include "logging.h"
 
 CTTask::CTTask(const QString& tokenString, const QString& _comment,
                const QString& _userLogin, bool _systemCrontab) :

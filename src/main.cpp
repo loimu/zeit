@@ -40,18 +40,20 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName(QStringLiteral("Zeit"));
     QApplication::setOrganizationName(QStringLiteral("zeit"));
     QApplication::setApplicationVersion(QStringLiteral(ZEIT_V));
+    bool result;
     QTranslator translator;
-    translator.load(QApplication::applicationDirPath() +
-                    QLatin1String("/../share/zeit/translations/") +
-                    QLatin1String("zeit_") +
-                    QLocale::system().name() + QLatin1String(".qm"));
+    result = translator.load(QApplication::applicationDirPath() +
+                             QLatin1String("/../share/zeit/translations/") +
+                             QLatin1String("zeit_") +
+                             QLocale::system().name() + QLatin1String(".qm"));
     a.installTranslator(&translator);
     QTranslator libTranslator;
-    libTranslator.load(QApplication::applicationDirPath() +
-                       QLatin1String("/../share/zeit/translations/") +
-                       QLatin1String("crontablib_") +
-                       QLocale::system().name() + QLatin1String(".qm"));
+    result &= libTranslator.load(QApplication::applicationDirPath() +
+                                 QLatin1String("/../share/zeit/translations/") +
+                                 QLatin1String("crontablib_") +
+                                 QLocale::system().name() + QLatin1String(".qm"));
     a.installTranslator(&libTranslator);
+    Q_UNUSED(result)
     MainWindow w;
     w.show();
     if(showTrayIcon)

@@ -35,7 +35,6 @@
 #include "cthost.h"
 #include "ctcron.h"
 #include "cttask.h"
-#include "ctvariable.h"
 #include "ctInitializationError.h"
 
 #include "data/commanddelegate.h"
@@ -46,7 +45,6 @@
 #include "taskdialog.h"
 #include "commanddialog.h"
 #include "timerdialog.h"
-#include "variabledialog.h"
 #include "commands.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"

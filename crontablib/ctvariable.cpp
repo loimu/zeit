@@ -15,6 +15,7 @@
 
 #include "ctHelper.h"
 
+
 CTVariable::CTVariable(const QString& tokenString, const QString& _comment, const QString& _userLogin) {
 
 	QString tokStr = tokenString;
