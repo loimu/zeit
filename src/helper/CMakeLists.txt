@@ -1,8 +1,12 @@
 
 add_executable(zeit_helper zeithelper.cpp)
-target_link_libraries(zeit_helper KF5::AuthCore)
-target_include_directories(zeit_helper PRIVATE Qt5::Core KF5::Auth)
-
+if(WITH_QT6)
+  target_link_libraries(zeit_helper KF6::AuthCore)
+  target_include_directories(zeit_helper PRIVATE Qt5::Core KF6::Auth)
+else()
+  target_link_libraries(zeit_helper KF5::AuthCore)
+  target_include_directories(zeit_helper PRIVATE Qt5::Core KF5::Auth)
+endif()
 
 find_package (ECM REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
